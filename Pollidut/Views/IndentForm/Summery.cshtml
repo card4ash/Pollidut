@@ -1,0 +1,256 @@
+﻿<style>
+    .pdSbasic td {
+        text-align: left;
+    }
+
+    .pdSdetails > thead > tr > th {
+        text-align: center;
+        vertical-align: middle;
+    }
+</style>
+<div class="row" id="SearchPanel">
+    <div class="col-lg-12">
+        <div class="panel panel-default" id="existing-data">
+            <div class="panel-heading">
+                <h4>
+                    <span>Search Parameter</span>
+                </h4>
+
+                <a href="#" class="minimize">Minimize</a>
+            </div>
+            <div class="panel-body noPad">
+                <table class="table table-hover pdSbasic">
+                    <tbody>
+                        <tr>
+                            <th>Supervisor Name : </th>
+                            <td>@ViewBag.SupervisorName</td>
+                            <th><input type="hidden" id="supId" value="@ViewBag.SupId" />Pallydut Name : </th>
+                            <td style="text-align:left;">
+                                <select class="nostyle form-control resetIt" id="pollidutId" name="pollidutid" style="width: 100%;">
+                                    <option value="0" data-disid="0">None</option>
+                                    @foreach (var pd in ViewBag.PDList)
+                                    {
+                                        <option value="@pd.PollidutId" data-disid="@pd.DistributionHouseId">@pd.PollidutName</option>
+                                    }
+
+                                </select>
+                                <label id="pderrorlbl"></label>
+                            </td>
+                            
+                            
+                            <th>Distributor Name</th>
+                            <td style="text-align:left;">
+                                <select class="nostyle form-control resetIt" id="distributionId" name="distributionId" style="width: 100%;">
+                                    <option value="0">None</option>
+                                    @foreach (var house in ViewBag.DistributionHouses)
+                                    {
+                                        <option value="@house.DistributionHouseId">@house.DistributionHouseName</option>
+                                    }
+                                </select><label id="distributionErrorlbl"></label>
+
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <th>Start Date </th>
+                            <td style="text-align:left;"><input class="form-control datepicker nostyle" id="startDate" name="startDate" type="text" placeholder="dd-mm-yyyy" /><label id="orderDatefromError"></label></td>
+                            <th>End Date </th>
+                            <td style="text-align:left;">
+                                <input class="form-control datepicker nostyle" id="endDate" name="endDate" type="text" placeholder="dd-mm-yyyy" /><label id="orderDatetoError"></label>
+                            </td>
+                            <th></th>
+                            <td style="text-align:left;">
+                                <button id="btnSearch" type="button" class="form-control btn btn-default"><i class="icon-search"></i>Search</button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+
+            </div>
+            <div class="panel-body noPad">
+                <table id="searchIndent" class="table table-hover searchIndent" style="display:table;">
+                    <thead>
+                        <tr>
+                            <th>Pallydut Name</th>
+                            <th>Distribution House</th>
+                            <th>Target</th>
+                            <th>Order Amount(tk.)</th>
+                            <th>Delivery Amount(tk.)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="searchResult"></tbody>
+
+
+
+                </table>
+
+            </div>
+
+
+            
+        </div>
+    </div>
+
+</div>
+
+<div id="orderDetail" style="display:none;">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default" id="existing-data">
+                <div class="panel-heading">
+                    <h4>
+                        <span>Order Detail</span>
+                    </h4>
+
+                    <a href="#" class="minimize">Minimize</a>
+                </div>
+
+                <div class="panel-body noPad">
+                    <button class="btn btn-primary" type="button" id="backToSearch"><i class="icon-backward"></i>Back To Search Result</button>
+
+                    <table class="table table-hover pdSbasic">
+                        <tbody>
+                            <tr>
+                                <th>Supervisor Name : </th>
+                                <td id="odsupName" style="text-align:left;">@ViewBag.SupervisorName</td>
+                                <th>Pallydut Name : </th>
+                                <td id="odtdPDName" style="text-align:left;"></td>
+                                <th>Distributor Name:</th>
+                                <td id="odtdDistribution" style="text-align:left;"></td>
+                            </tr>
+                            
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-body noPad" id="divDeliverytbl">
+                    <div class="panel-body noPad">
+                        <table id="orderDetailtbl" class="table table-hover pdSdetails" style="display:table;">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2">Product SKU</th>
+                                    <th colspan="2">Indent</th>
+                                    <th colspan="2">Delivery </th>
+                                    <th rowspan="2">Total Indent Price</th>
+                                    <th rowspan="2">Total Delivery Price</th>
+
+                                </tr>
+                                <tr>
+                                    <th>Carton</th>
+                                    <th>Piece</th>
+                                    <th>Carton</th>
+                                    <th>Piece</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bodyOrderdetail">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<input type="hidden" id="odstartDate" value="" />
+<input type="hidden" id="odendDate" value="" />
+
+
+<script>
+    (function ($) {
+        $.fn.outerHTML = function () {
+            return $(this).clone().wrap('<div></div>').parent().html();
+        };
+    })(jQuery);
+    $(function () {
+        $('#backToSearch').click(function () {
+            $('#orderDetail').hide();
+            $('#SearchPanel').show();
+        });
+        $('#searchResult').on('click', '.btnDetails', function () {
+            var pdId = $(this).closest('tr').find('.pdId').val();
+            var supId = $('#supId').val();
+            var distributionId = $(this).closest('tr').find('.disId').val();
+            var startDate = $('#odstartDate').val();
+            var endDate = $('#odendDate').val();
+            $('#odtdPDName').html($(this).closest('tr').find('.pdName').html());
+            $('#odtdDistribution').html($(this).closest('tr').find('.distributionName').html());
+            $.ajax({
+                type: "POST",
+                url: "/IndentForm/SummaryDetail",
+                data: JSON.stringify({ pdId: pdId, supId: supId, distributionId: distributionId, startDate: startDate, endDate: endDate }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.msg == "success") {
+                        $('#SearchPanel').hide();
+                        $('#orderDetail').show();
+                        $('#bodyOrderdetail').empty();
+                        $(msg.data).each(function () {
+                            $('#bodyOrderdetail').append('<tr><td>' + this.ProductName + '</td><td>' + this.ICarton + '</td><td>' + this.IPiece + '</td><td>' + this.DCarton + '</td><td>' + this.DPiece + '</td><td>' + this.ITotal + '</td><td>' + this.DTotal + '</td></tr>');
+                        });
+                    }
+                },
+                error: function (msg) {
+                    console.log(msg.responseText);
+                    alert(msg.responseText);
+                }
+            });
+        });
+        $('#btnSearch').click(function () {
+            var pdId = $('#pollidutId').val();
+            var supId = $('#supId').val();
+            var distributionId = $('#distributionId').val();
+            var startDate = $('#startDate').val();
+            var endDate = $('#endDate').val();
+            $('#odstartDate').val(startDate);
+            $('#odendDate').val(endDate);
+            $.ajax({
+                type: "POST",
+                url: "/IndentForm/GetSummary",
+                data: JSON.stringify({ pdId: pdId, supId: supId, distributionId: distributionId, startDate: startDate, endDate: endDate}),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.msg == "success") {
+                        $('#searchResult').empty();
+                        $.each(msg.data, function () {
+                            $('#searchResult').append('<tr><td><label class="pdName">' + this.PollidutName + '</label><input type="hidden" class="pdId" value="' + this.PollidutId + '"/></td><td><label class="distributionName">' + this.DistributionName + '</label><input type="hidden" class="disId" value="' + this.DistributionId + '"/></td><td>' + this.Target + '</td><td>' + this.TotalIndent + '</td><td>' + this.TotalDelivery + '</td><td><button type="button" class="btn btn-primary btnDetails">Details</button></td></tr>');
+                        });
+                    }
+                },
+                error: function (msg) {
+                    alert(msg.responseText);
+                }
+            });
+        });
+    });
+
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd-mm-yy',
+            yearRange: "-70:+0"
+        });
+        $('#pollidutId').change(function () {
+            var sel = document.getElementById('pollidutId');
+            var selected = sel.options[sel.selectedIndex];
+            var extra = selected.getAttribute('data-disId');
+            $('#distributionId').val(extra);
+        });
+
+    });
+
+</script>
+

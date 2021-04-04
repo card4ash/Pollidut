@@ -1,0 +1,573 @@
+﻿<style>
+    
+    .pdSbasic td {
+        text-align:left;
+    }
+    .pdSdetails > thead > tr > th {
+        text-align:center;
+        vertical-align:middle;
+    }
+    
+</style>
+<div style="display:none">
+    <input type="hidden" id="supId" value="@ViewBag.SupId" /> 
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default" id="existing-data">
+            <div class="panel-heading">
+                <h4>
+                    <span>Basic Information</span>
+                </h4>
+
+                <a href="#" class="minimize">Minimize</a>
+            </div>
+            <div class="panel-body noPad">
+                <table class="table table-hover pdSbasic">
+                    <tbody>
+                        <tr>
+                            <th>Pallydut Name : </th>
+                            <td style="text-align:left;">
+                                <select class="nostyle form-control resetIt" id="pollidutId" name="pollidutid" style="width: 100%;">
+                                    <option value="0" data-disid="0" data-target="" data-start='' data-end='' data-orderqty="" data-deliverqty="">None</option>
+                                    @foreach (var pd in ViewBag.PDList)
+                                    {
+                                        <option value="@pd.PollidutId" data-disid="@pd.DistributionHouseId" data-target="@pd.Target" data-start='@pd.StartDate.ToString("dd-MM-yyyy")' data-end='@pd.EndDate.ToString("dd-MM-yyyy")' data-orderqty="@pd.OrderQty" data-deliverqty="@pd.Acheivement">@pd.PollidutName</option>
+                                    }
+                                   
+                                </select>
+                                <label id="pderrorlbl"></label>
+                            </td>
+                            <th>Order Date</th>
+                            <td style="text-align:left;">
+                                <input class="form-control datepicker nostyle" id="orderdate" name="orderdate" type="text" placeholder="dd-mm-yyyy" /><label id="orderDateError"></label>
+                            </td>
+                            
+                            <th>Distributor Name</th>
+                            <td style="text-align:left;">
+                                <select class="nostyle form-control resetIt" id="distributionId" name="distributionId" style="width: 100%;">
+                                    <option value="0">None</option>
+                                    @foreach (var house in ViewBag.DistributionHouses)
+                                    {
+                                        <option value="@house.DistributionHouseId">@house.DistributionHouseName</option>
+                                    }
+                                </select><label id="distributionErrorlbl"></label>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Target : </th>
+                            <td id="pdTargetAmount"></td>
+                            <th>Start Date : </th>
+                            <td id="TargetStartDate"></td>
+                            <th>End Date : </th>
+                            <td id="TargetEndDate"></td>
+                        </tr>
+                        <tr>
+                            <th>Total Order Quantity (tk.) </th>
+                            <td id="TargetOrderQty"></td>
+                            <th>Total Delivery Quantity(tk.) </th>
+                            <td id="TargetDeliveryQty"></td>
+                            <th>Remaining Quantity (tk.) </th>
+                            <td id="remainingQty"></td>
+                            <tr>
+                        </tr>
+                        <tr>
+                            <th>Form Code # : </th>
+                            <td style="text-align:left;"><input id="formCode" class="form-control formCode" type="text" style="width: 100%;" /><label id="formCodeErrorlbl"></label></td>
+                        </tr>
+                       
+
+        </tbody>
+        </table>
+
+
+    </div>
+
+
+
+            <div class="panel-body noPad">
+                <table id="pdSdetails" class="table table-hover pdSdetails" style="display:table;width:100%;">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Product SKU</th>
+                            <th rowspan="2">Unit Price</th>
+                            <th rowspan="2" >JC Offer</th>
+                            <th colspan="2">Indent</th>
+                            <th rowspan="2">Total Price</th>
+                            <th rowspan="2">DD Amount</th>
+                            <th rowspan="2">Net Price</th>
+                            <th rowspan="2">Action</th>
+                        </tr>
+                        <tr>
+                            <th>Carton</th>
+                            <th>Piece</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="datarow">
+                            <td style="min-width:150px;">
+                                <select name="productSKU" class="form-control productSKU">
+                                    <option selected>None</option>
+                                    @foreach (var pdSku in ViewBag.PDSKUs)
+                                    {
+  <option value="@pdSku.ProductSKUId" data-unitprice="@pdSku.UnitPrice" data-ppc="@pdSku.PiecePerCarton" data-jcoffer="@pdSku.JCOffer" data-jctype="@pdSku.JCOfferType" data-outof="@pdSku.OutOf" data-outoftype="@pdSku.OutOfType" >@pdSku.ProductSKUName</option>
+                                    }
+                                </select>
+                            </td>
+                            <td><input readonly type="text" pattern="^[0-9]\d*$" name="unitprice" class="form-control unitprice" /><label class="lblUnitError"></label></td>
+                            <td><input readonly="readonly" type="text" pattern="^[0-9]\d*$" name="jcoffer" class="form-control jcoffer" /></td>
+                            
+                            <td><input type="text" pattern="^[0-9]\d*$" name="icarton" class="form-control icarton" /><label class="icartonError"></label><input type="hidden" name="ppc" class="ppc" /></td>
+                            <td><input type="text" pattern="^[0-9]\d*$" name="ipiece" class="form-control ipiece" /><label class="ipieceError"></label></td>
+                            
+                            <td><input type="text" readonly pattern="^[0-9]\d*$" name="tprice" class="form-control tprice" /><label class="lblTpricError"></label></td>
+                            <td>
+                                <input name="ddamount" readonly pattern="^[0-9]\d*$" type="text" class="form-control ddamount" />
+                            </td>
+                            <td><input type="text" pattern="^[0-9]\d*$" name="nprice" class="form-control nprice" /><label class="lblNpriceError"></label></td>
+                            <td>
+                                <button type="button" class="add btn btn-sm btn-default">Add <i class="fa fa icon-plus-sign"></i> </button>
+                            </td>
+                        </tr>
+                        <tr class="footertr">
+                            <td colspan="6" style="text-align:left;">Total</td>
+                            <td colspan="3"><input type="text" id="overallTotal" class="form-control overallTotal" /></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <div style="width:100%;text-align:center;">
+                    <input type="submit" value="Save" name="btnSave" id="btnSave" class="btnSave btn btn-lg btn-primary" />
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<div id="hiddenRow" style="display:none;"></div>
+<script>
+    $(function () {
+        function validation() {
+            var retValidation = true;
+            if ($('#pollidutId').val() > 0) {
+                $('#pderrorlbl').html('');
+            }
+            else {
+                $('#pderrorlbl').html('Please Select Pollidut').css('color', 'red');
+                retValidation = false;
+            }
+            if ($('#distributionId').val() > 0) {
+                $('#distributionErrorlbl').html('');
+            }
+            else {
+                $('#distributionErrorlbl').html('Please Select Distribution House').css('color', 'red');
+                retValidation = false;
+            }
+            if ($('#formCode').val() !='') {
+                $('#formCodeErrorlbl').html('');
+            }
+            else {
+                $('#formCodeErrorlbl').html('Please Select Form Code').css('color', 'red');
+                retValidation = false;
+            }
+            if ($('#orderdate').val() != '') {
+                $('#orderDateError').html('');
+            }
+            else {
+                $('#orderDateError').html('Please Select Order Date').css('color', 'red');
+                retValidation = false;
+            }
+
+            $('#pdSdetails tr.datarow').each(function () {
+                if ($(this).find('.productSKU').val() > 0) {
+                    if ($(this).find('.unitprice').val() >= 0) {
+                        $(this).find('.lblUnitError').html('');
+                    }
+                    else {
+                        $(this).find('.lblUnitError').html('Please Enter Valid Unit Price').css('color', 'red');
+                        retValidation = false;
+                    }
+
+                    if ($.isNumeric($(this).find('.jcoffer').val())) {
+                        $(this).find('.errorjco').html('');
+                    }
+                    else {
+                        $(this).find('.errorjco').html('Enter Valid Offer');
+                    }
+                    if ($.isNumeric($(this).find('.icarton').val())) {
+                        if ($(this).find('.icarton').val() < 0) {
+                            retValidation = false;
+                            $(this).find('.icartonError').html('Enter Valid Quantity').css('color','red');
+                        }
+                        else {
+                            $(this).find('.icartonError').html('');
+                        }
+                    }
+                    else if ($(this).find('.icarton').val() == '') {
+                        $(this).find('.icartonError').html('');
+                    }
+                    else {
+                        $(this).find('.icartonError').html('Enter Valid Quantity').css('color', 'red');
+                        retValidation = false;
+                    }
+
+                    if ($.isNumeric($(this).find('.ipiece').val())) {
+                        if ($(this).find('.ipiece').val() < 0) {
+                            retValidation = false;
+                            $(this).find('.ipieceError').html('Enter Valid Quantity').css('color', 'red');
+                        }
+                        else {
+                            $(this).find('.ipieceError').html('');
+                        }
+                    }
+                    else if ($(this).find('.ipiece').val() == '') {
+                        $(this).find('.ipieceError').html('');
+                    }
+                    else {
+                        $(this).find('.ipieceError').html('Enter Valid Quantity').css('color', 'red');
+                        retValidation = false;
+                    }
+
+
+
+                    if ($.isNumeric($(this).find('.nprice').val())) {
+                        if ($(this).find('.nprice').val() < 0) {
+                            retValidation = false;
+                            $(this).find('.lblNpriceError').html('Please Enter Valid Net Price').css('color', 'red');
+                        }
+                        else {
+                            $(this).find('.lblNpriceError').html('');
+                        }
+                    }
+                    else if ($(this).find('.nprice').val() == '') {
+                        $(this).find('.lblNpriceError').html('');
+                    }
+                    else {
+                        retValidation = false;
+                        $(this).find('.lblNpriceError').html('Please Enter Valid Net Price').css('color', 'red');
+                    }
+                }
+            });
+
+            return retValidation;
+        }
+        $('#btnSave').click(function () {
+            var valid = validation();
+            if (!valid) return false;
+            var pdForm = {};
+            pdForm.PollidutId = $('#pollidutId').val();
+            pdForm.SupervisorId = $('#supId').val();
+            pdForm.FormCode = $('#formCode').val();
+            pdForm.DistributionHouseId = $('#distributionId').val();
+            pdForm.OrderDate = $('#orderdate').val();
+            pdForm.DeliveryDate = $('#deliverydate').val();
+            pdForm.TotalPrice = $('#overallTotal').val();
+            var rowItems = [];
+            $('#pdSdetails tr.datarow').each(function () {
+                if ($(this).find('.productSKU').val() > 0) {
+                    var rowObj = {};
+                    rowObj.ProductSKUId = $(this).find('.productSKU').val();
+                    rowObj.UnitPrice = $(this).find('.unitprice').val();
+                    rowObj.JCOffer = $(this).find('.jcoffer').val();
+                    rowObj.IndentCartonQty = $(this).find('.icarton').val();
+                    rowObj.IndentPieceQty = $(this).find('.ipiece').val();
+                    rowObj.TotalPrice = $(this).find('.tprice').val();
+                    rowObj.DDAmount = $(this).find('.ddamount').val();
+                    rowObj.NetPrice = $(this).find('.nprice').val();
+
+                    rowItems.push(rowObj);
+                }
+            });
+            //console.log(rowItem);
+
+            $.ajax({
+                type: "POST",
+                url: "/IndentForm/SaveForm",
+                data: JSON.stringify({iForm:pdForm,rowItems:rowItems}),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.msg == "success") {
+                        alert('successfully saved data');
+                        $.ajax({
+                            url: '/IndentForm/OrderForm',
+                            async: true,
+                            beforeSend: function () {
+                                $('.panel-body div').removeClass('scroll');
+                                $("#PartialContent").fadeOut("slow").empty();
+
+                            },
+                            success: function (data) {
+                                $('#PartialContent').hide().html(data).fadeIn("slow");
+                            },
+                            error: function (request, status, error) {
+                                alert("Error-  Request: " + request + ", Status: " + status + ", Error: " + error);
+                            },
+                            complete: function () {
+                                $('div.sidenav').unblock();
+                            }
+                        });
+                    }
+                },
+                error: function (msg) {
+                    alert(msg.responseText);
+                }
+            });
+        });
+
+        $('.pdSdetails').on('change', '.tprice', function () {
+            var tprice = $(this).val();
+            var ddAmount=$(this).closest('tr').find('.ddamount').val();
+            $(this).closest('tr').find('.nprice').val(tprice-ddAmount);
+            totalPriceCalculate();
+        });
+        $('.pdSdetails').on('change', '.ddamount', function () {
+            var tprice=$(this).closest('tr').find('.tprice').val();
+            var ddAmount = $(this).val();
+            $(this).closest('tr').find('.nprice').val(tprice-ddAmount);
+            totalPriceCalculate();
+        });
+        $('.pdSdetails').on('change', '.nprice', function () {
+            totalPriceCalculate();
+        });
+
+        $('.pdSdetails').on('change', '.unitprice', function () {
+            var unitprice = $(this).val();
+            var value = $(this).closest('tr').find('.jcoffer').val();
+            if (unitprice == '') unitprice = 0;
+            if (value == '') value = 0;
+            var ddAmount = 0;
+            if ($(this).closest('tr').find('.psNo').hasClass('active')) {
+                ddAmount = unitprice * value;
+            }
+            else {
+                ddAmount = value;
+            }
+            var cartonvalue = $(this).closest('tr').find('.dcarton').val();
+            var piecevalue = $(this).closest('tr').find('.dpiece').val();
+            var cartonUnit = $(this).closest('tr').find('.ppc').val();
+            if (piecevalue == '') piecevalue = 0;
+            if (cartonvalue == '') cartonvalue = 0;
+            if (cartonUnit == '') cartonUnit = 0;
+            var tprice = cartonUnit * cartonvalue * unitprice + piecevalue * unitprice;
+            var nprice = tprice - ddAmount;
+            $(this).closest('tr').find('.tprice').val(tprice);
+            $(this).closest('tr').find('.ddamount').val(ddAmount);
+            $(this).closest('tr').find('.nprice').val(nprice);
+            totalPriceCalculate();
+        });
+
+        $('.pdSdetails').on('change', '.icarton', function () {
+            var cartonvalue = $(this).val();
+            var piecevalue = $(this).closest('tr').find('.ipiece').val();
+            var cartonUnit = $(this).closest('tr').find('.ppc').val();
+            var unitprice = $(this).closest('tr').find('.unitprice').val();
+            if (piecevalue == '') piecevalue = 0;
+            if (cartonvalue == '') cartonvalue = 0;
+            if (cartonUnit == '') cartonUnit = 0;
+            if (unitprice == '') unitprice = 0;
+            var tpiece = cartonUnit * cartonvalue;
+            var currentValue = parseInt($("#replies").text(), 10);
+            tpiece += Number(piecevalue);
+            var tprice = tpiece * unitprice;
+            $(this).closest('tr').find('.tprice').val(tprice);
+
+            var selected = $(this).closest('tr').find('.productSKU').find('option:selected');
+            var outOfType = selected.data('outoftype');
+            var outOfValue = selected.data('outof');
+            var offerType = selected.data('jctype');
+            var offerValue = selected.data('jcoffer');
+            var jcOffer = 0;
+            var ddAmount = 0;
+            var result = 0;
+
+            if (outOfType == 1) {
+                result = tprice / outOfValue;
+                result = Math.floor(result);
+            }
+            else if (outOfType == 2) {
+                result = tpiece / outOfValue;
+                result = Math.floor(result);
+            }
+            else {
+                result = 0;
+            }
+            if (offerType == 1) {
+                ddAmount = result * offerValue;
+                jcOffer = 0;
+            }
+            else if (offerType == 2) {
+                jcOffer = result * offerValue;
+                ddAmount = 0;
+            }
+            else {
+                jcOffer = 0;
+                ddAmount = 0;
+            }
+
+            $(this).closest('tr').find('.ddamount').val(ddAmount);
+            $(this).closest('tr').find('.jcoffer').val(jcOffer);
+            var nprice = tprice - ddAmount;
+            $(this).closest('tr').find('.nprice').val(nprice);
+            totalPriceCalculate();
+        });
+
+        $('.pdSdetails').on('change', '.ipiece', function () {
+            var piecevalue = $(this).val();
+            var cartonvalue = $(this).closest('tr').find('.icarton').val();
+            var cartonUnit = $(this).closest('tr').find('.ppc').val();
+            var unitprice = $(this).closest('tr').find('.unitprice').val();
+            if (piecevalue == '') piecevalue = 0;
+            if (cartonvalue == '') cartonvalue = 0;
+            if (cartonUnit == '') cartonUnit = 0;
+            if (unitprice == '') unitprice = 0;
+            var tpiece = cartonUnit * cartonvalue;
+            tpiece += Number(piecevalue);
+            var tprice = tpiece * unitprice;
+            $(this).closest('tr').find('.tprice').val(tprice);
+
+            var selected = $(this).closest('tr').find('.productSKU').find('option:selected');
+            var outOfType = selected.data('outoftype');
+            var outOfValue = selected.data('outof');
+            var offerType = selected.data('jctype');
+            var offerValue = selected.data('jcoffer');
+            var jcOffer = 0;
+            var ddAmount = 0;
+            var result = 0;
+
+            if (outOfType == 1) {
+                result = tprice / outOfValue;
+                result = Math.floor(result);
+            }
+            else if (outOfType == 2) {
+                result = tpiece / outOfValue;
+                result = Math.floor(result);
+            }
+            else {
+                result = 0;
+            }
+            if (offerType == 1) {
+                ddAmount = result * offerValue;
+                jcOffer = 0;
+            }
+            else if (offerType == 2) {
+                jcOffer = result * offerValue;
+                ddAmount = 0;
+            }
+            else {
+                jcOffer = 0;
+                ddAmount = 0;
+            }
+
+            $(this).closest('tr').find('.ddamount').val(ddAmount);
+            $(this).closest('tr').find('.jcoffer').val(jcOffer);
+            var nprice = tprice - ddAmount;
+            $(this).closest('tr').find('.nprice').val(nprice);
+            totalPriceCalculate();
+        });
+
+
+
+
+
+
+        $('.pdSdetails').on('change', '.productSKU', function () {
+            var selected = $(this).find('option:selected');
+            var unitprice = selected.data('unitprice');
+            var ppc = selected.data('ppc');
+            $(this).closest('tr').find('.unitprice').val(unitprice);
+            $(this).closest('tr').find('.ppc').val(ppc);
+            $(this).closest('tr').find('.jcoffer').val(0);
+            $(this).closest('tr').find('.icarton').val(0);
+            $(this).closest('tr').find('.ipiece').val(0);
+            $(this).closest('tr').find('.tprice').val(0);
+            $(this).closest('tr').find('.ddamount').val(0);
+            $(this).closest('tr').find('.nprice').val(0);
+        });
+
+        $('#pollidutId').change(function () {
+            var sel = document.getElementById('pollidutId');
+            var selected = sel.options[sel.selectedIndex];
+            var extra = selected.getAttribute('data-disId');
+            $('#distributionId').val(extra);
+            $('#pdTargetAmount').html(selected.getAttribute('data-target'));
+            $('#TargetStartDate').html(selected.getAttribute('data-start'));
+            $('#TargetEndDate').html(selected.getAttribute('data-end'));
+            $('#TargetOrderQty').html(selected.getAttribute('data-orderqty'));
+            $('#TargetDeliveryQty').html(selected.getAttribute('data-deliverqty'));
+            var target = 0;
+            var delivery = 0;
+            var remaining = 0;
+            if (selected.getAttribute('data-target') == '') {
+                target = 0
+            }
+            else {
+                target = selected.getAttribute('data-target');
+            }
+            if (selected.getAttribute('data-deliverqty') == '') {
+                delivery = 0
+            }
+            else {
+                delivery = selected.getAttribute('data-deliverqty');
+            }
+            remaining = target - delivery;
+            if (remaining < 0) {
+                remaining = 0;
+            }
+            $('#remainingQty').html(remaining);
+        });
+    });
+
+</script>
+
+<script>
+    $(function () {
+        var extraRowAdd = $('#pdSdetails tr').eq(2).clone();
+        $('#hiddenRow').html(extraRowAdd);
+        $('#pdSdetails').on('click', '.add', function () {
+            $(this).closest('tbody').find('tr.footertr').before($('#hiddenRow').html());
+            $(this).attr('class', 'remove  btn btn-sm btn-default');
+            $(this).html('Remove <i class="fa fa icon-minus"></i>');
+        });
+        $('#pdSdetails').on('click', '.remove', function () {
+            $(this).closest('tr').remove();
+            totalPriceCalculate();
+        });
+    });
+
+    function totalPriceCalculate() {
+        var totalprice = 0;
+        $('.nprice').each(function () {
+            var rowValue = 0;
+            if ($(this).val() == ''){
+                rowValue = 0;
+            }
+            else {
+                rowValue = parseFloat($(this).val());
+            }
+            totalprice =totalprice + rowValue;
+        });
+        $('.overallTotal').val(totalprice.toFixed(2));
+    }
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+        $(function () {
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd-mm-yy',
+                yearRange: "-70:+0"
+            });
+            
+        });
+        
+</script>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6e130c98a1f247028c5b300ffcbc61f7" Name="Diagram1" ZoomLevel="79">
+        <EntityTypeShape EntityType="PollidutModel.AREA" Width="1.5" PointX="1.5" PointY="21" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.BANK" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.BRAND" Width="1.5" PointX="7.75" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.CM_POSITIONS" Width="1.5" PointX="14.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.CM" Width="1.5" PointX="14.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.ComplainTicket" Width="1.5" PointX="10" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.DESIGNATION" Width="1.5" PointX="14.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.DISTRIBUTION_HOUSE_MAIN" Width="1.5" PointX="5.75" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.DISTRIBUTION_HOUSES" Width="1.5" PointX="0.75" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.DISTRICT" Width="1.5" PointX="7.75" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.EDUCATIONAL_DEGREES" Width="1.5" PointX="9.75" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.EDUCATIONAL_DIVISIONS" Width="1.5" PointX="2.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.EDUCATIONAL_GRADES" Width="1.5" PointX="4.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.EMPLOYEE_DISTRIBUTION_HOUSES" Width="1.5" PointX="5.25" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.EMPLOYEE_ROLE_STATUSES" Width="1.5" PointX="11.75" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.EMPLOYEE_TYPES" Width="1.5" PointX="16.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.EMPLOYEE_WORK" Width="1.5" PointX="5.25" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.EMPLOYEE" Width="1.5" PointX="3" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.FORM_ROW_ITEM" Width="1.5" PointX="14.5" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.GENDER" Width="1.5" PointX="16.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.JCOffer" Width="1.5" PointX="14.5" PointY="19.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.MARITAL_STATUSES" Width="1.5" PointX="16.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.Note" Width="1.5" PointX="16.75" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.PALLYDUT_TARGET" Width="1.5" PointX="16.75" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.PD_PRODUCT_INDENT_FORM" Width="1.5" PointX="12.25" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.PERSON_CURRENT_STATUSES" Width="1.5" PointX="18.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.PERSON_DEGREES" Width="1.5" PointX="18.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.PERSON_FAMILY" Width="1.5" PointX="3" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.PERSON_JOB_EXPERIENCES" Width="1.5" PointX="7.75" PointY="19.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.PERSON" Width="1.5" PointX="0.75" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.PERSONS_REFERENCES" Width="1.5" PointX="18.75" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.PRODUCT" Width="1.5" PointX="10" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.PRODUCT_SKU" Width="1.5" PointX="12.25" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.PRODUCT_TYPE" Width="1.5" PointX="7.75" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.PROJECT" Width="1.5" PointX="9.75" PointY="19.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.REGION" Width="1.5" PointX="1.5" PointY="24.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.RELIGION" Width="1.5" PointX="11.75" PointY="19.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.sysdiagram" Width="1.5" PointX="18.75" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.THANA" Width="1.5" PointX="18.75" PointY="17.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.TICKET_CATEGORY" Width="1.5" PointX="7.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.TICKET_REPLIED" Width="1.5" PointX="12.25" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.TICKET_STATUS" Width="1.5" PointX="7.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.TICKET_SUB_CATEGORY" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.USER" Width="1.5" PointX="3.75" PointY="20.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.USERS_LOGIN_INFO" Width="1.5" PointX="16.75" PointY="20.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.DISTRIBUTION_HOUSE_TYPES" Width="1.5" PointX="18.75" PointY="20.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.EDUCATION_DEGREE_LEVELS" Width="1.5" PointX="20.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.EXPERIENCE_TYPES" Width="1.5" PointX="20.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.LOCATION" Width="1.5" PointX="20.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.PERSON_DETAILS" Width="1.5" PointX="20.75" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.REFERENCE_TYPES" Width="1.5" PointX="20.75" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.TERRITORy" Width="1.5" PointX="20.75" PointY="17.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.USER_TYPES" Width="1.5" PointX="20.75" PointY="20.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.FormPDEmplyeeView" Width="1.5" PointX="9.75" PointY="22.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.View_EmployeeListForAssignToParent" Width="1.5" PointX="11.75" PointY="22.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.View_EMPLOYEES" Width="1.5" PointX="22.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.View_EMPLOYEES_DETAIL" Width="1.5" PointX="13.75" PointY="23.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.View_PERSON" Width="1.5" PointX="22.75" PointY="17.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.View_Supervisors" Width="1.5" PointX="3.75" PointY="24.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.View_USERS" Width="1.5" PointX="5.75" PointY="24.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.viewDistributionHouseSpecificPosition" Width="1.5" PointX="15.75" PointY="24.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.viewHouseAndTypeSpecificUnassignedEmployee" Width="1.5" PointX="17.75" PointY="24.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.viewHouseSpecificPositionAndEmployee" Width="1.5" PointX="19.75" PointY="24.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PollidutModel.viewSearchEmployee" Width="1.5" PointX="24.75" PointY="1.875" IsExpanded="true" />
+        <AssociationConnector Association="PollidutModel.FK_AREAS_REGIONS1" ManuallyRouted="false" />
+        <AssociationConnector Association="PollidutModel.FK_DISTRIBUTION_HOUSE_AREAS" ManuallyRouted="false" />
+        <AssociationConnector Association="PollidutModel.FK_ComplainTicket_TICKET_CATEGORY" ManuallyRouted="false" />
+        <AssociationConnector Association="PollidutModel.FK_ComplainTicket_TICKET_STATUS" ManuallyRouted="false" />
+        <AssociationConnector Association="PollidutModel.FK_ComplainTicket_TICKET_SUB_CATEGORY" ManuallyRouted="false" />
+        <AssociationConnector Association="PollidutModel.FK_TICKET_REPLIED_ComplainTicket" ManuallyRouted="false" />
+        <AssociationConnector Association="PollidutModel.FK_EMPLOYEE_DISTRIBUTION_HOUSES_DISTRIBUTION_HOUSES" ManuallyRouted="false" />
+        <AssociationConnector Association="PollidutModel.FK_EMPLOYEES_DISTRIBUTION_HOUSES" ManuallyRouted="false" />
+        <AssociationConnector Association="PollidutModel.FK_EMPLOYEE_DISTRIBUTION_HOUSES_EMPLOYEES" ManuallyRouted="false" />
+        <AssociationConnector Association="PollidutModel.FK_EMPLOYEE_WORK_EMPLOYEES" ManuallyRouted="false" />
+        <AssociationConnector Association="PollidutModel.FK_EMPLOYEES_PERSONS" ManuallyRouted="false" />
+        <AssociationConnector Association="PollidutModel.FK_FORM_ROW_ITEM_PD_PRODUCT_INDENT_FORM" ManuallyRouted="false" />
+        <AssociationConnector Association="PollidutModel.FK_FORM_ROW_ITEM_PRODUCT_SKU" ManuallyRouted="false" />
+        <AssociationConnector Association="PollidutModel.FK_JCOffer_PRODUCT_SKU" ManuallyRouted="false" />
+        <AssociationConnector Association="PollidutModel.FK_PERSON_FAMILY_PERSONS" ManuallyRouted="false" />
+        <AssociationConnector Association="PollidutModel.FK_PRODUCT_PRODUCT_TYPE" ManuallyRouted="false" />
+        <AssociationConnector Association="PollidutModel.FK_PRODUCT_SKU_PRODUCT" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

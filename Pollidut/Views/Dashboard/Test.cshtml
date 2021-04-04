@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Test";
+}
+@model List<Pollidut.ViewModels.ComplainViewModel>
+    <script src="../../Assets/Notes/fancybox/jquery.fancybox.js"></script>
+    
+
+    <div id="main">
+        <a id="addButton" class="green-button">Add a note</a>
+        @foreach (var item in Model)
+        {
+            <div class="note green" style="left:@{@item.Left}px;top:@{@item.Top}px;z-index:@{@item.Zindex;}px">
+                @item.Content
+                <div class="author">@item.User</div>
+                <span class="data">@item.ID</span>
+            </div>
+        }
+       
+    </div>
+
+    
+
+    <script src="../../Assets/Notes/script.js"></script>
+
+
+

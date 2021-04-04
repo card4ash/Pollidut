@@ -1,0 +1,215 @@
+﻿@{
+    Layout = null;
+}
+
+
+@*Main login page*@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.png">
+
+    <title>Login</title>
+
+      <link href="~/assets/css/bootstrap3/css/bootstrap.min.css" rel="stylesheet" />
+      <link href="~/assets/css/bootstrap3/css/signin.css" rel="stylesheet" />
+      <link href="~/assets/plugins/forms/validate/validate.css" rel="stylesheet" />
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+
+      <style>
+
+          .hidden-alert {
+              display:none;
+          }
+
+      </style>
+  </head>
+
+<body>
+
+    <div class="container">
+        <form class="form-signin" action="/Login/Index" id="login-form" enctype="multipart/form-data" method="post">
+            <h2 class="form-signin-heading" style="text-align:center">Please sign in</h2>
+            <input type="text" class="form-control" placeholder="Enter Login Name" id="username" name="username" value="" autofocus>
+            <input type="password" class="form-control" id="password" name="password" value="" placeholder="Password">
+
+            <div class="hidden-alert" id="PhotoWrapper">
+                <div class="row">
+                    <div class="col-md-12">
+                        <br />
+                        <input type="file" name="files" id="files" accept="image/jpeg,image/png,jpg|png;capture=camera" />
+                         @*accept="image/*;capture=camera"*@
+                        <br />
+                    </div>
+                </div>
+            </div>
+
+             <div class="row">
+                <div class="col-md-12" style="text-align:center">
+                    <!-- Split button -->
+                    <div class="btn-group">
+                        <button type="submit" id="submit" class="btn btn-primary btn-lg">Sign in</button>
+                        <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#" id="showphoto">Sign in with photo</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#"> <label class="checkbox"> <input type="checkbox" value="remember-me"> Remember me   </label>   </a>  </li>
+                        </ul>
+                    </div>
+                    <!-- Split button -->
+                </div>
+
+            </div>
+            <br />
+            <div class="alert alert-danger hidden-alert" id="invalidlogin">Invalid Login. Please try again.</div>
+        </form>
+    </div>
+    <!-- /container -->
+
+    <script src="~/assets/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+   <script src="~/Assets/css/bootstrap3/js/bootstrap.min.js"></script>
+    <script src="~/assets/plugins/forms/validate/jquery.validate.min.js"></script>
+    
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#showphoto').click(function (event) {
+                event.preventDefault();
+                $('#PhotoWrapper').removeClass('hidden-alert');
+            });
+
+            $.validator.addMethod('accept', function () { return true; });
+
+            $("#login-form").validate({
+
+                submitHandler: function (form) {
+                    var postdata = $('#login-form').serialize();
+                    var file = document.getElementById('files').files[0];
+                    var username = document.getElementById('username').value;
+                    var password = document.getElementById('password').value;
+                    var fd = new FormData();
+                    fd.append("files", file);
+                    fd.append("username", username);
+                    fd.append("password", password);
+                    fd.append("ismobile","y");
+                    //============================================
+
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            var lat = position.coords.latitude;
+                            var lon = position.coords.longitude;
+                            fd.append('lat', lat); fd.append('lon',lon);
+                            $.ajax({
+                                url: "/Login/Index",
+                                type: "POST",
+                                data: fd,
+                                processData: false,  // tell jQuery not to process the data
+                                contentType: false,   // tell jQuery not to set contentType
+                                beforeSend: function () {
+                                    $('#submit').attr('disabled', 'disabled');
+                                    $('#submit').html('Working...');
+                                },
+                                success: function (response) {
+                                    if (response.result == 'InvalidLogin') {
+                                        $('#invalidlogin').removeClass('hidden-alert');
+                                    }
+                                    else if (response.result == 'Error') {
+                                        alert('Error.');  //$('#testHtml').html('Database Error.'); return false;
+                                    }
+                                    else if (response.result == 'Redirect') {
+                                        window.location = response.url;
+                                    }
+                                },
+                                error: function (request, status, error) {
+                                    alert("error");
+                                    alert("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                                },
+                                complete: function () {
+                                    $('#submit').removeAttr("disabled");
+                                    $('#submit').html('Sign in');
+                                }
+                            });
+                    });
+                }
+                else {
+                    alert('failed to find your location.');
+                }
+                   
+                },
+                ignore: "files",
+                rules: {
+                    username: {
+                        required: true,
+                        minlength: 2
+                    },
+                    password: {
+                        required: true,
+                        minlength: 1
+                    },
+                    files: {
+                        required: false,
+                        accept: "image/png"
+                    }
+                },
+                messages: {
+                    username: {
+                        required: "Please provide a login name",
+                        minlength: "Minimum length 4"
+                    },
+                    password: {
+                        required: "Please provide a password",
+                        minlength: "Password is more than 1 chars"
+                    }
+                }
+            });
+        });
+
+
+        //$('#submit').click(function (e) {
+
+        //    var postdata = $('#login-form').serialize();
+        //    var file = document.getElementById('files').files[0];
+        //    alert(file.name);
+        //    var username = document.getElementById('username').value;
+        //    var password = document.getElementById('password').value;
+        //    var fd = new FormData();
+        //    fd.append("files", file);
+        //    fd.append("username", username);
+        //    fd.append("password", password);
+        //    $.ajax({
+        //        url: "/Home/Index",
+        //        type: "POST",
+        //        data: fd,
+        //        processData: false,  // tell jQuery not to process the data
+        //        contentType: false,   // tell jQuery not to set contentType
+        //        success: function (result) {
+        //            alert(result);
+        //     },
+        //        error: function (request, status, error) {
+        //            alert("error");
+        //        alert("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+        //    }
+        //    });
+
+        //});
+
+
+
+    </script>
+
+</body>
+</html>
+

@@ -1,0 +1,293 @@
+﻿<style>
+    #layer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        opacity: .8;
+        z-index: 1003;
+        display: none;
+        overflow: hidden;
+    }
+
+    #popup {
+        width: 80%;
+        height: 80%;
+        position: fixed;
+        margin: auto;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1013;
+        border: 1px solid green;
+        padding: 10px;
+        background-color: #fff;
+        display: none;
+    }
+    #pickEmployee {
+        height: 90%;
+        width: 100%;
+        overflow: scroll;
+    }
+    .boxclose {
+        float: right;
+        margin-top: -30px;
+        margin-right: -30px;
+        cursor: pointer;
+        color: #fff;
+        border: 1px solid #AEAEAE;
+        border-radius: 30px;
+        background: #605F61;
+        font-size: 31px;
+        font-weight: bold;
+        display: inline-block;
+        line-height: 0px;
+        padding: 11px 3px;
+    }
+</style>
+<script>
+    $(function () {
+        $('#boxclose').click(function () {
+            $('#pickEmployee').empty();
+            $('#popup,#layer').hide();
+        });
+        $('#layer').click(function () {
+            $('#pickEmployee').empty();
+            $('#popup,#layer').hide();
+        });
+    });
+
+</script>
+
+<script>
+    $(function () {
+        // $('#btnUser').click(function () {
+        $(this).closest('div').hide();
+        $('#tblAddUser').empty().append('<div class="form-group">' +
+        '<label  for="txtEmployee">Employee</label>' +
+            '<input type="hidden" id="empId"  /><input class="form-control nostyle" id="txtEmployee" name="personname" type="text" title="Employee." /><label></label>' +
+    '</div>' +
+            '       <div class="form-group">' +
+        '<label  for="txtUserName">User Name</label>' +
+         '   <input class="form-control nostyle" id="txtUserName" name="txtUserName" type="text" title="User Name" /><label></label>' +
+    '</div>' +
+    '<div class="form-group">' +
+        '<label  for="txtLogName">Login Name</label>' +
+            '<input class="form-control nostyle" id="txtLogName" name="txtLogName" type="text" title="Login Name." /><label id="logError"></label>' +
+    '</div>' +
+    '<div class="form-group">' +
+        '<label  for="txtPassword">Password</label>' +
+            '<input class="form-control nostyle" id="txtPassword" name="txtPassword" type="password" title="Password." /><label></label>' +
+    '</div>' +
+    '<div class="form-group">' +
+        '<label  for="txtConfirmPassword">Confirm Password</label>' +
+            '<input class="form-control nostyle" id="txtConfirmPassword" name="txtConfirmPassword" type="password" title="Confirm Password." /><label></label>' +
+    '</div>' +
+    '<div class="form-group">' +
+        '<label  for="dropUserType">User Type</label>' +
+            '<select class="nostyle form-control resetIt" id="dropUserType" name="dropUserType" style="width: 100%;">' +
+            '</select><label></label>' +
+    '</div>' +
+    '<div class="form-group">' +
+            '<button type="button" id="btnSubmit" class="btn btn-success btn-lg">Submit</button>' +
+           // '<button type="button" id="btnCancel" class="btn btn-info btn-lg">Cancel</button>'+
+    '</div>').show();
+        $('#txtUserName').val('');
+        $('#txtPassword').val('');
+        $.ajax({
+            type: "POST",
+            url: "/Dashboard/getUserType",
+            data: JSON.stringify({}),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (msg) {
+                BindUserType(msg);
+            },
+            error: function (msg) {
+                alert(msg.responseText);
+            }
+        });
+        $('#txtEmployee').click(function () {
+            $('#pickEmployee').empty();
+            $('#layer,#popup').show();
+            var myLink = "/Dashboard/GetUserEmployee"
+            $.ajax({
+                url: myLink,
+                async: true,
+                beforeSend: function () {
+                    $('div.sidenav').block({ message: '<img src="../../Assets/images/loaders/circular/001.gif" />' });
+                    $("#pickEmployee").fadeOut("slow");
+                    $("#pickEmployee").empty();
+
+                },
+                success: function (data) {
+                    $('#pickEmployee').html(data);
+                    $("#pickEmployee").fadeIn("slow");
+                },
+                error: function (request, status, error) {
+                    alert("Error-  Request: " + request + ", Status: " + status + ", Error: " + error);
+                },
+                complete: function () {
+                    $('div.sidenav').unblock();
+                }
+            });
+        });
+
+        $('#txtLogName').blur(function () {
+            $.ajax({
+                type: "POST",
+                url: "/Dashboard/getLoginName",
+                data: JSON.stringify({ longinName: $(this).val() }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg == true) {
+                        $('#logError').html('Login Name already Exist').css('color', 'red');
+                    }
+                    else {
+                        $('#logError').html('').css('color', 'red');
+                    }
+                },
+                error: function (msg) {
+                    alert(msg.responseText);
+                }
+            });
+        });
+        //$('#btnCancel').click(function () {
+        //    $('#tblAddUser').empty().hide();
+        //    $('#btnUser').closest('div .form-group').show();
+        //});
+        $('#btnSubmit').click(function () {
+            var check = validationUserAdd();
+            if (check == true) {
+                var userInfo = {};
+                userInfo.userName = $('#txtUserName').val();
+                userInfo.password = $('#txtPassword').val();
+                userInfo.loginName = $('#txtLogName').val();
+                userInfo.userType = $('#dropUserType').val();
+                userInfo.employeeId = $('#empId').val();
+                $.ajax({
+                    type: "POST",
+                    url: "/Dashboard/addUser",
+                    data: JSON.stringify({ user: userInfo }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+                        alert(msg);
+                        if (msg == 'Success') {
+                            $('#txtUserName').val('');
+                            $('#txtPassword').val('');
+                            $('#txtLogName').val('');
+                            $('#txtConfirmPassword').val('');
+                            $("#dropUserType").prop("selectedIndex", 0);
+                            $('#empId').val('');
+                            $('#txtEmployee').val('');
+                        }
+                    },
+                    error: function (msg) {
+                        alert(msg.responseText);
+                    }
+                });
+            }
+            else {
+                alert('false');
+            }
+        });
+        //});
+    });
+    function validationUserAdd() {
+        var returnvalue = true;
+        $('form #tblAddUser input[type="text"]').each(function () {
+            var x = $(this).val();
+            if (x == '') {
+                $(this).next().html('Please Enter Value').css('color', 'red');
+                returnvalue = false;
+            }
+            else {
+                $(this).next().html('');
+            }
+        });
+        $('form #tblAddUser input[type="password"]').each(function () {
+            var x = $(this).val();
+            if (x == '') {
+                $(this).next().html('Please Enter Value').css('color', 'red');
+                returnvalue = false;
+            }
+            else {
+                $(this).next().html('');
+            }
+        });
+        $('form #tblAddUser select').each(function () {
+            var x = $(this).val();
+            if (x == 0) {
+                $(this).next().html('Please Select').css('color', 'red');
+                returnvalue = false;
+            }
+            else {
+                $(this).next().html('');
+            }
+        });
+        if ($('#txtPassword ').val() != $('#txtConfirmPassword').val()) {
+            $('#txtConfirmPassword').next().html('Password Mismatch').css('color', 'red');
+            returnvalue = false;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Dashboard/getLoginName",
+            data: JSON.stringify({ longinName: $('#txtLogName').val() }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (msg) {
+                if (msg == true) {
+                    $('#logError').html('Login Name already Exist').css('color', 'red');
+                    returnvalue = false;
+
+                }
+                else {
+                    $('#logError').html('').css('color', 'red');
+                }
+            },
+            error: function (msg) {
+                alert(msg.responseText);
+            }
+        });
+        return returnvalue;
+    }
+    function BindUserType(msg) {
+        $('#dropUserType').empty().append('<option value="0">Please Select</option>');
+        $.each(msg, function () {
+            $('#dropUserType').append('<option value="' + this.ID + '">' + this.Name + '</option>');
+        });
+    }
+
+
+</script>
+
+<form>
+    <div>
+
+        @*<input id="btnUser" type="button" value="Add New User" />*@
+        @*<div class="form-group">
+            <input id="btnUser" type="button" class="btn btn-success btn-lg" value="Add New User" />
+        </div>*@
+        
+        <div id="tblAddUser">
+
+        </div>
+    </div>
+    
+    
+    
+    
+    <div id="layer"></div>
+    <div id="popup">
+        <a class="boxclose" id="boxclose">x</a>
+        <h1 style="text-align: center; color: Black; background-color: #f4f4f7; margin-bottom: 10px;">Pick Employee</h1>
+        <div id="pickEmployee">
+
+        </div>
+    </div>
+</form>

@@ -1,0 +1,465 @@
+﻿<style>
+    #imgPreviewWithStyles {
+    background: #222;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    padding: 15px;
+    z-index: 999;
+    border: none;
+}
+
+/* Text below image */
+#imgPreviewWithStyles span {
+    color: white;
+    text-align: center;
+    display: block;
+    padding: 10px 0 3px 0;
+}
+
+
+    #layer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        opacity: .8;
+        z-index: 1003;
+        display: none;
+        overflow: hidden;
+    }
+
+    #popup {
+        width: 80%;
+        height: 80%;
+        position: fixed;
+        margin: auto;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1013;
+        border: 1px solid green;
+        padding: 10px;
+        background-color: #fff;
+        display: none;
+    }
+    #pickEmployee {
+        height: 90%;
+        width: 100%;
+        overflow: scroll;
+    }
+	.boxclose {
+        float: right;
+        margin-top: -30px;
+        margin-right: -30px;
+        cursor: pointer;
+        color: #fff;
+        border: 1px solid #AEAEAE;
+        border-radius: 30px;
+        background: #605F61;
+        font-size: 31px;
+        font-weight: bold;
+        display: inline-block;
+        line-height: 0px;
+        padding: 11px 3px;
+    }
+
+</style>
+    <div id="layer"></div>
+    <div id="popup">
+	<a class="boxclose" id="boxclose">x</a>
+        <h1 style="text-align: center; color: Black; background-color: #f4f4f7; margin-bottom: 10px;">Pick Employee</h1>
+        <div id="pickEmployee">
+
+        </div>
+    </div>
+
+
+<div id="search-criteria-class" class="row" style="display: block;">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>
+                    <span>Assign Employee To Parent</span>
+                </h4>
+                @*   <span id="pie-chart-loader" class="loader">
+                    <img src="../../assets/images/loaders/circular/059.gif" width="16" height="16" alt="" /></span>*@
+                <a href="#" class="minimize">Minimize</a>
+            </div>
+            <div class="panel-body">
+
+                <form class="form-horizontal" id="form-search-employee" action="~/Dashboard/AssignEmployeePosition">
+
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label" for="areaid">Area</label>
+                        <div class="col-lg-5">
+                            <select class="nostyle form-control resetIt" id="areaid" name="areaid" style="width: 100%;">
+                                <option></option>
+                                @foreach (Pollidut.Models.Area area in ViewBag.Areas)
+                                {
+                                    <option value="@area.AreaId">@area.AreaName</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="col-lg-5">
+                        </div>
+                    </div>
+
+                    @*distributionhouseid*@
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label" for="distributionhouseid">Distribution House</label>
+                        <div class="col-lg-5">
+                            <select class="nostyle form-control resetIt" id="distributionhouseid" name="distributionhouseid" style="width: 100%;">
+                                <option></option>
+                                @*@foreach (var house in ViewBag.Houses)
+                                {
+                                    <option value="@house.DistributionHouseId">@house.DistributionHouseName</option>
+                                }*@
+                            </select>
+                        </div>
+
+                        <div class="col-lg-5" style="display:none;">
+                            <button id="btn-house-specific-list" class="btn btn-warning btn-sm">View Selected House Specific Data</button>
+                        </div>
+                    </div>
+
+                    @*Buttons*@
+                    @*                    <div class="form-group">
+                        <div class="col-lg-offset-3 col-lg-9">
+                            <button id="btn-house-specific-list" class="btn btn-warning btn-md">View Selected House Specific Data</button>
+                            
+                        </div>
+                    </div>*@
+
+
+                    @*parentemployeeid*@
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label" for="parentemployeeid">Parent Employee</label>
+                        <div class="col-lg-5">
+                            <input type="hidden" id="empId" name="empId" />
+                            <input type="text" class="nostyle form-control resetIt" style="font-weight:bold;border:1px solid #47A447;" id="txtEmployee" name="txtEmployee" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="search-result-class" class="row" style="display: block;">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>
+                    <span id="search-result-count">1 persons found.</span>
+                    <a id="back-to-search" class="pull-right" style="display:none;" href="#">Back to search  </a>
+                </h4>
+                <a class="minimize" href="#">Minimize</a>
+            </div>
+            <div class="panel-body noPad">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" class="chkAll" /></th>
+                            <th>House Name</th>
+                            <th>Emp. Code</th>
+                            <th>Photo</th>
+                            <th>Employee Name</th>
+                            <th>Employee Type</th>
+                            <th>Active</th>
+                            <th>Mobile</th>
+                            <th>Supervisor</th>
+                            <th>Sup. Photo</th>
+                            <th style="">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox" class="chkSingle" /></td>
+                            <td>Daffodil, Pabna</td>
+                            <td>2</td>
+                            <td>
+                                <a class="employee-thumb" href="img/../../../Photos/EmployeePhotos/0bc10e4f-63f4-4951-bd93-653aa5cf9998.png">
+                                    <img class="img-rounded" width="30px" src="../../Photos/EmployeePhotos/0bc10e4f-63f4-4951-bd93-653aa5cf9998.png">
+                                </a>
+                            </td>
+                            <td class="person-name-td" style="text-align: left;">Md. Hashinur Rhoman</td>
+                            <td>CM</td>
+                            <td>Yes</td>
+                            <td>01723152051</td>
+                            <td></td>
+                            <td>
+                                <a class="btn btn-info btn-sm" href="../../../Employee/EmployeeDetail?id=2" target="_blank">Details</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+<div class="col-lg-12 text-center">
+    <button type="button" class="btnAssignToParent btn btn-success btn-lg" name="btnAssignToParent">Assign to Parent</button>
+</div>
+</div>
+
+    <script type="text/javascript">
+        $(function () {
+            $('#distributionhouseid').select2({ placeholder: "Select a house." });
+            $('#areaid').select2({ placeholder: "Select an area" });
+            $('#search-result-class').hide();
+            $('#back-to-search').click(function () {
+                $('#search-result-class').hide();
+                $('#search-criteria-class').show();
+            });
+            //$('.limit').inputlimiter({ limit: 100 });
+
+
+
+            $("#areaid").change(function () {
+                var url = '@Url.Action("getHouseList","Employee")';
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    async: true,
+                    data: JSON.stringify({ areaId: $(this).val() }),
+                    success: function (result) {
+                        BindCombo(result, $("#distributionhouseid"));
+                    },
+                    error: function (request, status, error) {
+                        alert("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                        //alert("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                    }
+                });
+            });
+
+            
+            $("#distributionhouseid").change(function () {
+                var url = "/Employee/getEmployeeListForAssignToParent";
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: 'json',
+                    async: true,
+                    data: JSON.stringify({ houseId: $(this).val() }),
+                    success: function (result) {
+                        console.log(result);
+                        bindEmployeeList(result);
+                    },
+                    error: function (request, status, error) {
+                        alert("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                    }
+                });
+            });
+
+
+        });
+
+        function bindEmployeeList(result) {
+            var parsed = JSON.parse(result);
+            //alert(result.length);
+            var rowCount = parsed.length;
+            if (rowCount > 0) {
+                $('#search-result-count').html(parsed.length + ' persons found.');
+                $('tbody').empty();
+                parsed.forEach(function (row) {
+                    var isActive = (row.IsActive == 1 ? "Yes" : "No");
+                    //alert(row.SupervisorPhoto);
+                    $('tbody').append('<tr><td><input type="hidden" class="Employee-Id" value="' + row.EmployeeId + '"/><input type="checkbox" class="chkSingle" /></td><td>' + row.DistributionHouseName + '</td><td>' +
+                        row.EmployeeCode + '</td><td><a class="employee-thumb" href="img/../../../Photos/EmployeePhotos/' +
+                        row.Photo + '".jpg"><img width="30px" class="img-rounded" src="../../Photos/EmployeePhotos/' +
+                        row.Photo + '"/></a></td><td style="text-align:left;" class="person-name-td">' +
+                        row.PersonName + '</td><td>' + row.EmployeeTypeName + '</td><td>' + isActive + '</td><td>' +
+                        row.MOBILE + '</td><td>' + row.SupervisorName + '</td><td><a class="employee-thumb" href="img/../../../Photos/EmployeePhotos/' +
+                        row.SupervisorPhoto + '".jpg"><img width="30px" class="img-rounded" src="../../Photos/EmployeePhotos/' +
+                        row.SupervisorPhoto + '"/></a></td><td><a target="_blank" href="../../../Employee/EmployeeDetail?id=' +
+                        row.EmployeeId + '" class="btn btn-info btn-sm">Details</a></td></tr>');
+
+                    //alert(row.SupervisorName);
+                    if (row.SupervisorName == null || row.SupervisorName == "None") {
+                        //alert($('tbody').find("tr").last().html());
+                        $('tbody').find("tr").last().css('color', '#D2322D');
+                    }
+
+                    $('.employee-thumb').imgPreview({
+                        containerID: 'imgPreviewWithStyles',
+                        imgCSS: {
+                            // Limit preview size:
+                            height: 150
+                        },
+                        // When container is shown:
+                        //onShow: function (link) {
+                        //    $('<span>' + $('.employee-thumb').closest('tr').find('.person-name-td').html() + '</span>').appendTo(this);
+                        //},
+                        // When container hides: 
+                        onHide: function (link) {
+                            $('span', this).remove();
+                        }
+                    });
+                });
+                $('.employee-thumb').imgPreview({
+                    containerID: 'imgPreviewWithStyles',
+                    imgCSS: {
+                        // Limit preview size:
+                        height: 150
+                    },
+                    // When container is shown:
+                    //onShow: function (link) {
+                    // $('<span>' + $('.employee-thumb').closest('tr').find('.person-name-td').html() + '</span>').appendTo(this);
+                    //},
+                    // When container hides:
+                    onHide: function (link) {
+                        $('span', this).remove();
+                    }
+                });
+                $('table').show();
+                $('#search-result-class').show();
+                //$('#search-criteria-class').hide();
+            }
+            else {
+                $('table').hide();
+                $('#search-result-count').html('not found.');
+            }
+            //$(MainForm).find('.btn').removeAttr("disabled");
+            //$(MainForm).find('#btn-submit-mainform').html('Search');
+            $('#search-criteria-class').show();
+            //$('#search-result-class').hide();
+        }
+
+        function BindCombo(result, combo, selectedItemValue) {
+            //alert(selectedItemValue + " from combo");
+            combo.empty().append('<option selected="selected"> None</option>');
+            $.each(result, function () {
+                //alert(this[0]);
+                //if (this['ThanaId'] == selectedItemValue) {
+                //combo.append($("<option></option>").val(this['ThanaId']).html(this['ThanaName']).attr('selected', 'selected'));
+                //}
+                //else {
+                combo.append($("<option></option>").val(this['DistributionHouseId']).html(this['DistributionHouseName']));
+                //}
+            });
+        }
+
+        $(function () {
+
+            $('#txtEmployee').click(function () {
+                $('#pickEmployee').empty();
+                $('#layer,#popup').show();
+                var myLink = "/Dashboard/GetUserEmployee"
+                $.ajax({
+                    url: myLink,
+                    async: true,
+                    beforeSend: function () {
+                        $('div.sidenav').block({ message: '<img src="../../Assets/images/loaders/circular/001.gif" />' });
+                        $("#pickEmployee").fadeOut("slow");
+                        $("#pickEmployee").empty();
+
+                    },
+                    success: function (data) {
+                        $('#pickEmployee').html(data);
+                        $("#pickEmployee").fadeIn("slow");
+                    },
+                    error: function (request, status, error) {
+                        alert("Error-  Request: " + request + ", Status: " + status + ", Error: " + error);
+                    },
+                    complete: function () {
+                        $('div.sidenav').unblock();
+                    }
+                });
+            });
+
+
+            $('.chkAll').click(function () {
+                if ($(this).is(':checked')) {
+                    $('.chkSingle').attr("checked", true);
+                }
+                else {
+                    $('.chkSingle').attr("checked", false);
+                }
+            });
+
+            
+            $(".btnAssignToParent").click(function () {
+                var ParentEmployeeId = $("#empId").val();
+                //alert("Parent Id: " + ParentEmployeeId);
+                var isCheckedOneItem = false;
+                var isCheckedParentEmployee = false;
+                if (ParentEmployeeId < 1) {
+                    alert("Select parent supervisor first!");
+                    return false;
+                }
+                else {
+                    isCheckedParentEmployee = true;
+                }
+                var rows = $("tbody").find("tr");
+                var processCounter = 0;
+                $.each(rows, function (row) {
+                    if ($(this).find(".chkSingle").is(':checked')) {
+                        var EmployeeId = $(this).find(".Employee-Id").val();
+                        //alert("Employee Id in list: " + EmployeeId);
+                        if (ParentEmployeeId == EmployeeId) {
+                            //alert("Parent Id: " + ParentEmployeeId + ", Employee Id: " + EmployeeId);
+                        }
+                        else {
+                            isCheckedOneItem = true;
+                            var url = '@Url.Action("AssignEmployeeToParent","Employee")';
+                            var data = JSON.stringify({ ParentEmployeeId: ParentEmployeeId, EmployeeId: EmployeeId, ActionMode: "add" });
+                            //alert(data);
+                            $.ajax({
+                                type: "POST",
+                                url: url,
+                                contentType: "application/json; charset=utf-8",
+                                dataType: 'json',
+                                async: true,
+                                data: data,
+                                success: function (result) {
+                                    if (result == "success") {
+                                        processCounter = processCounter + 1;
+                                        SuccessfullSaveNotification();
+                                    } else if (result == "Action failed!") {
+                                        ShowRegularError(result);
+                                    }
+                                    //alert(processCounter);
+                                },
+                                error: function (request, status, error) {
+                                    alert("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                                }
+                            });
+                        }
+                    }
+                });
+
+                //alert("Total proccessed: " + processCounter + ".");
+
+                if (isCheckedOneItem == false && isCheckedParentEmployee == true) {
+                    alert("Check anyone of employee(s)!");
+                }
+                else {
+                    $("#distributionhouseid").change();
+                }
+            });
+
+        });
+
+
+    </script>
+	<script>
+    $(function () {
+        $('#boxclose').click(function () {
+            $('#pickEmployee').empty();
+            $('#popup,#layer').hide();
+        });
+        $('#layer').click(function () {
+            $('#pickEmployee').empty();
+            $('#popup,#layer').hide();
+        });
+    });
+
+</script>

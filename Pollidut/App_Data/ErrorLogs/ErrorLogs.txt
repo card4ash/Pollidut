@@ -1,0 +1,272 @@
+Created on: 16-Nov-2014, 05.46.07 PM
+Error Description: e:\Users\Decoder\AppData\Local\Temp\Temporary ASP.NET Files\root\f9146c68\f9eca527\App_Web_dashboard.desktop.cshtml.c6206085.gp12ggfh.0.cs(31): error CS0246: The type or namespace name 'BATB' could not be found (are you missing a using directive or an assembly reference?)
+Source File: Dashboard
+Method: Index
+________________________________________________________________________
+
+Created on: 16-Nov-2014, 07.07.05 PM
+Error Description: Invalid object name 'DESIGNATIONS'.
+Source File: f:\Project2015\Pollidut\Pollidut\Controllers\DashboardController.cs
+Method: SearchEmployee
+Line: 281
+Column: 17
+________________________________________________________________________
+
+Created on: 16-Nov-2014, 07.29.53 PM
+Error Description: Invalid object name 'DESIGNATIONS'.
+Source File: f:\Project2015\Pollidut\Pollidut\Controllers\DashboardController.cs
+Method: SearchEmployee
+Line: 281
+Column: 17
+________________________________________________________________________
+
+Created on: 16-Nov-2014, 07.30.46 PM
+Error Description: Invalid object name 'DESIGNATIONS'.
+Source File: f:\Project2015\Pollidut\Pollidut\Controllers\DashboardController.cs
+Method: SearchEmployee
+Line: 281
+Column: 17
+________________________________________________________________________
+
+Created on: 17-Nov-2014, 03.22.55 PM
+Error Description: Invalid object name 'viewSearchEmployee'.
+Source File: f:\Project2015\Pollidut\Pollidut\Controllers\DashboardController.cs
+Method: SearchEmployeeResult
+Line: 629
+Column: 17
+________________________________________________________________________
+
+Created on: 18-Nov-2014, 02.06.29 PM
+Error Description: Invalid object name 'dbo.viewHouseSpecificPositionAndEmployee'.
+Source File: Dashboard
+Method: HouseSpecificPositionAndEmployeeList
+________________________________________________________________________
+
+Created on: 18-Nov-2014, 02.07.07 PM
+Error Description: Invalid object name 'dbo.viewHouseSpecificPositionAndEmployee'.
+Source File: Dashboard
+Method: HouseSpecificPositionAndEmployeeList
+________________________________________________________________________
+
+Created on: 22-Nov-2014, 04.04.48 PM
+Error Description: Object reference not set to an instance of an object.
+Source File: Dashboard
+Method: Index
+________________________________________________________________________
+
+Created on: 29-Nov-2014, 01.41.25 PM
+Error Description: The 'EmployeeCode' property on 'View_EmployeeListForAssignToParent' could not be set to a 'System.String' value. You must set this property to a non-null value of type 'System.Int32'. 
+Source File: f:\Project2015\Pollidut\Pollidut\Controllers\EmployeeController.cs
+Method: getEmployeeListForAssignToParent
+Line: 824
+Column: 25
+________________________________________________________________________
+
+Created on: 29-Nov-2014, 01.41.29 PM
+Error Description: The 'EmployeeCode' property on 'View_EmployeeListForAssignToParent' could not be set to a 'System.String' value. You must set this property to a non-null value of type 'System.Int32'. 
+Source File: f:\Project2015\Pollidut\Pollidut\Controllers\EmployeeController.cs
+Method: getEmployeeListForAssignToParent
+Line: 824
+Column: 25
+________________________________________________________________________
+
+Created on: 29-Nov-2014, 01.41.34 PM
+Error Description: The 'EmployeeCode' property on 'View_EmployeeListForAssignToParent' could not be set to a 'System.String' value. You must set this property to a non-null value of type 'System.Int32'. 
+Source File: f:\Project2015\Pollidut\Pollidut\Controllers\EmployeeController.cs
+Method: getEmployeeListForAssignToParent
+Line: 824
+Column: 25
+________________________________________________________________________
+
+Created on: 29-Nov-2014, 01.41.53 PM
+Error Description: The 'EmployeeCode' property on 'View_EmployeeListForAssignToParent' could not be set to a 'System.String' value. You must set this property to a non-null value of type 'System.Int32'. 
+Source File: f:\Project2015\Pollidut\Pollidut\Controllers\EmployeeController.cs
+Method: getEmployeeListForAssignToParent
+Line: 824
+Column: 25
+________________________________________________________________________
+
+Created on: 29-Nov-2014, 03.14.55 PM
+Error Description: Server cannot set content type after HTTP headers have been sent.
+Source File: Dashboard
+Method: SearchEmployeeResult
+________________________________________________________________________
+
+Created on: 29-Nov-2014, 03.16.32 PM
+Error Description: Server cannot set content type after HTTP headers have been sent.
+Source File: Dashboard
+Method: SearchEmployeeResult
+________________________________________________________________________
+
+Created on: 29-Nov-2014, 03.17.32 PM
+Error Description: Server cannot set content type after HTTP headers have been sent.
+Source File: Dashboard
+Method: SearchEmployeeResult
+________________________________________________________________________
+
+Created on: 29-Nov-2014, 03.19.25 PM
+Error Description: Server cannot set content type after HTTP headers have been sent.
+Source File: Dashboard
+Method: SearchEmployeeResult
+________________________________________________________________________
+
+Created on: 29-Nov-2014, 04.00.38 PM
+Error Description: The 'EmployeeCode' property on 'View_EmployeeListForAssignToParent' could not be set to a 'System.String' value. You must set this property to a non-null value of type 'System.Int32'. 
+Source File: f:\Project2015\Pollidut\Pollidut\Controllers\EmployeeController.cs
+Method: getEmployeeListForAssignToParent
+Line: 824
+Column: 25
+________________________________________________________________________
+
+Created on: 29-Nov-2014, 04.00.59 PM
+Error Description: The 'EmployeeCode' property on 'View_EmployeeListForAssignToParent' could not be set to a 'System.String' value. You must set this property to a non-null value of type 'System.Int32'. 
+Source File: f:\Project2015\Pollidut\Pollidut\Controllers\EmployeeController.cs
+Method: getEmployeeListForAssignToParent
+Line: 824
+Column: 25
+________________________________________________________________________
+
+Created on: 29-Nov-2014, 04.28.37 PM
+Error Description: The 'EmployeeCode' property on 'View_EmployeeListForAssignToParent' could not be set to a 'System.String' value. You must set this property to a non-null value of type 'System.Int32'. 
+Source File: f:\Project2015\Pollidut\Pollidut\Controllers\EmployeeController.cs
+Method: getEmployeeListForAssignToParent
+Line: 824
+Column: 25
+________________________________________________________________________
+
+Created on: 29-Nov-2014, 04.30.44 PM
+Error Description: The 'EmployeeCode' property on 'View_EmployeeListForAssignToParent' could not be set to a 'System.String' value. You must set this property to a non-null value of type 'System.Int32'. 
+Source File: f:\Project2015\Pollidut\Pollidut\Controllers\EmployeeController.cs
+Method: getEmployeeListForAssignToParent
+Line: 824
+Column: 25
+________________________________________________________________________
+
+Created on: 29-Nov-2014, 04.36.30 PM
+Error Description: The 'EmployeeCode' property on 'View_EmployeeListForAssignToParent' could not be set to a 'System.String' value. You must set this property to a non-null value of type 'System.Int32'. 
+Source File: f:\Project2015\Pollidut\Pollidut\Controllers\EmployeeController.cs
+Method: getEmployeeListForAssignToParent
+Line: 824
+Column: 25
+________________________________________________________________________
+
+Created on: 21-Dec-2014, 05.43.25 PM
+Error Description: DistributionHouseName
+Source File: f:\Project2015\Pollidut\Pollidut\Controllers\DashboardController.cs
+Method: EditEmployee
+Line: 550
+Column: 17
+________________________________________________________________________
+
+Created on: 21-Dec-2014, 05.43.39 PM
+Error Description: DistributionHouseName
+Source File: f:\Project2015\Pollidut\Pollidut\Controllers\DashboardController.cs
+Method: EditEmployee
+Line: 550
+Column: 17
+________________________________________________________________________
+
+Created on: 22-Dec-2014, 07.09.00 PM
+Error Description: Object reference not set to an instance of an object.
+Source File: f:\Project2015\Pollidut\Pollidut\Controllers\DashboardController.cs
+Method: EditEmployee
+Line: 550
+Column: 17
+________________________________________________________________________
+
+Created on: 27-Dec-2014, 01.19.12 PM
+Error Description: Object reference not set to an instance of an object.
+Source File: f:\Project2015\Pollidut\Pollidut\Controllers\DashboardController.cs
+Method: EditEmployee
+Line: 523
+Column: 17
+________________________________________________________________________
+
+Created on: 27-Dec-2014, 01.21.57 PM
+Error Description: Object reference not set to an instance of an object.
+Source File: f:\Project2015\Pollidut\Pollidut\Controllers\DashboardController.cs
+Method: EditEmployee
+Line: 523
+Column: 17
+________________________________________________________________________
+
+Created on: 30-Dec-2014, 05.13.15 PM
+Error Description: Object reference not set to an instance of an object.
+Source File: Dashboard
+Method: Index
+________________________________________________________________________
+
+Created on: 31-Dec-2014, 05.34.56 PM
+Error Description: Object reference not set to an instance of an object.
+Source File: Dashboard
+Method: PostComplain
+________________________________________________________________________
+
+Created on: 31-Dec-2014, 05.36.14 PM
+Error Description: Object reference not set to an instance of an object.
+Source File: Dashboard
+Method: PostComplain
+________________________________________________________________________
+
+Created on: 31-Dec-2014, 05.42.13 PM
+Error Description: Object reference not set to an instance of an object.
+Source File: Dashboard
+Method: PostComplain
+________________________________________________________________________
+
+Created on: 06-Jan-2015, 03.49.44 PM
+Error Description: Object reference not set to an instance of an object.
+Source File: Dashboard
+Method: UpdatePD
+________________________________________________________________________
+
+Created on: 06-Jan-2015, 03.59.21 PM
+Error Description: Object reference not set to an instance of an object.
+Source File: Dashboard
+Method: UpdatePD
+________________________________________________________________________
+
+Created on: 06-Jan-2015, 03.59.57 PM
+Error Description: Object reference not set to an instance of an object.
+Source File: Dashboard
+Method: UpdatePD
+________________________________________________________________________
+
+Created on: 06-Jan-2015, 04.04.54 PM
+Error Description: Object reference not set to an instance of an object.
+Source File: Dashboard
+Method: UpdatePD
+________________________________________________________________________
+
+Created on: 06-Jan-2015, 04.09.55 PM
+Error Description: Object reference not set to an instance of an object.
+Source File: Dashboard
+Method: UpdatePD
+________________________________________________________________________
+
+Created on: 06-Jan-2015, 04.54.48 PM
+Error Description: Object reference not set to an instance of an object.
+Source File: Dashboard
+Method: Index
+________________________________________________________________________
+
+Created on: 06-Jan-2015, 07.25.19 PM
+Error Description: Object reference not set to an instance of an object.
+Source File: f:\Project2015\Pollidut\Pollidut\Controllers\DashboardController.cs
+Method: EditEmployee
+Line: 572
+Column: 17
+________________________________________________________________________
+
+Created on: 06-Jan-2015, 08.47.02 PM
+Error Description: f:\Project2015\Pollidut\Pollidut\Views\Dashboard\Dashboard.desktop.cshtml(163): error CS0103: The name 'userType' does not exist in the current context
+Source File: Dashboard
+Method: Index
+________________________________________________________________________
+
+Created on: 06-Jan-2015, 09.13.20 PM
+Error Description: Object reference not set to an instance of an object.
+Source File: Dashboard
+Method: Index
+________________________________________________________________________
+

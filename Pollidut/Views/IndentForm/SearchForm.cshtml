@@ -1,0 +1,665 @@
+﻿<style>
+    .pdSbasic td {
+        text-align: left;
+    }
+
+    .pdSdetails > thead > tr > th {
+        text-align: center;
+        vertical-align: middle;
+    }
+</style>
+<div class="row" id="SearchPanel">
+    <div class="col-lg-12">
+        <div class="panel panel-default" id="existing-data">
+            <div class="panel-heading">
+                <h4>
+                    <span>Search Parameter</span>
+                </h4>
+
+                <a href="#" class="minimize">Minimize</a>
+            </div>
+            <div class="panel-body noPad">
+                <table class="table table-hover pdSbasic">
+                    <tbody>
+                        <tr>
+                            <th><input type="hidden" id="supId" value="@ViewBag.SupId" />Pollidut Name : </th>
+                            <td style="text-align:left;">
+                                <select class="nostyle form-control resetIt" id="pollidutId" name="pollidutid" style="width: 100%;">
+                                    <option value="0" data-disid="0">None</option>
+                                    @foreach (var pd in ViewBag.PDList)
+                                    {
+                                        <option value="@pd.PollidutId" data-disid="@pd.DistributionHouseId">@pd.PollidutName</option>
+                                    }
+
+                                </select>
+                                <label id="pderrorlbl"></label>
+                            </td>
+                            <th>Form Code # : <input type="hidden" id="supId" value="@ViewBag.SupId" /> </th>
+                            <td style="text-align:left;"><input id="formCode" class="form-control formCode" type="text" style="width: 100%;" /><label id="formCodeErrorlbl"></label></td>
+                            <th>Distributor Name</th>
+                            <td style="text-align:left;">
+                                <select class="nostyle form-control resetIt" id="distributionId" name="distributionId" style="width: 100%;">
+                                    <option value="0">None</option>
+                                    @foreach (var house in ViewBag.DistributionHouses)
+                                    {
+                                        <option value="@house.DistributionHouseId">@house.DistributionHouseName</option>
+                                    }
+                                </select><label id="distributionErrorlbl"></label>
+
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <th>Order Date (From)</th>
+                            <td style="text-align:left;"><input class="form-control datepicker nostyle" id="orderdatefrom" name="orderdatefrom" type="text" placeholder="dd-mm-yyyy" /><label id="orderDatefromError"></label></td>
+                            <th>Order Date (To)</th>
+                            <td style="text-align:left;">
+                                <input class="form-control datepicker nostyle" id="orderdateto" name="orderdateto" type="text" placeholder="dd-mm-yyyy" /><label id="orderDatetoError"></label>
+                            </td>
+                            <th></th>
+                            <td style="text-align:left;">
+                                <button id="btnSearch" type="button" class="form-control btn btn-default"><i class="icon-search"></i>Search</button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+
+            </div>
+            <div class="panel-body noPad">
+                <table id="searchIndent" class="table table-hover searchIndent" style="display:table;">
+                    <thead>
+                        <tr>
+                            <th>Pollidut Name</th>
+                            <th>Distribution House</th>
+                            <th>Order Date</th>
+                            <th>Delivery Date</th>
+                            <th>Form Code</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="searchResult"></tbody>
+
+
+
+                </table>
+
+            </div>
+
+
+            
+        </div>
+    </div>
+
+</div>
+@*<form class="form-horizontal" id="orderDetail" method="post" action="~/IndentForm/SaveDelivery" style="display:none;">*@
+<div id="orderDetail" style="display:none;">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default" id="existing-data">
+                <div class="panel-heading">
+                    <h4>
+                        <span>Order Detail</span>
+                    </h4>
+
+                    <a href="#" class="minimize">Minimize</a>
+                </div>
+
+                <div class="panel-body noPad">
+                    <button class="btn btn-primary" type="button" id="backToSearch"><i class="icon-backward"></i>Back To Search Result</button>
+
+                    <table class="table table-hover pdSbasic">
+                        <tbody>
+                            <tr>
+                                <th>Pollidut Name : <input type="hidden" id="pdIndentFormId" value="" /></th>
+                                <td id="odtdPDName" style="text-align:left;"></td>
+                                <th>Form Code # : </th>
+                                <td id="odtdFormCode" style="text-align:left;"></td>
+                                <th>Distributor Name:</th>
+                                <td id="odtdDistribution" style="text-align:left;"></td>
+                            </tr>
+                            <tr>
+
+                                <th>Order Date </th>
+                                <td style="text-align:left;"><input class="form-control datepicker nostyle" readonly id="odorderdate" name="odorderdate" type="text" placeholder="dd-mm-yyyy" /></td>
+                                <th>Delivery Date</th>
+                                <td style="text-align:left;">
+                                    <input class="form-control datepicker nostyle" id="oddeliverydate" name="oddeliverydate" type="text" placeholder="dd-mm-yyyy" />
+                                    <label id="oddeliverydateError"></label>
+                                </td>
+                                <th>
+
+                                </th>
+                                <td></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-body noPad" id="divDeliverytbl">
+                    <div class="panel-body noPad">
+                        <table id="orderDetailtbl" class="table table-hover pdSdetails" style="display:table;">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2">Product SKU</th>
+                                    <th rowspan="2">Unit Price</th>
+                                    <th colspan="3">Indent</th>
+                                    <th colspan="3">Delivery</th>
+                                    <th rowspan="2">Total Price</th>
+                                    <th rowspan="2">DD Amount</th>
+                                    <th rowspan="2">Net Price</th>
+
+                                </tr>
+                                <tr>
+                                    <th>JC Offer</th>
+                                    <th>Carton</th>
+                                    <th>Piece</th>
+                                    <th>Carton</th>
+                                    <th>Piece</th>
+                                    <th>JC Offer</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bodyOrderdetail">
+                                <tr id="footerOrder" class="footertr">
+                                    <td colspan="7" style="text-align:left;">Total</td>
+                                    <td colspan="2"><input type="text" readonly id="overallTotal" class="form-control overallTotal" /></td>
+                                    <td><button type="button" class="btn btn-default addProduct"><i class="fa-plus"></i>Add Product</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="input-group" style="text-align:center;margin:auto;">
+                <button type="submit" id="btnSave" name="btnSave" class="btn btn-success btn-lg">Save</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="hiddenRow" style="display:none;">
+    <table>
+        <tr class="datarow">
+            <td>
+                <select name="productSKU" class="form-control productSKU">
+                    <option>None</option>
+                    @foreach (var pdSku in ViewBag.PDSKUs)
+                    {
+                        <option value="@pdSku.ProductSKUId" data-unitprice="@pdSku.UnitPrice" data-ppc="@pdSku.PiecePerCarton" data-jcoffer="@pdSku.JCOffer" data-jctype="@pdSku.JCOfferType" data-outof="@pdSku.OutOf" data-outoftype="@pdSku.OutOfType">@pdSku.ProductSKUName</option>
+                    }
+                </select>
+            </td>
+            <td class="unitpricetd">0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+
+            <td><input class="form-control dcarton" type="text" value="" /><label class="dcartonError"></label></td>
+            <td><input type="text" class="form-control dpiece" value="" /><label class="dpieceError"></label></td>
+            <td><input type="text" class="form-control doffer" readonly value="" /></td>
+            <td><input type="text" class="form-control dtprice" readonly value="" /></td>
+            <td><input type="text" class="form-control dddAmount" readonly value="" /></td>
+            <td><input type="text" class="form-control dnprice" value="" /><label class="npriceError"></label></td>
+        </tr>
+    </table>
+</div>
+
+<script>
+    (function ($) {
+        $.fn.outerHTML = function () {
+            return $(this).clone().wrap('<div></div>').parent().html();
+        };
+    })(jQuery);
+    $(function () {
+        $('#bodyOrderdetail').on('click', '.addProduct', function () {
+            var str = $('#hiddenRow table tr:first').outerHTML();
+            $(this).closest('tr').before(str);
+        });
+        $('#backToSearch').click(function () {
+            $('#orderDetail').hide();
+            $('#SearchPanel').show();
+        });
+        $('#searchResult').on('click', '.btnDeliveryDetail', function () {
+            var formId = $(this).closest('tr').find('.formid').val();
+            var Tr = $(this).closest('tr');
+            $.ajax({
+                type: "POST",
+                url: "/IndentForm/DeliveryDtail",
+                data: JSON.stringify({ formId: formId }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.msg == "success") {
+                        $('#pdIndentFormId').val(Tr.find('.formid').val());
+                        $('#odtdPDName').html(Tr.find('.pdName').html());
+                        $('#odtdDistribution').html(Tr.find('.disName').html());
+                        $('#odorderdate').val(Tr.find('.orderDate').html());
+                        $('#oddeliverydate').val(Tr.find('.deliveryDate').html());
+                        $('#odtdFormCode').html(Tr.find('.formCode').html());
+                        $('#oddeliverydateError').html('');
+                        $('#SearchPanel').hide();
+                        $('#orderDetail').show();
+                        $('#bodyOrderdetail').empty().append('<tr id="footerOrder" class="footertr">'
+                            + '<td colspan="7" style="text-align:left;">Total</td>'
+                            + '<td colspan="3"><input type="text" readonly id="overallTotal" class="form-control overallTotal" /></td>'
+                        + ' <td><button type="button" class="btn btn-default addProduct"><i class="fa fa icon-plus-sign"></i>Add Product</button></td></tr>');
+                        $.each(msg.data, function () {
+                            $('#footerOrder').before('<tr class="producttr" data-rowid="' + this.Id + '" data-unitprice="' + this.UnitPrice + '" data-ppc="' + this.PiecePerCarton + '" data-jcoffer="' + this.JCOffer + '" data-jctype="' + this.JCOfferType + '" data-outof="' + this.OutOf + '" data-outoftype="' + this.OutOfType + '" ><td>' + this.ProductSKUName + '</td><td>' + this.UnitPrice + '</td><td>' + this.Ioffer + '</td><td>' + this.Icarton + '</td><td>' + this.Ipiece + '</td><td><input class="form-control dcarton" type="text" value="' + this.Dcarton + '" /><label class="dcartonError"></label></td><td><input type="text"  class="form-control dpiece"  value="' + this.Dpiece + '" /><label class="dpieceError"></label></td><td><input type="text"  class="form-control doffer" readonly value="' + this.DOffer + '" /></td><td><input type="text" class="form-control dtprice" readonly value="' + this.Dtprice + '" /></td><td><input type="text"  class="form-control dddAmount" readonly  value="' + this.DddAmount + '"/></td><td><input type="text" class="form-control dnprice"  value="' + this.Dnprice + '" /><label class="npriceError"></label></td></tr>');
+                        });
+                        jQuery.validator.addClassRules('dcarton', {
+                            required: false,
+                            number: true,
+                            min: 0,
+                            max: 50000
+                        });
+                        jQuery.validator.addClassRules('dpiece', {
+                            required: false,
+                            number: true,
+                            min: 0,
+                            max: 50000
+                        });
+                        totalPriceCalculate();
+                    }
+                },
+                error: function (msg) {
+                    alert(msg.responseText);
+                }
+            });
+        });
+        $('#btnSearch').click(function () {
+            var pdId = $('#pollidutId').val();
+            var supId = $('#supId').val();
+            var distributionId = $('#distributionId').val();
+            var orderDatefrom = $('#orderdatefrom').val();
+            var orderDateto = $('#orderdateto').val();
+            var formCode = $('#formCode').val();
+            $.ajax({
+                type: "POST",
+                url: "/IndentForm/Search",
+                data: JSON.stringify({ pdId: pdId, supId: supId, distributionId: distributionId, orderDatefrom: orderDatefrom, orderDateto: orderDateto, formCode: formCode }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.msg == "success") {
+                        $('#searchResult').empty();
+                        $.each(msg.data, function () {
+                            $('#searchResult').append('<tr><td class="pdName">' + this.Name + '</td><td class="disName">' + this.Distribution + '</td><td class="orderDate">' + this.OrderDate + '</td><td  class="deliveryDate">' + this.DeliveryDate + '</td><td class="formCode">' + this.FormCode + '</td><td><input type="hidden" class="formid" value=' + this.ID + ' /><input class="btn btn-primary  btnDeliveryDetail" type="button" value="Order Detail" /></td></tr>');
+                        });
+                    }
+                },
+                error: function (msg) {
+                    alert(msg.responseText);
+                }
+            });
+        });
+
+
+        function validation() {
+            var retValidation = true;
+            if ($('#oddeliverydate').val() =='') {
+                $('#oddeliverydateError').html('Please Enter Delivery Date.').css('color', 'red');
+                retValidation = false;
+            }
+            else {
+                $('#oddeliverydateError').html('');
+            }
+            $('#orderDetailtbl .dcarton').each(function () {
+                if ($.isNumeric($(this).val())) {
+                    if ($(this).val() < 0) {
+                        $(this).closest('tr').find('.dcartonError').html('Enter Valid Quantity').css('color', 'red');
+                        retValidation = false;
+                    }
+                    else {
+                        $(this).closest('tr').find('.dcartonError').html('');
+                    }
+                }
+                else if ($(this).val()=='') {
+                    $(this).closest('tr').find('.dcartonError').html('');
+                }
+                else {
+                    $(this).closest('tr').find('.dcartonError').html('Enter Valid Quantity').css('color', 'red');
+                    retValidation = false;
+                }
+                
+            });
+            $('#orderDetailtbl .dpiece').each(function () {
+                if ($.isNumeric($(this).val())) {
+                    if ($(this).val() < 0) {
+                        $(this).closest('tr').find('.dpieceError').html('Enter Valid Quantity').css('color', 'red');
+                        retValidation = false;
+                    }
+                    else {
+                        $(this).closest('tr').find('.dpieceError').html('');
+                    }
+                }
+                else if ($(this).val()=='') {
+                    $(this).closest('tr').find('.dpieceError').html('');
+                }
+                else {
+                    $(this).closest('tr').find('.dpieceError').html('Enter Valid Quantity').css('color', 'red');
+                    retValidation = false;
+                }
+
+            });
+
+            $('#orderDetailtbl .dnprice').each(function () {
+                if ($.isNumeric($(this).val())) {
+                    if ($(this).val() < 0) {
+                        $(this).closest('tr').find('.npriceError').html('Enter Valid Quantity').css('color', 'red');
+                        retValidation = false;
+                    }
+                    else {
+                        $(this).closest('tr').find('.npriceError').html('');
+                    }
+                }
+                else {
+                    $(this).closest('tr').find('.npriceError').html('Enter Valid Quantity').css('color', 'red');
+                    retValidation = false;
+                }
+
+            });
+                    
+
+            return retValidation;
+        }
+
+        $('#orderDetail').on('click', '#btnSave', function () {
+            var valid = validation(); 
+            if (!valid) return false;
+            var pdForm = {};
+            pdForm.FormId = $('#pdIndentFormId').val();
+            pdForm.DeliveryDate = $('#oddeliverydate').val();
+            pdForm.DTotalPrice = $('#overallTotal').val();
+            var rowItems = [];
+            $('#orderDetailtbl tr.producttr').each(function () {
+                if ($(this).data('rowid')>0) {
+                    var rowObj = {};
+                    rowObj.RowId = $(this).closest('tr').data('rowid');
+                    rowObj.DUnitPrice = $(this).data('unitprice');
+                    rowObj.DeliveryCartonQty = $(this).find('.dcarton').val();
+                    rowObj.DeliveryPieceQty = $(this).find('.dpiece').val();
+                    rowObj.DJCOffer = $(this).find('.doffer').val();
+                    rowObj.DTotalPrice = $(this).find('.dtprice').val();
+                    rowObj.DDDAmount = $(this).find('.dddAmount').val();
+                    rowObj.DNetPrice = $(this).find('.dnprice').val();
+                    rowItems.push(rowObj);
+                }
+            });
+            $('#orderDetailtbl tr.datarow').each(function () {
+                if ($(this).find('.productSKU').val() > 0) {
+                    var rowObj = {};
+                    rowObj.RowId = 0;
+                    rowObj.ProductSKUId = $(this).find('.productSKU').val();
+                    rowObj.UnitPrice = $(this).find('.unitpricetd').html();
+                    rowObj.DUnitPrice = $(this).find('.unitpricetd').html();
+                    rowObj.DeliveryCartonQty = $(this).find('.dcarton').val();
+                    rowObj.DeliveryPieceQty = $(this).find('.dpiece').val();
+                    rowObj.DJCOffer = $(this).find('.doffer').val();
+                    rowObj.DTotalPrice = $(this).find('.dtprice').val();
+                    rowObj.DDDAmount = $(this).find('.dddAmount').val();
+                    rowObj.DNetPrice = $(this).find('.dnprice').val();
+                    rowItems.push(rowObj);
+                }
+            });
+            $.ajax({
+                type: "POST",
+                url: "/IndentForm/SaveDelivery",
+                data: JSON.stringify({ dForm: pdForm, rowItems: rowItems }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    if (msg.msg == "success") {
+                        alert('successfully saved data');
+                        var uformId=$('#pdIndentFormId').val();
+                        $('#searchResult tr .formid[value="' + uformId + '"]').closest('tr').find('.deliveryDate').html($('#oddeliverydate').val());
+                        $('#orderDetail').hide();
+                        $('#SearchPanel').show();
+                    }
+                    else if (msg.status == "error") {
+                        alert(msg.details);
+                    }
+                    else {
+                        alert('Error in saving Delivery Data.');
+                    }
+                },
+                error: function (msg) {
+                    alert(msg.responseText);
+                }
+            });
+        });
+
+
+
+        $('#orderDetailtbl').on('change', '.dcarton', function () {
+            var cartonvalue = $(this).val();
+            var piecevalue = $(this).closest('tr').find('.dpiece').val();
+            var cartonUnit = $(this).closest('tr').data('ppc');
+            var unitprice = $(this).closest('tr').data('unitprice');
+            if (piecevalue == '') piecevalue = 0;
+            if (cartonvalue == '') cartonvalue = 0;
+            if (cartonUnit == '') cartonUnit = 0;
+            if (unitprice == '') unitprice = 0;
+            var tpiece = cartonUnit * cartonvalue;
+            tpiece += Number(piecevalue);
+            var tprice = tpiece * unitprice;
+           
+
+            var selected = $(this).closest('tr');
+            var outOfType = selected.data('outoftype');
+            var outOfValue = selected.data('outof');
+            var offerType = selected.data('jctype');
+            var offerValue = selected.data('jcoffer');
+            var djcOffer = 0;
+            var dddAmount = 0;
+            var result = 0;
+
+            if (outOfType == 1) {
+                result = tprice / outOfValue;
+                result = Math.floor(result);
+                if (offerType == 1) {
+                    dddAmount = result * offerValue;
+                    djcOffer = 0;
+                }
+                else if (offerType == 2) {
+                    djcOffer = result * offerValue;
+                    dddAmount = 0;
+                }
+                else {
+                    djcOffer = 0;
+                    dddAmount = 0;
+                }
+            }
+            else if (outOfType == 2) {
+                result = tpiece / outOfValue;
+                result = Math.floor(result);
+                if (offerType == 1) {
+                    dddAmount = result * offerValue;
+                    djcOffer = 0;
+                }
+                else if (offerType == 2) {
+                    outOfValue = Number(outOfValue) + Number(offerValue);
+                    result = tpiece / outOfValue;
+                    result = Math.floor(result);
+                    djcOffer = result * offerValue;
+                    dddAmount = 0;
+                }
+                else {
+                    djcOffer = 0;
+                    dddAmount = 0;
+                }
+            }
+            else {
+                result = 0;
+                if (offerType == 1) {
+                    dddAmount = result * offerValue;
+                    djcOffer = 0;
+                }
+                else if (offerType == 2) {
+                    djcOffer = result * offerValue;
+                    dddAmount = 0;
+                }
+                else {
+                    djcOffer = 0;
+                    dddAmount = 0;
+                }
+            }
+            
+            var offerDiscount = djcOffer * unitprice;
+            var UpdateTprice = tprice - offerDiscount;
+            $(this).closest('tr').find('.dtprice').val(UpdateTprice);
+            $(this).closest('tr').find('.dddAmount').val(dddAmount);
+            $(this).closest('tr').find('.doffer').val(djcOffer);
+            var nprice = UpdateTprice - dddAmount;
+            $(this).closest('tr').find('.dnprice').val(nprice);
+            totalPriceCalculate();
+        });
+
+        $('#orderDetailtbl').on('change', '.dpiece', function () {
+            var piecevalue = $(this).val();
+            var cartonvalue = $(this).closest('tr').find('.dcarton').val();
+            var cartonUnit = $(this).closest('tr').data('ppc');
+            var unitprice = $(this).closest('tr').data('unitprice');
+            if (piecevalue == '') piecevalue = 0;
+            if (cartonvalue == '') cartonvalue = 0;
+            if (cartonUnit == '') cartonUnit = 0;
+            if (unitprice == '') unitprice = 0;
+            var tpiece = cartonUnit * cartonvalue;
+            tpiece += Number(piecevalue);
+            var tprice = tpiece * unitprice;
+            
+
+            var selected = $(this).closest('tr');
+            var outOfType = selected.data('outoftype');
+            var outOfValue = selected.data('outof');
+            var offerType = selected.data('jctype');
+            var offerValue = selected.data('jcoffer');
+            var djcOffer = 0;
+            var dddAmount = 0;
+            var result = 0;
+
+            if (outOfType == 1) {
+                result = tprice / outOfValue;
+                result = Math.floor(result);
+                if (offerType == 1) {
+                    dddAmount = result * offerValue;
+                    djcOffer = 0;
+                }
+                else if (offerType == 2) {
+                    djcOffer = result * offerValue;
+                    dddAmount = 0;
+                }
+                else {
+                    djcOffer = 0;
+                    dddAmount = 0;
+                }
+            }
+            else if (outOfType == 2) {
+                result = tpiece / outOfValue;
+                result = Math.floor(result);
+                if (offerType == 1) {
+                    dddAmount = result * offerValue;
+                    djcOffer = 0;
+                }
+                else if (offerType == 2) {
+                    outOfValue = Number(outOfValue) + Number(offerValue);
+                    result = tpiece / outOfValue;
+                    result = Math.floor(result);
+                    djcOffer = result * offerValue;
+                    dddAmount = 0;
+                }
+                else {
+                    djcOffer = 0;
+                    dddAmount = 0;
+                }
+            }
+            else {
+                result = 0;
+                if (offerType == 1) {
+                    dddAmount = result * offerValue;
+                    djcOffer = 0;
+                }
+                else if (offerType == 2) {
+                    djcOffer = result * offerValue;
+                    dddAmount = 0;
+                }
+                else {
+                    djcOffer = 0;
+                    dddAmount = 0;
+                }
+            }
+            var offerDiscount = djcOffer * unitprice;
+            var UpdateTprice = tprice - offerDiscount;
+            $(this).closest('tr').find('.dtprice').val(UpdateTprice);
+            $(this).closest('tr').find('.dddAmount').val(dddAmount);
+            $(this).closest('tr').find('.doffer').val(djcOffer);
+            var nprice = UpdateTprice - dddAmount;
+            $(this).closest('tr').find('.dnprice').val(nprice);
+            totalPriceCalculate();
+        });
+
+        $('#orderDetailtbl').on('change', '.productSKU', function () {
+            var selected = $(this).find('option:selected');
+            var unitprice = selected.data('unitprice');
+            $(this).closest('tr').find('.unitpricetd').html(unitprice);
+            $(this).closest('tr').find('.dcarton').val(0);
+            $(this).closest('tr').find('.dpiece').val(0);
+            $(this).closest('tr').find('.doffer').val(0);
+            $(this).closest('tr').find('.dtprice').val(0);
+            $(this).closest('tr').find('.dddAmount').val(0);
+            $(this).closest('tr').find('.dnprice').val(0);
+
+            $(this).closest('tr').data('unitprice', selected.data('unitprice'));
+            $(this).closest('tr').data('ppc', selected.data('ppc'));
+            $(this).closest('tr').data('outoftype', selected.data('outoftype'));
+            $(this).closest('tr').data('outof', selected.data('outof'));
+            $(this).closest('tr').data('jctype', selected.data('jctype'));
+            $(this).closest('tr').data('jcoffer', selected.data('jcoffer'));
+                    
+        });
+
+        $('#pollidutId').change(function () {
+            var sel = document.getElementById('pollidutId');
+            var selected = sel.options[sel.selectedIndex];
+            var extra = selected.getAttribute('data-disId');
+            $('#distributionId').val(extra);
+        });
+    });
+
+</script>
+<script>
+    function totalPriceCalculate() {
+        var totalprice = 0;
+        $('.dnprice').each(function () {
+            var rowValue = 0;
+            if ($(this).val() == '') {
+                rowValue = 0;
+            }
+            else {
+                rowValue = parseFloat($(this).val());
+            }
+            totalprice = Number(totalprice) + Number(rowValue);
+        });
+        $('.overallTotal').val(totalprice.toFixed(2));
+    }
+</script>
+<script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd-mm-yy',
+            yearRange: "-70:+0"
+        });
+
+    });
+
+</script>
+

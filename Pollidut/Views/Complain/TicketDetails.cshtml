@@ -1,0 +1,96 @@
+﻿<div class="row" id="search-criteria-class">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>
+                    <span>Ticket Details</span>
+                </h4>
+                @*   <span id="pie-chart-loader" class="loader">
+                    <img src="../../assets/images/loaders/circular/059.gif" width="16" height="16" alt="" /></span>*@
+                <a href="#" class="minimize">Minimize</a>
+            </div>
+            <div class="panel-body">
+
+                <form class="form-horizontal" id="form-search-employee" action="~/Complain/CreateNewComplain">
+
+                    <div class="form-group">
+                        <label class="col-lg-2 " for="complainstatus">Ticket ID</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" id="complainstatus" value="12325" readonly="readonly" />
+                        </div>
+                    </div>
+
+
+                    @*active*@
+                    <div class="form-group">
+                        <label class="col-lg-2" for="active">Category</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" id="complainstatus" value="Travelling" readonly="readonly" />
+                        </div>
+                    </div>
+                    @*active*@
+                    <div class="form-group">
+                        <label class="col-lg-2" for="active">Sub Category</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" id="complainstatus" value="Sub Category" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2" for="active">Status</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" id="complainstatus" value="Reply From Support" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2" for="active">Title</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" value="Problem Defination"  />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2" for="active">Content</label>
+                        <div class="col-lg-10">
+                            <textarea rows="5" class="form-control limit nostyle" maxlength="100">Some Problem Defination.Details of the Problem</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2" for="active">Reply From Support</label>
+                        <div class="col-lg-10">
+                            <textarea rows="5" class="form-control limit nostyle" maxlength="100">Given Solution For the Problem Statement.</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2" for="active">Feedback</label>
+                        <div class="col-lg-10">
+                            <textarea rows="5" class="form-control limit nostyle" maxlength="100">Given Feedback.Some other Problem</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2" for="active">Reply From Support</label>
+                        <div class="col-lg-10">
+                            <textarea rows="5" class="form-control limit nostyle" maxlength="100">Given Solution For the Problem Statement</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2" for="active">Feedback</label>
+                        <div class="col-lg-10">
+                            <textarea rows="5" class="form-control limit nostyle" maxlength="100"></textarea>
+                        </div>
+                    </div>
+
+
+                    @*Buttons*@
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-9">
+                            <button type="button" id="btn-submit-mainform" class="btn btn-success btn-lg">Send</button>
+                            <button type="button" id="btn-submit-mainform" class="btn btn-warning btn-lg">Close This Ticket</button>
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,444 @@
+﻿@model Pollidut.Models.OnlineUsersModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@ViewBag.DashboardTitle</title>
+    <meta name="author" content="SuggeElson" />
+    <meta name="description" content="Admin Panel" />
+    <meta name="keywords" content="OK Mobile Banking Admin Panel" />
+    <meta name="application-name" content="Supr admin template" />
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Force IE9 to render in normal mode -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Headings -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css' />
+    <!-- Text -->
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css' /> 
+    <!-- Core stylesheets do not remove -->
+    <link id="bootstrap" href="~/assets/css/bootstrap/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="~/Assets/css/bootstrap/bootstrap-theme.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/css/supr-theme/jquery.ui.supr.css" rel="stylesheet" type="text/css"/>
+    <link href="../assets/css/icons.css" rel="stylesheet" type="text/css" />
+
+    <!-- Plugins stylesheets -->
+    <link href="../assets/plugins/misc/qtip/jquery.qtip.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/plugins/misc/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/plugins/misc/search/tipuesearch.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/forms/uniform/uniform.default.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/gallery/jpages/jPages.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/plugins/gallery/pretty-photo/prettyPhoto.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/misc/pnotify/jquery.pnotify.default.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/forms/togglebutton/toggle-buttons.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/misc/jqueryFileTree/jqueryFileTree.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/tables/dataTables/jquery.dataTables.css" type="text/css" rel="stylesheet" />    
+    <link href="../assets/plugins/forms/inputlimiter/jquery.inputlimiter.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/forms/color-picker/color-picker.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/forms/select/select2.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/forms/validate/validate.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/forms/smartWizzard/smart_wizard.css" type="text/css" rel="stylesheet" />
+    <link href="~/assets/css/font-awesome-4.0.3/css/font-awesome.css" rel="stylesheet" />
+
+
+
+    <!-- Main stylesheets -->
+    <link href="../assets/css/main.css" rel="stylesheet" type="text/css" /> 
+
+    <!-- Custom stylesheets ( Put your own changes here ) -->
+    <link href="../assets/css/custom.css" rel="stylesheet" type="text/css" /> 
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="../assets/images/favicon.ico" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/apple-touch-icon-144-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/apple-touch-icon-114-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/apple-touch-icon-72-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" href="images/apple-touch-icon-57-precomposed.png" />
+
+    @*<link href="../../Assets/Notes/styles.css" rel="stylesheet" />
+    <link type="text/css" media="screen" href="../../Assets/Notes/fancybox/jquery.fancybox.css" rel="stylesheet" />*@
+    
+    <!-- Windows8 touch icon ( http://www.buildmypinnedsite.com/ )-->
+    <meta name="application-name" content="Supr"/> 
+    <meta name="msapplication-TileColor" content="#3399cc"/> 
+
+    <!-- Load modernizr first -->
+    <script type="text/javascript" src="../assets/js/libs/modernizr.js"></script>
+
+    </head>
+      
+    <body>
+    <!-- loading animation -->
+    <div id="qLoverlay"></div>
+    <div id="qLbar"></div>
+        
+    <div id="header">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#"><span class="slogan">@ViewBag.DashboardTitle</span></a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon16 icomoon-icon-arrow-4"></span>
+                </button>
+            </div> 
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="#"><span class="icon16 icomoon-icon-screen-2"></span> <span class="txt">Dashboard</span> </a>
+                    </li>
+
+                </ul>
+              
+                <ul class="nav navbar-right usernav">
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle avatar" data-toggle="dropdown">
+                            <img src="../assets/images/avatar.jpg" alt="" class="image" /> 
+                            <span class="txt">@ViewBag.LoginName</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="menu">
+                                <ul>
+                                    <li><a href="#"><span class="icon16 icomoon-icon-user-plus"></span>Profile</a></li>
+                                    <li><a href="~/Common/ChangePassword?userid=@ViewBag.UserId" class="handle-link"><span class="icon16 icomoon-icon-bubble-2"></span>Change Pass</a></li>
+                                   
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="/Login?mode=logout"><span class="icon16 icomoon-icon-exit"></span><span class="txt"> Logout</span></a></li>
+                </ul>
+            </div><!-- /.nav-collapse -->
+        </nav><!-- /navbar --> 
+
+    </div><!-- End #header -->
+
+    <div id="wrapper">
+
+        <!--Responsive navigation button-->  
+        <div class="resBtn">
+            <a href="#"><span class="icon16 minia-icon-list-3"></span></a>
+        </div>
+        
+        <!--Left Sidebar collapse button-->  
+        <div class="collapseBtn leftbar">
+             <a href="#" class="tipR" title="Hide Left Sidebar"><span class="icon12 minia-icon-layout"></span></a>
+        </div>
+
+        <!--Sidebar background-->
+        <div id="sidebarbg"></div>
+
+        <!--Start Sidebar Content-->
+        <div id="sidebar">
+
+            <div class="shortcuts">
+                <ul>
+                    <li><a href="#" title="Help" class="tip"><span class="icon24 icomoon-icon-support"></span></a></li>
+                    <li><a href="#" title="Data Backup" class="tip"><span class="icon24 icomoon-icon-database"></span></a></li>
+                    <li><a href="~/Statistics/statistics.html" title="Statistics" class="tip" target="_blank"><span class="icon24 icomoon-icon-pie-2"></span></a></li>
+                    <li><a href="#" title="Contact Webadmin" class="tip"><span class="icon24 icomoon-icon-pencil"></span></a></li>
+                </ul>
+            </div><!-- End search -->            
+
+            <div class="sidenav">
+
+                <div class="sidebar-widget" style="margin: -1px 0 0 0;">
+                    <h5 class="title" style="margin-bottom:0">Navigation</h5>
+                </div><!-- End .sidenav-widget -->
+
+                <div class="mainnav">
+                    <ul>
+
+                        <!-- Admin only content- chart, graph etc. menu -->
+                        @{
+                            String userType = ViewBag.UserTypeName;
+                                    
+                                }
+
+
+                        @*Complain Menus*@
+                        <li>
+                            <a href="#"><span class="icon16 icomoon-icon-users"></span>Complain</a>
+                            <ul class="sub">
+                                @{
+
+                                    switch (userType)
+                                    {
+                                        case "webadmin":
+                                        case "superadmin":
+                                        case "PallydutSupervisor":
+
+                                            <text>
+                                                <li><a href="~/Complain/CreateTicket"><span class="icon16 icomoon-icon-user-plus-2"></span>Create Complain Ticket</a></li>
+                                                <li><a href="~/Complain/SearchTicket"><span class="icon16 icomoon-icon-search-3"></span>Search Ticket</a></li>
+
+
+                                            </text>
+                                            break;
+
+                                        default:
+                                        <text></text>
+                                            break;
+                                    }
+                                }
+
+                            </ul>
+                        </li>
+
+
+
+
+
+                        @*Employee Menus //MyWorks begins from here*@ 
+                        <li> 
+                            <a href="#"><span class="icon16 icomoon-icon-users"></span>Employee</a>
+                            <ul class="sub">
+                                @{
+                                    
+                                    switch (userType)
+                                    {
+                                        case "webadmin":
+                                        case "superadmin":
+                                        case "PallydutSupervisor":
+                                            <text>
+                                                <li><a href="~/Dashboard/CreatePD"><span class="icon16 icomoon-icon-user-plus-2"></span>Create New</a></li>
+                                                <li><a href="~/Dashboard/EditEmployee"><span class="icon16 icomoon-icon-search-3"></span>Search Employee</a></li>
+                                                <li><a href="~/Employee/AssignEmployeeToParent"><span class="icon16 icomoon-icon-vcard"></span>Supervisor Assignment</a></li>
+                                            </text>
+                                            break;
+                                        
+                                        default:
+                                            <text></text>
+                                            break;
+                                    }
+                                }
+                                
+                            </ul>
+                        </li>
+                        @*User management*@
+                        <li> 
+                            <a href="#"><span class="icon16 icomoon-icon-user-3"></span>User Management</a>
+                            <ul class="sub">
+                                @{
+                                    switch (userType)
+                                    {
+                                        case "webadmin":
+                                        case "superadmin":
+                                        case "PallydutSupervisor":
+                                        
+                                            <text>
+                                                <li><a href="~/Dashboard/ManageUser"><span class="icon16 icomoon-icon-user-plus-3"></span>Create User</a></li>
+                                            </text>
+                                            break;
+                                        
+                                        default:
+                                            <text></text>
+                                            break;
+                                    }
+                                }
+                                
+                            </ul>
+                        </li>
+                           @*====================================================================================*@
+
+
+                        @*Employee Menus //MyWorks begins from here*@
+                        <li>
+                            <a href="#"><span class="icon16 icomoon-icon-file"></span>Indent Manage</a>
+                            <ul class="sub">
+                                @{
+
+                                    switch (userType)
+                                    {
+                                        case "webadmin":
+                                        case "superadmin":
+                                        case "PallydutSupervisor":
+
+                                            <text>
+                                                <li><a href="~/IndentForm/OrderForm"><span class="icon16 icomoon-icon-file-7"></span>Order Form</a></li>
+                                                <li><a href="~/IndentForm/SearchForm"><span class="icon16 icomoon-icon-search-3"></span>Search Form</a></li>
+                                                <li><a href="~/IndentForm/Summary"><span class="icon16  icomoon-icon-support"></span>Summary</a></li>
+                                            </text>
+                                            break;
+
+                                        default:
+                                        <text></text>
+                                            break;
+                                    }
+                                }
+
+                            </ul>
+                        </li>
+                        <li><a href="~/Dashboard/ReportPosition"><span class="icon16 icomoon-icon-globe-2"></span>Report Position </a></li>
+
+                    </ul>
+                </div>
+            </div><!-- End sidenav -->
+
+           
+        </div>
+        <!-- End Sidebar Content -->
+
+        <!--Body content-->
+        <div id="content" class="clearfix">
+            <div class="contentwrapper">
+
+                <!-- Start Heading -->
+                <div class="heading">
+                    <h3>Welcome, <span class="txt">@ViewBag.FullName</span>  </h3>                  
+                    <div class="resBtnSearch">
+                        <a href="#"><span class="icon16 icomoon-icon-search-3"></span></a>
+                    </div>
+
+                    <ul class="breadcrumb">
+                        <li>You are here:</li>
+                        <li>
+                            <a href="#" class="tip" title="back to dashboard">
+                                <span class="icon16 icomoon-icon-screen-2"></span>
+                            </a> 
+                            <span class="divider">
+                                <span class="icon16 icomoon-icon-arrow-right-3"></span>
+                            </span>
+                        </li>
+                        <li class="active">Dashboard</li>
+                    </ul>
+                </div>
+                <!-- End .heading-->
+
+                <!--Start Build page from here: -->
+
+              
+
+                <div id="PartialContent">
+
+                    
+
+                </div>
+                <!-- Partial Content ends -->
+            </div>
+        </div><!-- End #content -->
+    
+    </div><!-- End #wrapper -->
+    
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Important plugins put in all pages -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="../assets/js/bootstrap/bootstrap.js"></script>  
+    <script type="text/javascript" src="../assets/js/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="../assets/js/libs/jRespond.min.js"></script>
+
+    <!-- Charts plugins -->
+        <script type="text/javascript" src="http://static.pureexample.com/js/flot/jquery.flot.min.js"></script>
+        <script type="text/javascript" src="http://static.pureexample.com/js/flot/jquery.flot.time.js"></script>   
+<script type="text/javascript" src="http://static.pureexample.com/js/flot/jquery.flot.axislabels.js"></script>
+   
+    <script type="text/javascript" src="../assets/plugins/charts/flot/jquery.flot.tooltip_0.4.4.js"></script>
+    <script type="text/javascript" src="../assets/plugins/charts/flot/jquery.flot.orderBars.js"></script>
+    <script type="text/javascript" src="../assets/plugins/charts/sparkline/jquery.sparkline.min.js"></script><!-- Sparkline plugin -->
+    <script type="text/javascript" src="../assets/plugins/charts/knob/jquery.knob.js"></script><!-- Circular sliders and stats -->
+
+    <!-- Misc plugins -->
+    <script type="text/javascript" src="../assets/plugins/misc/fullcalendar/fullcalendar.min.js"></script><!-- Calendar plugin -->
+    <script type="text/javascript" src="../assets/plugins/misc/qtip/jquery.qtip.min.js"></script><!-- Custom tooltip plugin -->
+    <script type="text/javascript" src="../assets/plugins/misc/totop/jquery.ui.totop.min.js"></script> <!-- Back to top plugin -->
+    <script type="text/javascript" src="~/Assets/plugins/misc/nicescroll/jquery.nicescroll.min.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.blockUI.js"></script> <!-- Block UI plugin -->
+    <script type="text/javascript" src="../assets/plugins/misc/pnotify/jquery.pnotify.min.js"></script>
+
+    <!-- Gallery plugins -->
+    <script type="text/javascript" src="../assets/plugins/gallery/lazy-load/jquery.lazyload.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/gallery/jpages/jPages.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/gallery/pretty-photo/jquery.prettyPhoto.js"></script>
+    
+    <!-- Search plugin -->
+    <script type="text/javascript" src="../assets/plugins/misc/search/tipuesearch_set.js"></script>
+    <script type="text/javascript" src="../assets/plugins/misc/search/tipuesearch_data.js"></script><!-- JSON for searched results -->
+    <script type="text/javascript" src="../assets/plugins/misc/search/tipuesearch.js"></script>
+
+    <!-- Datatable plugins -->
+  @*  <script src="~/assets/plugins/tables/dataTables/TableTools.min.js"></script>*@
+    <script src="~/assets/plugins/tables/dataTables/jquery.dataTables.min.js"></script>
+
+
+    <!-- Form plugins -->
+    <script type="text/javascript" src="../assets/plugins/forms/uniform/jquery.uniform.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/togglebutton/jquery.toggle.buttons.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/typeahead/typeahead.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/wizard/jquery.bbq.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/wizard/jquery.form.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/validate/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/wizard/jquery.form.wizard.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/elastic/jquery.elastic.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/inputlimiter/jquery.inputlimiter.1.3.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/maskedinput/jquery.maskedinput-1.3.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/globalize/globalize.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/color-picker/colorpicker.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/timeentry/jquery.timeentry.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/select/select2.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/dualselect/jquery.dualListBox-1.3.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/tiny_mce/tinymce.min.js"></script>
+    <script type="text/javascript" src="../assets/js/supr-theme/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript" src="../assets/js/supr-theme/jquery-ui-sliderAccess.js"></script>
+    <script src="~/assets/plugins/misc/imgpreview.full.jquery.js"></script>
+        
+
+    <!-- Google Chart API -->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+    <!-- Init plugins -->
+    <script type="text/javascript" src="../assets/js/main.js"></script><!-- Core js functions -->
+    <script type="text/javascript" src="../assets/js/dashboard.js"></script><!-- Init plugins only for page -->
+
+    <script type="text/javascript" src="../assets/js/widgets.js"></script><!-- Init plugins only for page -->
+       
+    <!-- My Funtions -->
+    <script type="text/javascript" src="~/Assets/js/myfunctions.js"></script><!-- My Funtions -->
+        <script src="~/Assets/js/handle-link.js"></script>
+
+         <!-- load default page for current user-->
+        <script>
+            $(function () {
+
+                
+                //if this identifier exists
+                    $.ajax({
+                        url: '/IndentForm/OrderForm',
+                        async: true,
+                        beforeSend: function () {
+                            $('div.sidenav').block({ message: '<img src="../../Assets/images/loaders/circular/001.gif" />' });
+                            $('.panel-body div').removeClass('scroll');
+                            $("#PartialContent").fadeOut("slow").empty();
+                        },
+                        success: function (data) {
+                            $('#PartialContent').hide().html(data).fadeIn("slow");
+                        },
+                        error: function (request, status, error) {
+                            alert("Error-  Request: " + request + ", Status: " + status + ", Error: " + error);
+                        },
+                        complete: function () {
+                            $('div.sidenav').unblock();
+                        }
+                    });
+                
+            });
+    </script>
+
+
+
+
+
+
+    </body>
+</html>
+

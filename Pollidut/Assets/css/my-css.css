@@ -1,0 +1,88 @@
+﻿
+.table h1 {
+  margin: 0;
+  font-size: 2em;
+  display: inline;
+  /*width: 100%;*/
+  height: 34px;
+  /*padding: 6px 12px;*/
+  /*font-size: 14px;*/
+  line-height: 1.428571429;
+  color: #555555;
+  vertical-align: middle;
+  /*background-color: #ffffff;*/
+}
+
+.table h4 {
+  margin: 0;
+  font-size: 1em;
+  display: inline;
+  /*width: 100%;*/
+  /*height: 34px;*/
+  /*padding: 6px 12px;*/
+  /*font-size: 14px;*/
+  line-height: 2.3;
+  color: #555555;
+  vertical-align: middle;
+  /*background-color: #ffffff;*/
+}
+
+.mycenter {
+   text-align: center;   
+}
+
+/*.table th {
+   text-align: center;   
+}
+
+.table td {
+   text-align: center;   
+}*/
+
+.table-row-checkbox{
+  margin: 0;
+  /*font-size: 1em;*/
+  /*display: inline;*/
+  /*width: 100%;*/
+  height: 24px;
+  /*padding: 6px 12px;*/
+  /*font-size: 14px;*/
+  line-height: 1.3;
+  color: #555555;
+  vertical-align: middle;
+  background-color: #ffffff;
+}
+
+
+.checkboxmy {
+ display: inline-block;
+  min-height: 14px;
+  /*padding-left: 20px;*/
+  margin-top: 6px;
+  margin-bottom: 6px;
+  vertical-align: middle;
+}
+.form-inline h1 {
+  margin: 0;
+  font-size: 2em;
+  display: inline;
+  /*width: 100%;*/
+  height: 34px;
+  /*padding: 6px 12px;*/
+  /*font-size: 14px;*/
+  line-height: 1.428571429;
+  color: #555555;
+  vertical-align: middle;
+  /*background-color: #ffffff;*/
+}
+
+.auto-width-textbox {
+width:initial;
+}
+
+.normal-textbox {
+width:initial;
+display:inline-block;
+}
+
+

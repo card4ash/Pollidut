@@ -1,0 +1,1694 @@
+﻿@{
+    Layout = null;
+    var PreviousUrl = "";
+    var loginUrl = Url.Action("Index", "Login");
+    bool viewPermission = false;
+    bool editPermission = false;
+    bool deletePermission = false;
+    int projectId = 0;
+    
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Employee</title>
+    <link href="~/assets/plugins/forms/select/select2.css" rel="stylesheet" />
+    <link href="~/assets/css/bootstrap3/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/assets/plugins/misc/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/css/supr-theme/jquery.ui.supr.css" rel="stylesheet" type="text/css"/>
+    <link href="../assets/plugins/forms/validate/validate.css" type="text/css" rel="stylesheet" />
+    <link href="~/assets/font-awesome-4.0.3/css/font-awesome.css" rel="stylesheet" />
+
+    <script src="~/assets/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <style type="text/css">
+        .box-shadow
+        {
+            -moz-box-shadow: inset 0 0 5px #000000;
+            -webkit-box-shadow: inset 0 0 5px #000000;
+            box-shadow: inset 0 0 5px #000000;
+        }
+
+        div.input-group
+        {
+            width: 100%;
+        }
+
+        span.input-group-addon
+        {
+            width: 180px;
+            text-align: right;
+        }
+        .modal-dialog-center {
+            margin-top: 25%;
+        }
+        .nostyle
+        {padding: 0;
+	border: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"@* style="width:100%;"*@>
+        <form id="employeeForm" name="employeeForm" action="/Employee/EmployeeDetail" enctype="multipart/form-data" method="post" role="form">
+        <div class="col-md-12 col-xs-12 alert alert-success box-shadow" style="min-height: 120px; margin-bottom: 2px; border: 0px solid black;">
+            <div class="col-md-6 col-xs-6">
+                <h1 class="pull-left" style="padding: 0; margin: 0;">@if (ViewBag.Employee.EMPLOYEE_ID != null)
+                                                                     { @ViewBag.Employee.PERSON_NAME; }</h1>
+                <input type="hidden" name="employeeId" id="employeeId" value="@if (ViewBag.Employee.EMPLOYEE_ID != null)
+                                                                              {@ViewBag.Employee.EMPLOYEE_ID}" />
+                <input type="hidden" name="personId" id="personId" value="@if (ViewBag.Employee.PERSON_ID != null)
+                                                                          {@ViewBag.Employee.PERSON_ID}" />
+            </div>
+            <div class="col-md-4 col-xs-4">
+<div class="modal modal-dialog-center" id="myModal">
+	<div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h3 class="modal-title"></h3>
+        </div>
+                    <div class="modal-body">
+                            <div id="validationSummary">
+
+                            </div>
+                    </div>
+        <div class="modal-footer">
+          <a href="#" data-dismiss="modal" class="btn dialogClose">Close</a>
+          @*<a href="#" class="btn btn-primary">Save changes</a>*@
+        </div>
+      </div>
+    </div>
+</div>                
+            </div>
+            <div class="col-md-2 col-xs-2">
+                 @if (ViewBag.Employee.PERSON_IMAGE != "") // && System.IO.File.Exists("~/Photos/EmployeePhotos/" + ViewBag.Employee.PERSON_IMAGE)
+                 {
+                     @*<script>
+                         alert("Picture from database, @ViewBag.Employee.PERSON_IMAGE");
+                     </script>*@
+                    <img class="thumbnail pull-right imageDisplay box-shadow" id="imageDisplay" title="Click to upload" src="~/Photos/EmployeePhotos/@ViewBag.Employee.PERSON_IMAGE" style="height: 100px; width: 90px;" />
+                 }
+                 else
+                 {
+                     @*<script>
+                         alert("Picture not from database, @ViewBag.Employee.PERSON_IMAGE");
+                     </script>*@
+                     <img class="thumbnail pull-right imageDisplay box-shadow" id="imageDisplay" title="Click to upload" src="~/Assets/images/avatar.jpg" style="height: 100px; width: 90px;" />
+                 }
+                <input type="file" id="fileUploader" name="fileUploader" style="visibility:hidden" onchange="displayPreview(this.files);" />
+                <input type="hidden" id="imageName" name="imageName" value="@ViewBag.Employee.PERSON_IMAGE" />
+            </div>
+        </div>
+
+        <div class="" style="border: 0px solid black;">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs alert alert-info box-shadow" style="margin-bottom: 2px; border: 0px solid black; font-weight: bold; font-size: larger;">
+                <li class="active"><a href="#basic" data-toggle="tab"><span class="glyphicon glyphicon-list-alt"></span> Basic</a></li>
+                <li><a href="#employeeStatuses" data-toggle="tab"><span class="glyphicon glyphicon-user"></span> Employee Status</a></li>
+                <li><a href="#familyDetail" data-toggle="tab"><span class="glyphicon glyphicon-book"></span> Family Details</a></li>
+                <li><a href="#workArea" data-toggle="tab"><span class="glyphicon glyphicon-book"></span> Work Area</a></li>
+                <li><a href="#educations" data-toggle="tab"><span class="glyphicon glyphicon-book"></span> Educations</a></li>
+                <li><a href="#experiences" data-toggle="tab"><span class="glyphicon glyphicon-tasks"></span> Experiences</a></li>
+                <li><a href="#references" data-toggle="tab"><span class="glyphicon glyphicon-thumbs-up"></span> References</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content alert alert-warning panel panel-body box-shadow" style="/*min-height: 400px; height: 100%; */ color:#2A6496; background-color: #C7D7C1; padding: 5px; border-width: 0;">
+                @*Starts basic info*@
+                <div class="tab-pane active" id="basic">
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Name</span>
+                                <input type="text" class="form-control" id="employeeName" name="employeeName" value="@if (ViewBag.Employee.PERSON_NAME != "")
+                                                                                                                     {@ViewBag.Employee.PERSON_NAME}" placeholder="Employee Name">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Father's Name</span>
+                                <input type="text" class="form-control" id="fatherName" name="fatherName" value="@if (ViewBag.Employee.FATHERS_NAME != "")
+                                                                                                                 {@ViewBag.Employee.FATHERS_NAME}" placeholder="Father's Name">
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Mother's Name</span>
+                                <input type="text" class="form-control" id="motherName" name="motherName" value="@if (ViewBag.Employee.MOTHERS_NAME != "")
+                                                                                                                 {@ViewBag.Employee.MOTHERS_NAME}" placeholder="Mother's Name">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Mobile</span>
+                                <input type="text" class="form-control" id="mobile" name="mobile" value="@if (ViewBag.Employee.MOBILE != null)
+                                                                                                         {@ViewBag.Employee.MOBILE}" placeholder="Mobile">
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Phone</span>
+                                <input type="text" class="form-control" id="phone" name="phone" value="@if (ViewBag.Employee.PHONE != "")
+                                                                                                       {@ViewBag.Employee.PHONE}" placeholder="Phone">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">E-Mail</span>
+                                <input type="text" class="form-control" id="email" name="email" value="@if (ViewBag.Employee.EMAIL != "")
+                                                                                                       {@ViewBag.Employee.EMAIL}" placeholder="E-Mail">
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Mailing Address</span>
+                                <textarea class="form-control" id="mailingAddress" name="mailingAddress" placeholder="Mailing Address" style="resize: none;">@if (ViewBag.Employee.MAILING_ADDRESS != "")
+                                                                                                                                                             {@ViewBag.Employee.MAILING_ADDRESS}</textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Permanent Address</span>
+                                <textarea class="form-control" id="permanentAddress" name="permanentAddress" placeholder="Permanent Address" style="resize: none;">@if (ViewBag.Employee.PERMANENT_ADDRESS != "")
+                                                                                                                                                                   {@ViewBag.Employee.PERMANENT_ADDRESS}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Date of Birth</span>
+                                <input type="text" class="form-control datepicker" id="dateOfBirth" name="dateOfBirth" value="@if (ViewBag.Employee.DATE_OF_BIRTH != null)
+                                                                                                                              {@ViewBag.Employee.DATE_OF_BIRTH.ToString("dd-MM-yyyy")}" placeholder="Date Of Birth">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group" style="width: 100%;">
+                                <span class="input-group-addon">Gender</span>
+                                <select class="form-control nostyle" id="genderId" name="genderId">
+                                    <option value="-1">Select Gender</option>
+                                    @foreach (var gender in ViewBag.Genders)
+                                    {
+                                        if (ViewBag.Employee.GENDER_ID == gender.GenderId)
+                                        {
+                                            <option value="@gender.GenderId" selected="selected">@gender.GenderName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@gender.GenderId">@gender.GenderName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Religion</span>
+                                <select class="form-control" id="religionId" name="religionId" style="width: 100%;">
+                                    <option value="-1">Select Region</option>
+                                    @foreach (var religion in ViewBag.Religions)
+                                    {
+                                        if (ViewBag.Employee.RELIGION_ID == religion.ReligionId)
+                                        {
+                                            <option value="@religion.ReligionId" selected="selected">@religion.ReligionName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@religion.ReligionId">@religion.ReligionName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Religion Specify</span>
+                                <input type="text" class="form-control" id="religionSpecify" name="religionSpecify" value="@if (ViewBag.Employee.RELIGION_SPECIFY != "")
+                                                                                                                           {@ViewBag.Employee.RELIGION_SPECIFY}" placeholder="Religion Specify">
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Nationality</span>
+                                <input type="text" class="form-control" id="nationality" name="nationality" value="@if (ViewBag.Employee.NATIONALITY != null)
+                                                                                                                   {@ViewBag.Employee.NATIONALITY}" placeholder="Nationality">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Marital Status</span>
+                                <select class="form-control" id="maritalStatusId" name="maritalStatusId">
+                                    <option value="-1">Select Status</option>
+                                    @foreach (var maritalStatus in ViewBag.MaritalStatuses)
+                                    {
+                                        if (ViewBag.Employee.MARITAL_STATUS_ID == maritalStatus.MaritalStatusId)
+                                        {
+                                            <option value="@maritalStatus.MaritalStatusId" selected="selected">@maritalStatus.MaritalStatusName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@maritalStatus.MaritalStatusId">@maritalStatus.MaritalStatusName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Minimum Investment</span>
+                                <input type="text" class="form-control" id="invest" name="invest" value="@ViewBag.Employee.MINIMUM_INVESTMENT" placeholder="Minimum Investment">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Other Finacial Activity</span>
+                                <input type="text" class="form-control" id="otherfinace" name="otherfinace" value="@ViewBag.Employee.OTHER_FINANCIAL" placeholder="Other Financial Activity">
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Educational Qualification</span>
+                                <input type="text" class="form-control" id="educationalQualification" name="educationalQualification" 
+                                  value="@ViewBag.Employee.EDUCATIONAL_QUALIFICATION" placeholder="Educational Qualification">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Family Member No.</span>
+                                <input type="text" class="form-control" id="familyno" name="familyno" value="@ViewBag.Employee.FAMILY_MEMBER_NO" placeholder="Family Member No.">
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Male Member No.</span>
+                                <input type="text" class="form-control" id="maleno" name="maleno" value="@ViewBag.Employee.MALE_NO" placeholder="Male Member No.">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Female Member No.</span>
+                                <input type="text" class="form-control" id="femaleno" name="femaleno" value="@ViewBag.Employee.FEMALE_NO" placeholder="Female Member No.">
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">District</span>
+                                <select class="form-control" id="districtId" name="districtId">
+                                    <option value="-1">Select District</option>
+                                    @if (ViewBag.Districts != null)
+                                    {
+                                        foreach (var district in ViewBag.Districts)
+                                        {
+                                            if (ViewBag.Employee.DISTRICT_ID == district.DistrictId)
+                                            {
+                                                <option value="@district.DistrictId" selected="selected">@district.DistrictName</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@district.DistrictId">@district.DistrictName</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Thana</span>
+                                <select class="form-control" id="thanaId" name="thanaId">
+                                    <option value="-1">Select District</option>
+                                    @if (ViewBag.Thanas != null)
+                                    {
+                                        foreach (var thana in ViewBag.Thanas)
+                                        {
+                                            if (ViewBag.Employee.THANA_ID == thana.ThanaId)
+                                            {
+                                                <option value="@thana.ThanaId" selected="selected">@thana.ThanaName</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@thana.ThanaId">@thana.ThanaName</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                                    <script>
+                                        var employeeId = [@Html.Raw(ViewBag.Employee.EMPLOYEE_ID)];
+                                        var districtId = [@Html.Raw(ViewBag.Employee.DISTRICT_ID)];
+                                        var thanaId = [@Html.Raw(ViewBag.Employee.THANA_ID)];
+                                        if (districtId != "") {
+                                            //alert(thanaId);
+                                            if (districtId > 0) {
+                                                var url = "/Employee/getThanas";
+
+                                                $.ajax({
+                                                    type: "POST",
+                                                    url: '/Employee/getThanas',
+                                                    contentType: "application/json; charset=utf-8",
+                                                    dataType: 'json',
+                                                    async: true,
+                                                    data: JSON.stringify({ districtId: $("#districtId").val() }),
+                                                    success: function (result) {
+                                                        //alert(districtId + " from success");
+                                                        BindCombo(result, $("#thanaId"), thanaId);
+                                                        //@ViewBag.Thanas = <Text> result</text>;
+                                                    },
+                                                    error: function (request, status, error) {
+                                                        alert("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                                                        //alert("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    </script>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Bank Name</span>
+                                <select class="form-control" id="bankId" name="bankId">
+                                    <option value="-1">Select Bank</option>
+                                    @foreach (var bank in ViewBag.Banks)
+                                    {
+                                        if (ViewBag.Employee.BANK_ID == bank.BankId)
+                                        {
+                                            <option value="@bank.BankId" selected="selected">@bank.BankName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@bank.BankId">@bank.BankName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Branch</span>
+                                <input type="text" class="form-control" id="bankbranch" name="bankbranch" value="@if (ViewBag.Employee.BANK_BRANCH != null)
+                                                                                                                   {@ViewBag.Employee.BANK_BRANCH}" placeholder="Branch">
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Account No.</span>
+                                <input type="text" class="form-control" id="accountno" name="accountno" value="@if (ViewBag.Employee.BANK_ACCOUNT_NO != null)
+                                                                                                                   {@ViewBag.Employee.BANK_ACCOUNT_NO}" placeholder="Bank Account No.">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">NID</span>
+                                <input type="text" class="form-control" id="nid" name="nid" value="@if (ViewBag.Employee.NID != "")
+                                                                                                   {@ViewBag.Employee.NID}" placeholder="National ID">
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Remark</span>
+                                <input type="text" class="form-control" id="remark" name="remark" value="@if (ViewBag.Employee.REMARKS != null)
+                                                                                                                   {@ViewBag.Employee.REMARKS.ToString()}" placeholder="Remark">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Active</span>
+                                <select class="form-control" id="isActive" name="isActive">
+                                @if (ViewBag.Employee.ACTIVE == true)
+                                {
+                                    <option value="-1">Is Active?</option>
+                                    <option value="1" selected="selected">Yes</option>
+                                    <option value="0">No</option>
+                                }
+                                else if (ViewBag.Employee.ACTIVE == false)
+                                {
+                                    <option value="-1">Is Active?</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0" selected="selected">No</option>
+                                }
+                                else
+                                {
+                                    <option value="-1">Is Active?</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    @*<br />
+                    <div class="row" style="text-align:center;">
+                        <div class="col-md-12 col-xs-12" style="border: 0 solid black;">
+                            <input type="button" class="btn btn-primary form-control" id="btnSaveBasic" value="Save & Next" />
+                        </div>
+                    </div>*@
+                </div>
+
+                @*Starts as employee status*@
+                <div class="tab-pane" id="employeeStatuses">
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Current Status</span>
+                                <select class="form-control" id="personCurrentStatusId" name="personCurrentStatusId">
+                                    <option value="-1">Select Status</option>
+                                    @if (ViewBag.PersonCurrentStatuses != null)
+                                    {
+                                        foreach (var currentStatus in ViewBag.PersonCurrentStatuses)
+                                        {
+                                            if (ViewBag.Employee.PERSON_CURRENT_STATUS_ID == currentStatus.PersonCurrentStatusId)
+                                            {
+                                                <option value="@currentStatus.PersonCurrentStatusId" selected="selected">@currentStatus.PersonCurrentStatusName</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@currentStatus.PersonCurrentStatusId">@currentStatus.PersonCurrentStatusName</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Employee Type</span>
+                                <select class="form-control" id="employeeTypeId" name="employeeTypeId">
+                                    <option value="-1">Select Status</option>
+                                    @if (ViewBag.EmployeeTypes != null)
+                                    {
+                                        foreach (var employeeType in ViewBag.EmployeeTypes)
+                                        {
+                                            if (ViewBag.Employee.EMPLOYEE_TYPE_ID == employeeType.EmployeeTypeId)
+                                            {
+                                                <option value="@employeeType.EmployeeTypeId" selected="selected">@employeeType.EmployeeTypeName</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@employeeType.EmployeeTypeId">@employeeType.EmployeeTypeName</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Role Status</span>
+                                <select class="form-control" id="employeeRoleStatusId" name="employeeRoleStatusId">
+                                    <option value="-1">Select Status</option>
+                                    @if (ViewBag.EmployeeRoleStatuses != null)
+                                    {
+                                        foreach (var employeeRoleStatus in ViewBag.EmployeeRoleStatuses)
+                                        {
+                                            if (ViewBag.Employee.EMPLOYEE_ROLE_STATUS_ID == employeeRoleStatus.EmployeeRoleStatusId)
+                                            {
+                                                <option value="@employeeRoleStatus.EmployeeRoleStatusId" selected="selected">@employeeRoleStatus.EmployeeRoleStatusName</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@employeeRoleStatus.EmployeeRoleStatusId">@employeeRoleStatus.EmployeeRoleStatusName</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">Employee Code</span>
+                                <input type="text" class="form-control disabled" disabled="disabled" id="employeeCode" name="employeeCode" value="@if (ViewBag.employee.EMPLOYEE_CODE != null)
+                                                                                                                                                  {@ViewBag.employee.EMPLOYEE_CODE}" placeholder="Employee Code">
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            <div class="input-group">
+                                <span class="input-group-addon">House Name</span>
+                                <select class="form-control" id="houseId" name="houseId">
+                                    <option value="-1">Select Status</option>
+                                    @if (ViewBag.DistributionHouses != null)
+                                    {
+                                        foreach (var disributionHouse in ViewBag.DistributionHouses)
+                                        {
+                                            if (ViewBag.Employee.DISTRIBUTION_HOUSE_ID == Convert.ToInt32(disributionHouse.DistributionHouseId))
+                                            {
+                                                <option value="@disributionHouse.DistributionHouseId" selected="selected">@disributionHouse.DistributionHouseName</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@disributionHouse.DistributionHouseId">@disributionHouse.DistributionHouseName</option>
+                                            }
+                                        }
+                                                <option value="0">None</option>
+                                        
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6" style="border: 0 solid black;">
+                            
+                            <div class="input-group">
+                                <span class="input-group-addon">Joining Date</span>
+                                <input type="text" class="form-control datepicker" id="joining" name="joining" value="@if (ViewBag.Employee.JOINING_DATE != null)
+                                                                                                                              {@ViewBag.Employee.JOINING_DATE.ToString("dd-MM-yyyy")}" placeholder="Joining Date">
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                       
+                    </div>
+                   
+                </div>
+                <div class="tab-pane" id="familyDetail">
+
+                    <div class="panel panel-default">
+
+
+                        <!-- Table -->
+                        <table id="tableFamily" class="table table-striped">
+                            <thead class="text-center" style="font-weight:bold;">
+                                <tr class="alert alert-success">
+                                    <td>Member Name</td>
+                                    <td>Relation</td>
+                                    <td>Age</td>
+                                    <td>Occupation</td>
+                                    <td>Action</td>
+                                </tr>
+                            </thead>
+                            <tbody id="familyBody">
+                                @foreach (var fmember in ViewBag.FamilyDetail)
+                                {
+                                    <tr class="familytr">
+                                        
+                                        <td>
+                                            <input type="text" class="form-control memberName" name="memberName" value="@fmember.MEMBER_NAME" placeholder="Member Name">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control relation" id="relation" name="relation" value="@fmember.RELATION" placeholder="Relation">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control age" id="age" pattern="^[1-9]\d*$" name="age" value="@fmember.AGE" placeholder="Age">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control occujpation" id="occujpation" name="occujpation" value="@fmember.OCCUPATION" placeholder="Occupation">
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-info btn-md removeRow"><span class="glyphicon glyphicon-remove"></span> Remove</button>
+                                        </td>
+                                        
+                                    </tr>
+                                }
+                                <tr class="familytr">
+                                    <td>
+                                        <input type="text" class="form-control memberName" name="memberName"  placeholder="Member Name">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control relation" id="relation" name="relation"  placeholder="Relation">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control age" id="age" name="age" pattern="^[1-9]\d*$" placeholder="Age">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control occujpation" id="occujpation" name="occujpation"  placeholder="Occupation">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-info btn-md removeRow"><span class="glyphicon glyphicon-remove"></span> Remove</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="well" style="text-align: right; margin-bottom: 0;">
+                            <button type="button" id="addFamily" name="addFamily" class="btn btn-info"><span class="glyphicon glyphicon-import"></span> Add Family Member</button>
+                        </div>
+                    </div>
+                    @*</div>*@
+                </div>
+
+                <div class="tab-pane" id="workArea">
+
+                    <div class="panel panel-default">
+
+
+                        <!-- Table -->
+                        <table id="tableWork" class="table table-striped">
+                            <thead class="text-center" style="font-weight:bold;">
+                                <tr class="alert alert-success">
+                                    <td>Work Area Name</td>
+                                    <td>Union</td>
+                                    <td>Thana</td>
+                                    <td>Action</td>
+                                </tr>
+                            </thead>
+                            <tbody id="workBody">
+                                @foreach (var work in ViewBag.WorkAra)
+                                {
+                                    <tr class="worktr">
+
+                                        <td>
+                                            <input type="text" class="form-control areaName" name="areaName" value="@work.WORK_AREA" placeholder="Area Name">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control unionName" id="unionName" name="unionName" value="@work.UNION_NAME" placeholder="Union">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control thanaName" id="thanaName" name="thanaName" value="@work.THANA_NAME" placeholder="Thana">
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-info btn-md removeRow"><span class="glyphicon glyphicon-remove"></span> Remove</button>
+                                        </td>
+
+                                    </tr>
+                                }
+                                <tr class="worktr">
+                                    <td>
+                                        <input type="text" class="form-control areaName" name="areaName"  placeholder="Area Name">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control unionName" id="unionName" name="unionName"  placeholder="Union">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control thanaName" id="thanaName" name="thanaName"  placeholder="Thana">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-info btn-md removeRow"><span class="glyphicon glyphicon-remove"></span> Remove</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="well" style="text-align: right; margin-bottom: 0;">
+                            <button type="button" id="addWork" name="addWork" class="btn btn-info"><span class="glyphicon glyphicon-import"></span> Add Work Area</button>
+                        </div>
+                    </div>
+                    @*</div>*@
+                </div>
+
+                <div class="tab-pane" id="educations">
+                   
+                    <div class="panel panel-default">
+                       
+
+                        <!-- Table -->
+                        <table id="tableEducation" class="table table-striped">
+                            <thead class="text-center" style="font-weight:bold;">
+                                <tr class="alert alert-success">
+                                    <td>Degree</td>
+                                    <td>Institute</td>
+                                    <td>Passing Year</td>
+                                    <td>Subject</td>
+                                    <td>Duration</td>
+                                    <td>Grade</td>
+                                    <td>CGPA</td>
+                                    <td>Division/Class</td>
+                                    <td>Mark</td>
+                                    <td>Actions</td>
+                                </tr>
+                            </thead>
+                            <tbody id="educationBody">
+                                @foreach (var educationalDegree in ViewBag.PersonDegrees)
+                                {                                    
+                                <tr class="educationtr">
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="hidden" class="personEducationId" id="personEducationId" name="personEducationId" />
+                                            <select class="form-control educationDegree educationDegreeId" id="educationDegreeId" name="educationDegreeId">
+                                                <option value="-1">Select Degree</option>
+                                                @if (ViewBag.EducationalDegrees != null)
+                                                {
+                                                    foreach (var degree in ViewBag.EducationalDegrees)
+                                                    {
+                                                        if (educationalDegree.EDUCATIONAL_DEGREE_ID == degree.EducationalDegreeId)
+                                                        {
+                                                            <option value="@degree.EducationalDegreeId" selected="selected">@degree.EducationalDegreeName</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@degree.EducationalDegreeId">@degree.EducationalDegreeName</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control institute" id="institute" name="institute" value="@educationalDegree.INSTITUTE" placeholder="Institute">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control passingYear" id="passingYear" name="passingYear" value="@educationalDegree.PASSING_YEAR" placeholder="Passing year">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control subject" id="subject" name="subject" value="@educationalDegree.SUBJECT" placeholder="Subject">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control duration" id="duration" name="duration" value="@educationalDegree.DURATION" placeholder="Duration(yyyy-yyyy)">
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <select class="form-control gradeId" id="gradeId" name="gradeId">
+                                                <option value="-1">Select Grade</option>
+                                                @if (ViewBag.EducationalGrades != null)
+                                                {
+                                                    foreach (var grade in ViewBag.EducationalGrades)
+                                                    {
+                                                        if (educationalDegree.GRADE_ID == grade.GradeId)
+                                                        {
+                                                            <option value="@grade.GradeId" selected="selected">@grade.GradeName</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@grade.GradeId">@grade.GradeName</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control cgpa" name="cgpa" value="@educationalDegree.CGPA" placeholder="CGPA">
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <select class="form-control divisionId" id="divisionId" name="divisionId">
+                                                <option value="-1">Division</option>
+                                                @if (ViewBag.EducationalDivisions != null)
+                                                {
+                                                    foreach (var division in ViewBag.EducationalDivisions)
+                                                    {
+                                                        if (educationalDegree.DIVISION_ID == division.DivisionId)
+                                                        {
+                                                            <option value="@division.DivisionId" selected="selected">@division.DivisionName</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@division.DivisionId">@division.DivisionName</option>
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control mark" id="mark" name="mark" value="@educationalDegree.MARK" placeholder="Mark">
+                                    </td>
+                                <td>
+                                    <button type="button" class="btn btn-info btn-md removeRow" ><span class="glyphicon glyphicon-remove"></span> Remove</button>
+                                </td>
+                                </tr>
+                                }
+                                <tr class="educationtr">
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="hidden" class="personEducationId" id="personEducationId" name="personEducationId" />
+                                            <select class="form-control educationDegree educationDegreeId" id="educationDegreeId" name="educationDegreeId">
+                                                <option value="-1">Select Degree</option>
+                                                @if (ViewBag.EducationalDegrees != null)
+                                                {
+                                                    foreach (var degree in ViewBag.EducationalDegrees)
+                                                    {
+                                                        
+                                                            <option value="@degree.EducationalDegreeId">@degree.EducationalDegreeName</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control institute" id="institute" name="institute" placeholder="Institute">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control passingYear" id="passingYear" name="passingYear" placeholder="Passing year">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control subject" id="subject" name="subject" placeholder="Subject">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control duration" id="duration" name="duration" placeholder="Duration(yyyy-yyyy)">
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <select class="form-control gradeId" id="gradeId" name="gradeId">
+                                                <option value="-1">Select Grade</option>
+                                                @if (ViewBag.EducationalGrades != null)
+                                                {
+                                                    foreach (var grade in ViewBag.EducationalGrades)
+                                                    {
+                                                        
+                                                            <option value="@grade.GradeId">@grade.GradeName</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control cgpa" name="cgpa" placeholder="CGPA">
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <select class="form-control divisionId" id="divisionId" name="divisionId">
+                                                <option value="-1">Division</option>
+                                                @if (ViewBag.EducationalDivisions != null)
+                                                {
+                                                    foreach (var division in ViewBag.EducationalDivisions)
+                                                    {
+                                                        
+                                                            <option value="@division.DivisionId">@division.DivisionName</option>
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control mark" id="mark" name="mark" placeholder="Mark">
+                                    </td>
+                                <td>
+                                    <button type="button" class="btn btn-info btn-md removeRow" ><span class="glyphicon glyphicon-remove"></span> Remove</button>
+                                </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="well" style="text-align: right; margin-bottom: 0;">
+                            <button type="button" id="addEducation" name="addEducation" class="btn btn-info"><span class="glyphicon glyphicon-import"></span> Add Education</button>
+                        </div>
+                    </div>
+
+                    @*</div>*@
+                </div>
+                <div class="tab-pane" id="experiences">
+                    <!-- Default panel contents -->
+                    @*<div class="panel-heading">Experiences</div>*@
+
+                    <!-- Table -->
+                    <table id="tableExperience" class="table table-striped">
+                        <thead class="text-center" style="font-weight:bold;">
+                            <tr class="alert alert-success">
+                                <td>Experience Type</td>
+                                <td>Organization</td>
+                                <td>Designation</td>
+                                <td>Start Date</td>
+                                <td>End Date</td>
+                                <td>Duration</td>
+                                <td>Job Description</td>
+                                <td>Achievement</td>
+                                <td>Actions</td>
+                            </tr>
+                        </thead>
+                        <tbody id="experienceBody">
+                                @foreach (Pollidut.DataAccess.PERSON_JOB_EXPERIENCES personExperience in ViewBag.PersonExperiences)
+                                {                                    
+                            <tr class="experiencetr">
+                                <td>
+                                    <div class="input-group">
+                                        <input type="hidden" class="personExperienceId" id="personExperienceId" name="personExperienceId" />
+                                        <select class="form-control experienceTypeId" id="experienceTypeId" name="experienceTypeId">
+                                            <option value="-1">Select Type</option>
+                                            @if (ViewBag.ExperienceTypes != null)
+                                            {
+                                                foreach (Pollidut.Models.ExperienceType experienceType in ViewBag.ExperienceTypes)
+                                                {
+                                                    if (personExperience.EXPERIENCE_TYPE_ID == experienceType.ExperienceTypeId)
+                                                    {
+                                                        <option value="@experienceType.ExperienceTypeId" selected="selected">@experienceType.ExperienceTypeName</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@experienceType.ExperienceTypeId">@experienceType.ExperienceTypeName</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control organization" id="organization" name="organization" value="@personExperience.ORGANIZATION" placeholder="Organization">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control designation" id="designation" name="designation" value="@personExperience.DESIGNATION" placeholder="Designation">
+                                </td>
+                                <td>
+                                   <input type="text" class="form-control startDate datepicker" name="startDate" value="@(personExperience.START_DATE!=null ? Convert.ToDateTime(personExperience.START_DATE).ToString("dd-MM-yyyy") : "")" placeholder="Start Date">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control endDate datepicker" name="endDate" value="@(personExperience.END_DATE != null ? Convert.ToDateTime(personExperience.END_DATE).ToString("dd-MM-yyyy") : "")" placeholder="End Date">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control expDuration" id="expDuration" name="expDuration" value="@personExperience.DURATION" placeholder="Duration">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control jobDescription" id="jobDescription" name="jobDescription" value="@personExperience.JOB_DESCRIPTION" placeholder="Job Description">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control achievement" id="achievement" name="achievement" value="@personExperience.ACHIEVEMENT" placeholder="Achievement">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-info btn-md removeRow"><span class="glyphicon glyphicon-remove"></span> Remove</button>
+                                </td>
+                            </tr>
+                                }
+                            <tr class="experiencetr">
+                                <td>
+                                    <div class="input-group">
+                                        <input type="hidden" class="personExperienceId" id="personExperienceId" name="personExperienceId" />
+                                        <select class="form-control experienceTypeId" id="experienceTypeId" name="experienceTypeId">
+                                            <option value="-1">Select Experience</option>
+                                            @foreach (var experienceType in ViewBag.ExperienceTypes)
+                                            {
+                                                    <option value="@experienceType.ExperienceTypeId">@experienceType.ExperienceTypeName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control organization" id="organization" name="organization" placeholder="Organization">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control designation" id="designation" name="designation" placeholder="Designation">
+                                </td>
+                                <td>
+                                   <input type="text" class="form-control startDate datepicker" name="startDate" placeholder="Start Date">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control endDate datepicker" name="endDate" placeholder="End Date">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control expDuration" id="expDuration" name="expDuration" placeholder="Duration">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control jobDescription" id="jobDescription" name="jobDescription" placeholder="Job Description">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control achievement" id="achievement" name="achievement" placeholder="Achievement">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-info btn-md removeRow" ><span class="glyphicon glyphicon-remove"></span> Remove</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="well" style="text-align: right; margin-bottom: 0;">
+                        <button type="button" id="addExperience" name="addExperience" class="btn btn-info"><span class="glyphicon glyphicon-import"></span> Add Experience</button>
+                    </div>
+                </div>
+                
+                <div class="tab-pane" id="references">
+                    <!-- Default panel contents -->
+                    @*<div class="panel-heading">Experiences</div>*@
+
+                    <!-- Table -->
+                    <table id="tableReference" class="table table-striped">
+                        <thead class="text-center" style="font-weight:bold;">
+                            <tr class="alert alert-success">
+                                <td>Reference Type</td>
+                                <td>Name</td>
+                                <td>Organization</td>
+                                <td>Designation</td>
+                                <td>Mobile</td>
+                                <td>Phone</td>
+                                <td>E-Mail</td>
+                                <td>Address</td>
+                                <td>Relation</td>
+                                <td>Actions</td>
+                            </tr>
+                        </thead>
+                        <tbody id="referenceBody">
+                                @foreach (var personReference in ViewBag.PersonReferences)
+                                {                                    
+                            <tr class="referencetr">
+                                <td>
+                                    <div class="input-group">
+                                        <select class="form-control referenceType referenceTypeId" id="referenceTypeId" name="referenceTypeId">
+                                            <option value="-1">Select Type</option>
+                                            @if (ViewBag.ReferenceTypes != null)
+                                            {
+                                                foreach (var referenceType in ViewBag.ReferenceTypes)
+                                                {
+                                                    if (personReference.REFERENCE_TYPE_ID == referenceType.ReferenceTypeId)
+                                                    {
+                                                        <option value="@referenceType.ReferenceTypeId" selected="selected">@referenceType.ReferenceTypeName</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@referenceType.ReferenceTypeId">@referenceType.ReferenceTypeName</option>
+                                                    }
+
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control refName" id="refName" name="refName" value="@personReference.REFERENCE_NAME" placeholder="Name">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control refOrganization" id="refOrganization" name="refOrganization" value="@personReference.ORGANAIZATION" placeholder="Organization">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control refDesignation" id="refDesignation" name="refDesignation" value="@personReference.DESIGNATION" placeholder="Designation">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control refMobile" id="refMobile" name="refMobile" value="@personReference.MOBILE" placeholder="Mobile">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control refPhone" id="refPhone" name="refPhone" value="@personReference.PHONE" placeholder="Phone">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control refEmail" id="refEmail" name="refEmail" value="@personReference.EMAIL" placeholder="Email">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control refAddress" id="refAddress" name="refAddress" value="@personReference.MAILING_ADDRESS" placeholder="Address">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control refRelation" id="refRelation" name="refRelation" value="@personReference.RELATIONSHIP" placeholder="Relation">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-info btn-md removeRow"><span class="glyphicon glyphicon-remove"></span> Remove</button>
+                                </td>
+                            </tr>
+                                }
+                             <tr class="referencetr">
+                                <td>
+                                    <div class="input-group">
+                                        <select class="form-control referenceType referenceTypeId" id="referenceTypeId" name="referenceTypeId">
+                                            <option value="-1">Select Type</option>
+                                            @foreach (var referenceType in ViewBag.ReferenceTypes)
+                                            {
+                                                <option value="@referenceType.ReferenceTypeId">@referenceType.ReferenceTypeName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control refName" id="refName" name="refName" placeholder="Name">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control refOrganization" id="refOrganization" name="refOrganization" placeholder="Organization">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control refDesignation" id="refDesignation" name="refDesignation" placeholder="Designation">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control refMobile" id="refMobile" name="refMobile" placeholder="Mobile">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control refPhone" id="refPhone" name="refPhone" placeholder="Phone">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control refEmail" id="refEmail" name="refEmail" placeholder="E-Mail">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control refAddress" id="refAddress" name="refAddress" placeholder="Address">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control refRelation" id="refRelation" name="refRelation" placeholder="Relation">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-info btn-md removeRow"><span class="glyphicon glyphicon-remove"></span> Remove</button>
+                                </td>
+                            </tr>
+                       </tbody>
+                    </table>
+                    <div class="well" style="text-align: right; margin-bottom: 0;">
+                        <button type="button" id="addReference" name="addReference" class="btn btn-info"><span class="glyphicon glyphicon-import"></span> Add Reference</button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-12 col-xs-12 text-center" style="min-height:30px; margin-bottom:2px; border:0px solid black;">
+                @*<input type="submit" class="btn btn-success btn-lg" id="btnSave" name="btnSave" value="Save" />*@
+                <button type="submit" id="btnSubmit" class="btn btn-primary btn-lg" style="padding-left:3%;padding-right:3%;"><i class="glyphicon glyphicon-floppy-disk"></i> Save</button>
+            </div>
+        </div>
+    </form>
+<div class="progress" style="display:none;">
+  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+    <span class="sr-only">60% Complete</span>
+  </div>
+</div>
+    </div>
+
+    <script src="~/assets/css/bootstrap3/js/bootstrap.js"></script>
+    <script type="text/javascript" src="~/assets/plugins/forms/validate/jquery.validate.min.js"></script>
+    <script src="~/assets/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script> @*//for Date Picker*@
+   
+
+    <script type="text/javascript">
+    (function ($) {
+        $("#imageDisplay").click(function () {
+            $("#fileUploader").click();
+        });
+
+        addFamilyClickEvent();
+        addWorkClickEvent();
+        addEducationClickEvent();
+        addExperienceClickEvent();
+        addReferenceClickEvent();
+
+        $("#districtId").change(function () {
+            var url = "/Employee/getThanas";
+
+            $.ajax({
+                type: "POST",
+                url: '/Employee/getThanas',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                async: true,
+                data: JSON.stringify({ districtId: $(this).val() }),
+                success: function (result) {
+                    BindCombo(result, $("#thanaId"));
+                },
+                error: function (request, status, error) {
+                    alert("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                    //alert("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                }
+            });
+        });
+
+        removeTableRow();
+    })(jQuery);
+
+    function removeTableRow() {
+        $($('.removeRow')).click(function () {
+            $(this).closest("tr").remove();
+        });
+    }
+
+    function addFamilyClickEvent() {
+        $("#addFamily").click(function () {
+            var isFilled = true;
+            $('#familyBody .familytr').each(function () {
+                if ($(this).find('.memberName').val() == '') {
+                    isFilled = false;
+                }
+            });
+            if (isFilled == true) {
+                addFamily();
+                removeTableRow();
+            }
+            else {
+                return alert("Family Member Name not set!");
+            }
+        });
+    }
+    function addWorkClickEvent() {
+        $("#addWork").click(function () {
+            var isFilled = true;
+            $('#workBody .worktr').each(function () {
+                if ($(this).find('.areaName').val() == '') {
+                    isFilled = false;
+                }
+            });
+            if (isFilled == true) {
+                addWork();
+                removeTableRow();
+            }
+            else {
+                return alert("Work Area Not Entered!");
+            }
+        });
+    }
+
+    function addEducationClickEvent() {
+        $("#addEducation").click(function () {
+            var isFilled = true;
+            $('#educationBody .educationtr').each(function () {
+                if ($(this).find('.educationDegreeId').val() < 1) {
+                    isFilled = false;
+                }
+            });
+            if (isFilled == true) {
+                addEducation();
+                removeTableRow();
+            }
+            else {
+                return alert("Education degree didn't set!");
+            }
+        });
+    }
+    function addExperienceClickEvent() {
+        $("#addExperience").click(function () {
+            var isFilled = true;
+            $('#experienceBody .experiencetr').each(function () {
+                if ($(this).find('.experienceTypeId').val() < 1) {
+                    isFilled = false;
+                }
+            });
+            if (isFilled == true) {
+                addExperience();
+                removeTableRow();
+                $(".datepicker").datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    dateFormat: 'dd-mm-yy',
+                    yearRange: "1960:2014"
+                });
+            }
+            else {
+                return alert("Experience type didn't set!");
+            }
+        });
+    }
+    function addReferenceClickEvent() {
+        $("#addReference").click(function () {
+            var isFilled = true;
+            $('#referenceBody .referencetr').each(function () {
+                if ($(this).find('.referenceTypeId').val() < 1) {
+                    isFilled = false;
+                }
+            });
+            if (isFilled == true) {
+                addReference();
+                removeTableRow();
+            }
+            else {
+                return alert("Reference type didn't set!");
+            }
+        });
+    }
+
+    function BindCombo(result, combo, selectedItemValue) {
+        //alert(selectedItemValue + " from combo");
+        combo.empty().append('<option selected="selected" value="0">Please select</option>');
+        $.each(result, function () {
+            //alert(this[0]);
+            if (this['ThanaId'] == selectedItemValue) {
+                combo.append($("<option></option>").val(this['ThanaId']).html(this['ThanaName']).attr('selected', 'selected'));
+            }
+            else {
+                combo.append($("<option></option>").val(this['ThanaId']).html(this['ThanaName']));
+            }
+        });
+    }
+
+    function addExperience() {
+        var experienceRow = "";
+        experienceRow += "<tr class='experiencetr'>";
+        experienceRow += "<td><div class='input-group'><select class='form-control experienceTypeId' id='experienceTypeId' name='experienceTypeId'>";
+        experienceRow += "<option selected='selected' value='0'>Select Experience</option>";
+        //"<option value='0'>Select Type</option><option value='0'>text2</option><option value='0'>text3</option>"+
+
+        var ExperienceTypes = '@Html.Raw(Json.Encode(@ViewBag.ExperienceTypes))';
+        ExperienceTypes = JSON.parse(ExperienceTypes);
+
+        $.each(ExperienceTypes, function () {
+            experienceRow += "<option value='" + this.ExperienceTypeId + "'>" + this.ExperienceTypeName + "</option>";
+        });
+
+        experienceRow += "</select></div></td>";
+        experienceRow += "<td><input type='text' class='form-control organization' id='organization' name='organization' placeholder='Organization'></td>";
+        experienceRow += "<td><input type='text' class='form-control designation' id='designation' name='designation' placeholder='Designation'></td>";
+        experienceRow += "<td><input type='text' class='form-control startDate datepicker' name='startDate' placeholder='Start Date'></td>";
+        experienceRow += "<td><input type='text' class='form-control endDate datepicker' name='endDate' placeholder='End Date'></td>";
+        experienceRow += "<td><input type='text' class='form-control expDuration' id='expDuration' name='expDuration' placeholder='Duration'></td>";
+        experienceRow += "<td><input type='text' class='form-control jobDescription' id='jobDescription' name='jobDescription' placeholder='Job Description'></td>";
+        experienceRow += "<td><input type='text' class='form-control achievement' id='achievement' name='achievement' placeholder='Achievement'></td>";
+        experienceRow += "<td><button type='button' class='btn btn-info btn-md removeRow'><span class='glyphicon glyphicon-remove'></span> Remove</button></td>";
+        experienceRow += "</tr>";
+        $("#tableExperience").find('tbody').append($(experienceRow));
+
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd-mm-yy',
+            yearRange: "1960:2014"
+        });
+
+
+    }
+        function addReference() {
+            var referenceRow = "";
+            referenceRow += "<tr class='referencetr'>";
+            referenceRow += "<td><div class='input-group'><select class='form-control referenceType referenceTypeId' id='referenceTypeId' name='referenceTypeId'><option value='0'>Select Type</option>";
+
+            var ReferenceTypes = '@Html.Raw(Json.Encode(@ViewBag.ReferenceTypes))';
+            ReferenceTypes = JSON.parse(ReferenceTypes);
+
+            $.each(ReferenceTypes, function () {
+                referenceRow += "<option value='" + this.ReferenceTypeId + "'>" + this.ReferenceTypeName + "</option>";
+            });
+
+            referenceRow += "</select></div></td>";
+            referenceRow += "<td><input type='text' class='form-control refName' id='refName' name='refName' placeholder='Name'></td>";
+            referenceRow += "<td><input type='text' class='form-control refOrganization' id='refOrganization' name='refOrganization' placeholder='Organization'></td>";
+            referenceRow += "<td><input type='text' class='form-control refDesignation' id='refDesignation' name='refDesignation' placeholder='Designation'></td>";
+            referenceRow += "<td><input type='text' class='form-control refMobile' id='refMobile' name='refMobile' placeholder='Mobile'></td>";
+            referenceRow += "<td><input type='text' class='form-control refPhone' id='refPhone' name='refPhone' placeholder='Phone'></td>";
+            referenceRow += "<td><input type='text' class='form-control refEmail' id='refEmail' name='refEmail' placeholder='E-Mail'></td>";
+            referenceRow += "<td><input type='text' class='form-control refAddress' id='refAddress' name='refAddress' placeholder='Address'></td>";
+            referenceRow += "<td><input type='text' class='form-control refRelation' id='refRelation' name='refRelation' placeholder='Relation'></td>";
+            referenceRow += "<td><button type='button' class='btn btn-info btn-md removeRow'><span class='glyphicon glyphicon-remove'></span> Remove</button></td>";
+            referenceRow += "</tr>";
+            $("#tableReference").find('tbody').append($(referenceRow));
+        }
+
+        function addFamily() {
+            var familyRow = '<tr class="familytr">'
+                                    +'<td>'
+                                        +'<input type="text" class="form-control memberName" name="memberName"  placeholder="Member Name">'
+                                    +'</td>'
+                                    +'<td>'
+                                        +'<input type="text" class="form-control relation" id="relation" name="relation"  placeholder="Relation">'
+                                    +'</td>'
+                                    +'<td>'
+                                        + '<input type="text" class="form-control age" id="age" name="age"  placeholder="Age">'
+                                    +'</td>'
+                                    +'<td>'
+                                        +'<input type="text" class="form-control occujpation" id="occujpation" name="occujpation"  placeholder="Occupation">'
+                                    +'</td>'
+                                    +'<td>'
+                                        +'<button type="button" class="btn btn-info btn-md removeRow"><span class="glyphicon glyphicon-remove"></span> Remove</button>'
+                                    +'</td>'
+                                +'</tr>'
+
+            $("#tableFamily").find('tbody').append($(familyRow));
+            $("#tableFamily tr:last").find('.age').rules('add', {
+                required: false, number: true, min: 0, max: 140
+            })
+        }
+
+
+        function addWork() {
+            var workRow = '<tr class="worktr">'
+                                    +'<td>'
+                                      +'  <input type="text" class="form-control areaName" name="areaName"  placeholder="Area Name">'
+                                    +'</td>'
+                                    +'<td>'
+                                        +'<input type="text" class="form-control unionName" id="unionName" name="unionName"  placeholder="Union">'
+                                    +'</td>'
+                                    +'<td>'
+                                        +'<input type="text" class="form-control thanaName" id="thanaName" name="thanaName"  placeholder="Thana">'
+                                    +'</td>'
+                                    +'<td>'
+                                        +'<button type="button" class="btn btn-info btn-md removeRow"><span class="glyphicon glyphicon-remove"></span> Remove</button>'
+                                    +'</td>'
+                                +'</tr>"'
+            
+            $("#tableWork").find('tbody').append($(workRow));
+        }
+
+
+        function addEducation() {
+            var educationRow = "";
+
+            educationRow += "<tr class='educationtr'>";
+
+            var EducationalDegrees = '@Html.Raw(Json.Encode(@ViewBag.EducationalDegrees))';
+        EducationalDegrees = JSON.parse(EducationalDegrees);
+
+        educationRow += "<td><div class='input-group'>" +
+            "<input type='hidden' class='personEducationId' id='personEducationId' name='personEducationId' />" +
+        "<select class='form-control educationDegree educationDegreeId'><option selected='selected' value='0'>Please select</option>";
+        $.each(EducationalDegrees, function () {
+            educationRow += "<option value='" + this.EducationalDegreeId + "'>" + this.EducationalDegreeName + "</option>";
+        });
+        educationRow += "</select></div></td>";
+
+        educationRow += "<td><input type='text' class='form-control institute' placeholder='Institute'></td>";
+        educationRow += "<td><input type='text' class='form-control passingYear' placeholder='Passing year'></td>";
+        educationRow += "<td><input type='text' class='form-control subject' placeholder='Subject'></td>";
+        educationRow += "<td><input type='text' class='form-control duration' placeholder='Duration(yyyy-yyyy)'></td>";
+        educationRow += "<td><div class='input-group'><select class='form-control gradeId'><option>Select Grade</option>";
+        var EducationalGrades = '@Html.Raw(Json.Encode(@ViewBag.EducationalGrades))';
+        EducationalGrades = JSON.parse(EducationalGrades);
+        $.each(EducationalGrades, function () {
+            educationRow += "<option value='" + this.GradeId + "'>" + this.GradeName + "</option>";
+        });
+
+        educationRow += "</select></div></td>";
+        educationRow += "<td><input type='text' class='form-control cgpa' placeholder='CGPA'></td>";
+        educationRow += "<td><div class='input-group'><select class='form-control divisionId'><option>Division/Class</option>";
+        var EducationalDivisions = '@Html.Raw(Json.Encode(@ViewBag.EducationalDivisions))';
+        EducationalDivisions = JSON.parse(EducationalDivisions);
+        $.each(EducationalDivisions, function () {
+            educationRow += "<option value='" + this.DivisionId + "'>" + this.DivisionName + "</option>";
+        });
+        educationRow += "</select></div></td>";
+        educationRow += "<td><input type='text' class='form-control mark' placeholder='Mark'></td>";
+        educationRow += "<td><button type='button' class='btn btn-info btn-md removeRow'><span class='glyphicon glyphicon-remove'> Remove</button></td>";
+        //alert(educationRow);
+        educationRow += "</tr>";
+        $("#tableEducation").find('tbody').append($(educationRow));
+    }
+    function onFileLoad(e) {
+        $("#imageDisplay").attr('src', e.target.result);
+    }
+
+    function displayPreview(files) {
+        var reader = new FileReader();
+        reader.onload = onFileLoad;
+        reader.readAsDataURL(files[0]);
+    }
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+
+            $('#myModal').modal({ show: false });
+            $.validator.addMethod("dateCheck", function (value, element) {
+                var dateValue = $("#dateOfBirth").val();
+                var validDatePattern = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
+
+                if (validDatePattern.test(dateValue)) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+
+            }, 'Invalid date.');
+
+            jQuery.validator.addClassRules("age", {
+                required: false,
+                number: true,
+                min: 0,
+                max:140
+            });
+
+
+
+
+            var form = $('#employeeForm');
+            var validator = $('#employeeForm').validate({
+
+
+                submitHandler: function () {
+                    //$('#btnSubmit').click(function () {
+                    //var formData = $("#EmployeeForm").serialize();
+                    var employee = new FormData();
+                    //var employee = {};
+                    employee.append("employee.personId", $('#personId').val());
+                    employee.append("employee.employeeName", $('#employeeName').val());
+                    employee.append("employee.fatherName", $('#fatherName').val());
+                    employee.append("employee.mobile", $('#mobile').val());
+                    employee.append("employee.motherName", $('#motherName').val());
+                    employee.append("employee.phone", $('#phone').val());
+                    employee.append("employee.mailingAddress", $('#mailingAddress').val());
+                    employee.append("employee.permanentAddress", $('#permanentAddress').val());
+                    employee.append("employee.dateOfBirth", $('#dateOfBirth').val());
+                    employee.append("employee.genderId", $('#genderId').val());
+                    employee.append("employee.religionId", $('#religionId').val());
+                    employee.append("employee.religionSpecify", $('#religionSpecify').val());
+                    employee.append("employee.nationality", $('#nationality').val());
+                    employee.append("employee.maritalStatusId", $('#maritalStatusId').val());
+                    employee.append("employee.districtId", $('#districtId').val());
+                    employee.append("employee.thanaId", $('#thanaId').val());
+                    employee.append("employee.email", $('#email').val());
+                    employee.append("employee.bankId", $('#bankId').val());
+                    employee.append("employee.bankbranch", $('#bankbranch').val());
+                    employee.append("employee.accountno", $('#accountno').val());
+                    employee.append("employee.remark", $('#remark').val());
+                    employee.append("employee.nid", $('#nid').val());
+                    employee.append("employee.imageName", $('#imageName').val());
+
+
+                    employee.append("employee.personCurrentStatusId", $('#personCurrentStatusId').val());
+                    employee.append("employee.employeeTypeId", $('#employeeTypeId').val());
+                    employee.append("employee.employeeRoleStatusId", $('#employeeRoleStatusId').val());
+                    employee.append("employee.employeeCode", $('#employeeCode').val());
+                    employee.append("employee.houseId", $('#houseId').val());
+                    employee.append("employee.brandId", $('#brandId').val());
+                    employee.append("employee.isActive", $('#isActive').val());
+
+                    //employee.educations = [];
+
+                    $('#educationBody .educationtr').each(function (i) {
+                        if ($(this).find('.educationDegreeId').val() > 0) {
+                            //var educationobj = {};
+                            employee.append("employee.educations[" + i + "].personEducationId", $(this).find('.personEducationId').val());
+                            employee.append("employee.educations[" + i + "].educationDegreeId", $(this).find('.educationDegreeId').val());
+                            employee.append("employee.educations[" + i + "].institute", $(this).find('.institute').val());
+                            employee.append("employee.educations[" + i + "].passingYear", $(this).find('.passingYear').val());
+                            employee.append("employee.educations[" + i + "].subject", $(this).find('.subject').val());
+                            employee.append("employee.educations[" + i + "].duration", $(this).find('.duration').val());
+                            employee.append("employee.educations[" + i + "].gradeId", $(this).find('.gradeId').val());
+                            employee.append("employee.educations[" + i + "].cgpa", $(this).find('.cgpa').val());
+                            employee.append("employee.educations[" + i + "].divisionId", $(this).find('.divisionId').val());
+                            employee.append("employee.educations[" + i + "].mark", $(this).find('.mark').val());
+                        }
+                        //employee.educations.push(educationobj);
+                    });
+
+
+
+                    //employee.experiences = [];
+                    $('#experienceBody .experiencetr').each(function (i) {
+                        if ($(this).find('.experienceTypeId').val() > 0) {
+                            //var experienceobj = {};
+                            employee.append("employee.experiences[" + i + "].personExperienceId", $(this).find('.personExperienceId').val());
+                            employee.append("employee.experiences[" + i + "].experienceTypeId", $(this).find('.experienceTypeId').val());
+                            employee.append("employee.experiences[" + i + "].organization", $(this).find('.organization').val());
+                            employee.append("employee.experiences[" + i + "].designation", $(this).find('.designation').val());
+                            employee.append("employee.experiences[" + i + "].startDate", $(this).find('.startDate').val());
+                            employee.append("employee.experiences[" + i + "].endDate", $(this).find('.endDate').val());
+                            employee.append("employee.experiences[" + i + "].expDuration", $(this).find('.expDuration').val());
+                            employee.append("employee.experiences[" + i + "].jobDescription", $(this).find('.jobDescription').val());
+                            employee.append("employee.experiences[" + i + "].achievement", $(this).find('.achievement').val());
+                        }
+                    });
+
+                    //employee.references = [];
+                    $('#referenceBody .referencetr').each(function (i) {
+                        if ($(this).find('.referenceTypeId').val() > 0) {
+                            //var referenceobj = {};
+                            employee.append("employee.references[" + i + "].personReferenceId", $(this).find('.personReferenceId').val());
+                            employee.append("employee.references[" + i + "].referenceTypeId", $(this).find('.referenceTypeId').val());
+                            employee.append("employee.references[" + i + "].refName", $(this).find('.refName').val());
+                            employee.append("employee.references[" + i + "].refOrganization", $(this).find('.refOrganization').val());
+                            employee.append("employee.references[" + i + "].refDesignation", $(this).find('.refDesignation').val());
+                            employee.append("employee.references[" + i + "].refMobile", $(this).find('.refMobile').val());
+                            employee.append("employee.references[" + i + "].refPhone", $(this).find('.refPhone').val());
+                            employee.append("employee.references[" + i + "].refEmail", $(this).find('.refEmail').val());
+                            employee.append("employee.references[" + i + "].refAddress", $(this).find('.refAddress').val());
+                            employee.append("employee.references[" + i + "].refRelation", $(this).find('.refRelation').val());
+                        }
+                        //employee.references.push(referenceobj);
+                    });
+                    var fileInput = document.getElementById('fileUploader');
+                    employee.append('file', fileInput.files[0]);
+                    //console.log(employee);
+
+
+                    getText = function (url, callback, data) // How can I use this callback?
+                    {
+                        var request = new XMLHttpRequest();
+                        request.onreadystatechange = function () {
+                            if (request.readyState == 4 && request.status == 200) {
+                                var result = callback(request.responseText); // Another callback here
+                                if (request.responseText.trim().match('success')) {
+                                    $("#validationSummary").css({ "color": "black", "font-weight": "bold" }).text("Updated successfull!");
+                                    $('.modal-title').text("").text("Success Message");
+                                }
+                                else {
+                                    $("#validationSummary").css({ "color": "red", "font-weight": "bold" }).text(request.responseText);
+                                    $('.modal-title').text("").text("Message");
+                                }
+                                $('#myModal').modal({ show: true });
+                                $(".dialogClose").click(function () {
+                                    if ($('.modal - title').text() == 'Success Message') {
+                                        $('#myModal').modal({ show: false });
+                                        window.close();
+                                    }
+                                    else {
+                                    }
+                                });
+                            }
+                        };
+                        request.open('POST', url);
+                        request.send(data);
+                    }
+                    function mycallback(data) {
+                        //alert(data);
+                    }
+
+                    getText('/Employee/saveEmployee', mycallback, employee);
+                    return false;
+                    return false;
+
+                }
+               
+                , focusInvalid: false
+                , ignore: 'fileUploader',
+                rules: {
+                    employeeName: { required: true },
+                    fatherName: { required: true },
+                    mobile: { required: true, minlength: 11 },
+                    employeeCode: { required: true },
+                    mailingAddress: { required: true },
+                    permanentAddress: { required: true },
+                    email: { email: true },
+                    dateOfBirth: { required: true, dateCheck: true },
+                    genderId: { min: 1 },
+                    personCurrentStatusId: { min: 1 },
+                    employeeTypeId: { min: 1 },
+                    employeeRoleStatusId: { min: 1 },
+                }
+                ,
+                invalidHandler: function () {
+                    
+                    $("#validationSummary").text(validator.numberOfInvalids() + " field(s) are invalid.");
+                    $('.modal-title').text("Validation Summary");
+                    $('#myModal').modal({ show: true });
+                }
+                ,
+                messages: {
+                    employeeName: { required: "Please enter employee name." },
+                    fatherName: { required: "Please enter father's name." },
+                    genderId: { min: "Select any effective value." }
+                }
+            });
+
+            var template = jQuery.validator.format("{000} is not a valid value");
+
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd-mm-yy',
+                yearRange: "1960:2014"
+            });
+        });
+    </script>
+</body>    
+</html>

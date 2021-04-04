@@ -1,0 +1,66 @@
+﻿<style>
+    .usercls img {
+        display: none;
+    }
+
+    .usercls:hover img {
+        display: inline;
+    }
+</style>
+<script>
+    $(function () {
+        getUsers();
+    });
+    function BindUsers(msg) {
+        $('#users').empty().append('Available Users <br/> <br/>');
+        $.each(msg, function () {
+            //alert(this.Name);
+            //$('#roles').append($('<div style="height:50px;width:100px;float:left;">' + this.Name + '</div>').data('roleinfo', this));
+            $('#users').append($('<div class="usercls" style="width:100px;float:left;">').append('' + this.Name + '<img src="../assets/images/cross.gif" />').data('userinfo', this));
+        });
+        $('.usercls img').click(function () {
+            var check = confirm('Do You want to Delete this User?');
+            if (check == true) {
+                var privdata = $(this).closest('div').data('userinfo');
+                console.log(privdata);
+                $.ajax({
+                    type: "POST",
+                    url: "/Dashboard/deleteUser",
+                    data: JSON.stringify({ ID: privdata.ID }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+                        getUsers();
+                    },
+                    error: function (msg) {
+                        alert(msg.responseText);
+                    }
+                });
+            }
+            else {
+
+            }
+        });
+    }
+    function getUsers() {
+        $.ajax({
+            type: "POST",
+            url: "/Dashboard/getUsers",
+            data: "{}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (msg) {
+                BindUsers(msg);
+            },
+            error: function (msg) {
+                alert(msg.responseText);
+            }
+        });
+    }
+</script>
+<div id="users" style="position:relative;width:100%;">
+    Available Users
+    <br />
+
+    <br />
+</div>

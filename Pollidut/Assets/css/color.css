@@ -1,0 +1,15 @@
+.bluec {
+    color: blue;
+}
+
+.yellowc {
+    color: #ffff00;
+}
+
+.greenc {
+    color: #008000;
+}
+
+.greenc:hover {
+    color: #336699;
+}

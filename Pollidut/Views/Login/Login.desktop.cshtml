@@ -1,0 +1,199 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Login</title>
+    <meta name="author" content="SuggeElson" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="application-name" content="Supr admin template" />
+
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Force IE9 to render in normla mode -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Le styles -->
+    <link href="~/assets/css/bootstrap/bootstrap.css" rel="stylesheet" />
+   
+    <link href="~/assets/css/supr-theme/jquery.ui.supr.css" rel="stylesheet" type="text/css"/>
+    <link href="~/assets/css/icons.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/plugins/forms/uniform/uniform.default.css" type="text/css" rel="stylesheet" />
+
+    <!-- Main stylesheets -->
+    <link href="~/assets/css/main.css" rel="stylesheet" type="text/css" /> 
+              <style>
+
+          .hidden-alert {
+              display:none;
+          }
+
+      </style>
+    <!--[if IE 8]><link href="css/ie8.css" rel="stylesheet" type="text/css" /><![endif]-->
+    
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script type="text/javascript" src="js/libs/excanvas.min.js"></script>
+      <script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+      <script type="text/javascript" src="js/libs/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/apple-touch-icon-144-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/apple-touch-icon-114-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/apple-touch-icon-72-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" href="images/apple-touch-icon-57-precomposed.png" />
+
+    <script type="text/javascript" src="~/assets/js/libs/modernizr.js"></script>
+
+    </head>
+      
+    <body class="loginPage">
+
+    <div class="container">
+
+        <div id="header">
+
+            <div class="row">
+
+                <div class="navbar">
+                    <div class="container">
+                        <a class="navbar-brand" href="#">@ViewBag.WelcomeText</a>
+                    </div>
+                </div><!-- /navbar -->
+
+            </div><!-- End .row -->
+
+        </div><!-- End #header -->
+
+    </div><!-- End .container -->    
+
+
+    <div class="container">
+         
+        <div class="loginContainer">
+            <form class="form-horizontal" action="Login/Index" id="loginForm" role="form" >
+                <div class="form-group">
+                    <label class="col-lg-12 control-label" for="username">Username:</label>
+                    <div class="col-lg-12">
+                        <input id="username" type="text" name="username" class="form-control" value="" placeholder="Enter login name ..." autofocus="autofocus"/>
+                        <span class="icon16 icomoon-icon-user right gray marginR10"></span>
+                    </div>
+                </div><!-- End .form-group  -->
+                <div class="form-group">
+                    <label class="col-lg-12 control-label" for="password">Password:</label>
+                    <div class="col-lg-12">
+                        <input id="password" type="password" name="password" value="" class="form-control" placeholder="Enter password"/>
+                        <span class="icon16 icomoon-icon-lock right gray marginR10"></span>
+                        <span class="forgot help-block"><a href="#">Forgot your password?</a></span>
+                    </div>
+                </div><!-- End .form-group  -->
+                <div class="form-group">
+                    <div class="alert alert-danger hidden-alert" id="invalidlogin">Invalid Login. Please try again.</div>
+
+                    <div class="col-lg-12 clearfix form-actions">
+
+                        
+                        <div class="checkbox left">
+                            <label><input type="checkbox" id="keepLoged" value="Value" class="styled" name="logged" /> Keep me logged in</label>
+                        </div>
+                     
+                        <button type="submit" class="btn btn-info right" id="loginBtn"><span class="icon16 icomoon-icon-enter white"></span> Login</button>
+                    </div>
+                </div><!-- End .form-group  -->
+            </form>
+        </div>
+
+       
+
+
+    </div><!-- End .container -->
+    <script src="~/Assets/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="~/assets/js/bootstrap/bootstrap.js"></script>  
+    <script type="text/javascript" src="~/assets/plugins/forms/validate/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="~/assets/plugins/forms/uniform/jquery.uniform.min.js"></script>
+
+     <script type="text/javascript">
+         // document ready function
+         $(document).ready(function () {
+             //------------- Options for Supr - admin tempalte -------------//
+             var supr_Options = {
+                 rtl: false//activate rtl version with true
+             }
+
+
+             $("input, textarea, select").not('.nostyle').uniform();
+             $("#loginForm").validate({
+                 submitHandler: function (form) {
+                     var postdata = $('#loginForm').serialize();
+                     postdata = postdata + '&ismobile=n&lat=0.0&lon=0.0';
+                    
+                     $.ajax({
+                         type: "POST",
+                         url: '@Url.Action("Index","Login")',
+                         async: true,
+                         data: postdata,
+
+                         beforeSend: function () {
+                             $('#loginBtn').attr('disabled', 'disabled');
+                             $('#loginBtn').html('checking');
+                         },
+                         success: function (response) {
+                             if (response.result == 'InvalidLogin') {
+                                 $('#invalidlogin').removeClass('hidden-alert');
+                                 $('#loginBtn').removeAttr("disabled");
+                                 $('#loginBtn').html('Try Again');
+                             }
+                             else if (response.result == 'Error') {
+                                 alert('Error.');  //$('#testHtml').html('Database Error.'); return false;
+                                 $('#loginBtn').removeAttr("disabled");
+                                 $('#loginBtn').html('Try Again');
+                             }
+                             else if (response.result == 'Redirect') {
+                                 $('#loginBtn').removeAttr("disabled");
+                                 $('#loginBtn').html('Login');
+                                 window.location = response.url;
+                             }
+                         },
+                         error: function (request, status, error) {
+                            
+                             alert("Failed to execute. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                             $('#loginBtn').removeAttr("disabled");
+                             $('#loginBtn').html('Try Again');
+                         },
+                         complete: function () {
+                            
+                         }
+                     });
+                 },
+                 rules: {
+                     username: {
+                         required: true
+                        
+                     },
+                     password: {
+                         required: true
+                        
+                     }
+                 },
+                 messages: {
+                     username: {
+                         required: "Fill me please"
+                        
+                     },
+                     password: {
+                         required: "Please provide a password"
+                        
+                     }
+                 }
+             });
+         });
+    </script> 
+    </body>
+</html>

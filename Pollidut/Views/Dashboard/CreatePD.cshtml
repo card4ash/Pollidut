@@ -1,0 +1,634 @@
+<style>
+    .input-group {
+        width: 100%;
+        padding: 0px;
+        border-bottom: 5px;
+    }
+
+    .input-group-addon {
+        width: 180px;
+        min-width: 150px;
+        padding: 0px;
+    }
+
+    .input-group-sm {
+        width: 100%;
+    }
+</style>
+<div id="hiddenRow" style="display:none;"></div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+
+            <div class="panel-heading">
+                <h4>
+                    <span>Create New Employee</span>
+                </h4>
+
+            </div>
+            <form class="form-horizontal" id="form-create-employee" method="post" enctype="multipart/form-data" action="~/Dashboard/CreatePD">
+                <div class="panel-body noPad">
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Employee Name</span>
+                                <input class="form-control nostyle" id="personname" name="personname" type="text" title="Employee Name." placeholder="enter employee name" autofocus />
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Employee Code</span>
+                                <input class="form-control nostyle" id="empcode" name="empcode" type="text" title="Employee Code." placeholder="enter employee code" />
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Father Name</span>
+                                <input class="form-control nostyle" id="fathername" name="fathername" type="text" title="Father Name." placeholder="enter father name" />
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Mother Name</span>
+                                <input class="form-control nostyle" id="mothername" name="mothername" type="text" title="Mother Name." placeholder="enter mother name" />
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Mobile No.</span>
+                                <input class="form-control nostyle" id="mobileno" name="mobileno" type="text" title="Mobile No." placeholder="enter mobile no" />
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Educational Qualification</span>
+                                <input class="form-control nostyle" id="educationalqualification" name="educationalqualification" type="text" title="Educational Qualification." placeholder="enter educational qualification" />
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Date Of Birth</span>
+                                <input class="form-control nostyle datepicker" id="dateofbirth" name="dateofbirth" type="text" title="Date Of Birth" placeholder="dd-mm-yyyy" />
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">NID Number</span>
+                                <input class="form-control nostyle" id="nidno" name="nidno" type="text" title="NID Number" placeholder="enter NID Number" />
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Nationality</span>
+                                <input class="form-control nostyle " id="nationality" name="nationality" type="text" title="Nationality" placeholder="Nationality" />
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Religion</span>
+                                <select class="nostyle " id="religionid" style="width: 100%;" name="religionid">
+                                    <option></option>
+                                    @foreach (var type in ViewBag.Religions)
+                                    {
+                                        <option value="@type.ReligionId">@type.ReligionName</option>
+                                    }
+                                </select>
+
+
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Present Address</span>
+                                <textarea id="presentaddress" name="presentaddress" rows="3" class="form-control limit nostyle"></textarea>
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Permanent Address</span>
+                                <textarea id="permanentaddress" name="permanentaddress" rows="3" class="form-control limit nostyle"></textarea>
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Type/Desig</span>
+                                <select class="nostyle " id="employeetypeid" style="width: 100%;" name="employeetypeid">
+                                    <option></option>
+                                    @foreach (var type in ViewBag.EmployeeTypes)
+                                    {
+                                        <option value="@type.EmployeeTypeId">@type.EmployeeTypeName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Joining Date</span>
+                                <input class="form-control nostyle datepicker" id="joinDate" name="joinDate" type="text" title="Joining Date" placeholder="dd-mm-yyyy" />
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Minimum Investment.</span>
+                                <input class="form-control nostyle" id="minimumInvestment" name="minimumInvestment" type="text" title="Minimum Investment." placeholder="enter minimum investment" />
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Other Financial Activity</span>
+                                <input class="form-control nostyle" id="otherFinace" name="otherFinace" type="text" title="Other Financial Activity" placeholder="enter Other Financial Activity (If Any)" />
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="input-group">
+                                <span class="input-group-addon">Distribution House</span>
+
+                                <div class="input-group divDistribution" id="divDistribution">
+                                    <select class="nostyle  distributionhouseid" style="width: 100%;" name="distributionhouseid">
+                                        <option></option>
+                                        @foreach (var house in ViewBag.Houses)
+                                        {
+                                            <option value="@house.DistributionHouseId">@house.DistributionHouseName</option>
+                                        }
+                                        <option value="0">None</option>
+                                    </select>
+                                    @*<span class="input-group-btn">
+                                        <button type="button" class="add btn btn-sm btn-default">Add <i class="fa fa icon-plus-sign"></i> </button>
+                                    </span>*@
+                                </div><!-- /input-group -->
+
+                            </div>
+                        </div>
+
+                    </div><!-- /.row -->
+                    
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="input-group">
+                                <span class="input-group-addon">Photo</span>
+                                <input class="button" type="file" name="photo" id="photo" accept="image/jpeg,image/png,jpg|png" multiple="multiple" />
+                            </div>
+                        </div>
+
+                    </div><!-- /.row -->
+
+                </div>
+
+
+                <div class="panel-heading">
+                    <h4>
+                        <span>Pallydut Family Details</span>
+                    </h4>
+
+                </div>
+
+                <div class="panel-body noPad">
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Relationship Status</span>
+                                <select class="nostyle  relationship" id="relationship" style="width: 100%;" name="relationship">
+                                    <option></option>
+                                    @foreach (var relation in ViewBag.RelationShip)
+                                    {
+                                        <option value="@relation.MaritalStatusId">@relation.MaritalStatusName</option>
+                                    }
+                                    <option value="0">None</option>
+                                </select>
+
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Family Member No.</span>
+                                <input class="form-control nostyle memberno" id="memberno" name="memberno" type="text" title="Employee Code." placeholder="enter family member no." />
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Male Member No.</span>
+                                <input class="form-control nostyle" id="malemember" name="malemember" type="text" title="Male member No." placeholder="enter male member no." />
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Female Member No.</span>
+                                <input class="form-control nostyle" id="femalemember" name="femalemember" type="text" title="Female Member No." placeholder="enter female member no." />
+                            </div>
+                        </div><!-- /.col-lg-6 -->
+                    </div><!-- /.row -->
+
+                    <table id="pdFamilydetails" class="table table-hover pdFamilydetails" style="display:table;">
+                        <thead>
+                            <tr>
+                                <th>Member Name</th>
+                                <th>Relation</th>
+                                <th>Age</th>
+                                <th>Occupation</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" class="form-control memberName" /></td>
+                                <td><input type="text" class="form-control relation" /></td>
+                                <td><input type="text" class="form-control age" /></td>
+                                <td><input type="text" class="form-control occupation" /></td>
+                                <td><button type="button" class="addfamily btn btn-sm btn-default">Add <i class="fa fa icon-plus-sign"></i> </button></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                    
+
+
+
+                </div>
+
+
+
+
+
+
+                <div class="panel-heading">
+                    <h4>
+                        <span>Pallydut Working Details</span>
+                    </h4>
+
+                </div>
+
+                      <div class="panel-body noPad">
+                          <table id="pdWorkdetails" class="table table-hover pdWorkdetails" style="display:table;">
+                              <thead>
+                                  <tr>
+                                      <th>Work Area</th>
+                                      <th>Union</th>
+                                      <th>Thana</th>
+                                      <th>Action</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr>
+                                      <td><input type="text" class="form-control workarea" /></td>
+                                      <td><input type="text" class="form-control unionname" /></td>
+                                      <td><input type="text" class="form-control thana" /></td>
+                                      <td><button type="button" class="addwork btn btn-sm btn-default">Add <i class="fa fa icon-plus-sign"></i> </button></td>
+                                  </tr>
+                              </tbody>
+
+                          </table>
+                          <div class="row">
+                              <div class="col-lg-6">
+                                  <div class="input-group">
+                                      <span class="input-group-addon">PD Service Description</span>
+                                      <textarea id="pdservice" name="pdservice" rows="3" class="form-control limit nostyle"></textarea>
+                                  </div>
+                              </div><!-- /.col-lg-6 -->
+                              <div class="col-lg-6">
+                                  <div class="input-group">
+                                      <span class="input-group-addon">Previous PD Details</span>
+                                      <textarea id="previouspd" name="previouspd" rows="3" class="form-control limit nostyle"></textarea>
+                                  </div>
+                              </div><!-- /.col-lg-6 -->
+                          </div><!-- /.row -->
+
+
+
+                      </div>
+
+
+                      <div class="row">
+                          <div class="col-lg-12">
+                              <div class="input-group" style="text-align:center;">
+                                  <button type="submit" id="btn-submit-mainform" class="btn btn-success btn-lg">Save changes</button>
+                              </div>
+                          </div>
+
+                      </div>
+            </form>
+
+
+            
+        </div>
+    </div>
+</div>
+
+<!-- Select2 plugin -->
+<script>
+    $(document).ready(function () {
+        
+        $('.relationship').select2({ placeholder: "Select Relationship Status." });
+        $('#religionid').select2({ placeholder: "Select Religion." });
+        $('#employeetypeid').select2({ placeholder: "Select employee type." });
+        $('.limit').inputlimiter({ limit: 100 });
+        var extraRowAdd = $('.divDistribution').html();
+        $('#hiddenRow').html(extraRowAdd);
+        $('.distributionhouseid:last').select2({ placeholder: "Select a house." });
+
+
+        $('#form-create-employee').on('click', '.add', function () {
+            $('<div class="input-group divDistribution" > </div>').insertAfter('.divDistribution:last').append($('#hiddenRow').html());
+            $('.distributionhouseid:last').select2({ placeholder: "Select a house." });
+            $(this).attr('class', 'remove  btn btn-sm btn-default');
+            $(this).html('Remove <i class="fa fa icon-minus"></i>');
+        });
+
+        $('#form-create-employee').on('click', '.remove', function () {
+            $(this).closest('.divDistribution').remove();
+        });
+
+        $('#pdWorkdetails').on('click', '.addwork', function () {
+            $(this).closest('tr').after('<tr>'
+                                      +'<td><input type="text" class="form-control workarea" /></td>'
+                                      +'<td><input type="text" class="form-control workarea" /></td>'
+                                      +'<td><input type="text" class="form-control thana" /></td>'
+                                      +'<td><button type="button" class="addwork btn btn-sm btn-default">Add <i class="fa fa icon-plus-sign"></i> </button></td>'
+                                  +'</tr>');
+            $(this).attr('class', 'removework  btn btn-sm btn-default');
+            $(this).html('Remove <i class="fa fa icon-minus"></i>');
+        });
+        $('#pdWorkdetails').on('click', '.removework', function () {
+            $(this).closest('tr').remove();
+        });
+        $('#pdFamilydetails').on('click', '.addfamily', function () {
+            $(this).closest('tr').after('<tr>'
+                                +'<td><input type="text" class="form-control memberName" /></td>'
+                                +'<td><input type="text" class="form-control relation" /></td>'
+                                +'<td><input type="text" class="form-control age" /></td>'
+                                +'<td><input type="text" class="form-control occupation" /></td>'
+                                +'<td><button type="button" class="addfamily btn btn-sm btn-default">Add <i class="fa fa icon-plus-sign"></i> </button></td>'
+                            +'</tr>');
+            $(this).attr('class', 'removefamily  btn btn-sm btn-default');
+            $(this).html('Remove <i class="fa fa icon-minus"></i>');
+            jQuery.validator.addClassRules('age', {
+                required: false,
+                number: true,
+                min: 0,
+                max: 140
+            });
+        });
+        $('#pdFamilydetails').on('click', '.removefamily', function () {
+            $(this).closest('tr').remove();
+        });
+
+    });
+</script>
+
+<!-- date time picker -->
+<script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd-mm-yy',
+            yearRange: "-70:+0"
+        });
+    });
+</script>
+
+
+<!-- Validation -->
+<script type="text/javascript">
+    // document ready function
+    $(document).ready(function () {
+
+        //Validator date chech method
+        $.validator.addMethod('accept', function () { return true; });
+
+        
+
+
+        $.validator.addMethod("dateCheck", function (value, element) {
+            var dateValue = $("#dateofbirth").val();
+            var validDatePattern = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
+
+            if (validDatePattern.test(dateValue)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        }, 'Invalid date.');
+
+        $.validator.addMethod("JdateCheck", function (value, element) {
+            var dateValue = $("#joinDate").val();
+            var validDatePattern = /^$|^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
+
+            if (validDatePattern.test(dateValue)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        }, 'Invalid date.');
+
+        
+
+        $("input, textarea, select").not('.nostyle').uniform();
+
+        //form validation
+        var form = $('#form-create-employee');
+
+
+        $('#form-create-employee').validate({
+            submitHandler: function () {
+                var distributions = [];
+                var cats = {};
+                $('.divDistribution > .distributionhouseid').filter(function () {
+                    var category = $(this).val();
+                    if (cats[category]) {
+                        return false;
+                    } else {
+                        cats[category] = true;
+                        var distribution = {};
+                        distribution.Id = $(this).val();
+                        distributions.push(distribution);
+                        return true;
+                    }
+                });
+
+
+                
+                
+                var photo = document.getElementById('photo').files[0];
+
+                var fd = new FormData();
+                fd.append("personname", $('#personname').val());
+                fd.append("empcode",$('#empcode').val())
+                fd.append("fathername", $('#fathername').val());
+                fd.append("mothername", $('#mothername').val());
+                fd.append("mobileno", $('#mobileno').val());
+                fd.append("education", $('#educationalqualification').val());
+                fd.append("dateofbirth", $('#dateofbirth').val());
+                fd.append("nidno", $('#nidno').val());
+                fd.append("nationality", $('#nationality').val());
+                fd.append("religionid", $('#religionid').val());
+                fd.append("presentaddress", $('#presentaddress').val());
+                fd.append("permanentaddress", $('#permanentaddress').val());
+                fd.append("employeetypeid", $('#employeetypeid').val());
+                fd.append("joinDate", $('#joinDate').val());
+                fd.append("minimumInvestment", $('#minimumInvestment').val());
+                fd.append("otherFinace", $('#otherFinace').val());
+                fd.append("relationship", $('#relationship').val());
+                fd.append("memberno", $('#memberno').val());
+                fd.append("malemember", $('#malemember').val());
+                fd.append("femalemember", $('#femalemember').val());
+                fd.append("pdservice", $('#pdservice').val());
+                fd.append("previouspd", $('#previouspd').val());
+                
+                var works = [];
+                $('#pdWorkdetails tbody tr').each(function () {
+                    var work = {};
+                    if ($(this).find('.workarea').val() != '') {
+                        work.areaname = $(this).find('.workarea').val();
+                        work.unionname = $(this).find('.unionname').val();
+                        work.thananame = $(this).find('.thana').val();
+                        works.push(work);
+                    }
+                });
+                var family = [];
+                $('#pdFamilydetails tbody tr').each(function () {
+                    if ($(this).find('.memberName').val() != '') {
+                        var member = {};
+                        member.memberName = $(this).find('.memberName').val();
+                        member.relation = $(this).find('.relation').val();
+                        member.age = $(this).find('.age').val();
+                        member.occupation = $(this).find('.occupation').val();
+                        family.push(member);
+                    }
+                });
+                fd.append("distributions", JSON.stringify(distributions));
+                fd.append("works", JSON.stringify(works));
+                fd.append("family",JSON.stringify(family))
+                fd.append("photo", photo);
+                console.log(fd);
+                var SubmitURL = form.attr('action');
+
+                $.ajax({
+                    url: SubmitURL,
+                    type: "POST",
+                    data: fd,
+                    processData: false,  // tell jQuery not to process the data
+                    contentType: false,   // tell jQuery not to set contentType
+                    beforeSend: function () {
+                        $(form).find('#btn-reset-mainform').attr('disabled', 'disabled');
+                        $(form).find('#btn-submit-mainform').html('Working...');
+                    },
+                    success: function (result) {
+                        if (result.savestatus == 'Success') {
+                            $('#btn-submit-mainform').after(' <a id="detail-button" target="_blank" href="Employee/EmployeeDetail?id=' + result.employeeid + '" class="btn btn-warning btn-lg"> More details ? </a>');
+                            $('INPUT:file', '#form-create-employee').val('');
+                            SuccessfullSaveNotification();
+                        }
+                        else {
+                            ShowRegularError(result);
+                        }
+                    },
+                    error: function (request, status, error) {
+                        ShowRegularError("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                    },
+                    complete: function () {
+                        $(form).find('#btn-reset-mainform').removeAttr("disabled");
+                        $(form).find('#btn-submit-mainform').html('Save changes');
+
+                    }
+                });
+
+            },
+            ignore: 'photo',
+            rules: {
+                personname: { required: true },
+                dateofbirth: { required: true, dateCheck: true },
+                photo: { required: false, accept: "image/png" },
+                mobileno: { required: true, number: true, minlength: 11, maxlength: 11 },
+                distributionhouseid: { required: true },
+                employeetypeid: { required: true },
+                joinDate: { required: false, JdateCheck: true },
+                nidno: { required: false, number: true, min: 100000, max: 9999999999999999999 },
+                minimumInvestment: { required: true, number: true, min: 1000, max: 9999999999 },
+                memberno: { required: false, number: true, min: 0, max: 500 },
+                malemember: { required: false, number: true, min: 0, max: 500 },
+                femalemember: { required: false, number: true, min: 0, max: 500 }
+            },
+            messages: {
+                personname: { required: "Please enter employee name." },
+                mobileno: { required: "Required", number: "must be numeric", minlength: "minimum length 11.", maxlength: "max 11" },
+                dateofbirth: { required: "Enter date.", dateCheck: "Invalid date." },
+                joinDate:{required:"Enter date.",JdateCheck:"Invalid date."},
+                distributionhouseid: { required: "select a hosue." },
+                employeetypeid: { required: "select a type." },
+                nidno: { number: "Must be Number" },
+                minimumInvestment: { number: "Must be Number" },
+                memberno: { number: "Must be Number" },
+                malemember: { number: "Must be Number" },
+                femalemember: { number: "Must be Number" }
+            }
+
+            
+        });
+
+        $('#btn-reset-mainform').click(function (e) {
+
+            e.preventDefault();
+            var form = $(this).parents('form');
+
+            form.trigger('reset');
+            var validator = form.validate();
+            validator.resetForm();
+
+            $('select.resetIt', form).each(function () {
+                $(this).select2("val", "");
+            });
+
+            $('select.emptyIt', form).empty();
+
+            $(form).find('#detail-button').remove();
+
+            $(form).find('input:visible:first').focus();
+
+        });
+
+
+    });
+</script>
+
+
+

@@ -1,0 +1,152 @@
+﻿<div class="row" id="search-criteria-class">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>
+                    <span>Create Complain</span>
+                </h4>
+                @*   <span id="pie-chart-loader" class="loader">
+                    <img src="../../assets/images/loaders/circular/059.gif" width="16" height="16" alt="" /></span>*@
+                <a href="#" class="minimize">Minimize</a>
+            </div>
+            <div class="panel-body">
+                <h2 id="SuccessfulMsg" style="display:none;">Your Complain Successfully Submitted.</h2>
+
+                <form class="form-horizontal" id="form-search-employee" action="~/Complain/CreateNewComplain">
+
+                    <div class="form-group">
+                        <label class="col-lg-2 " for="complainstatus">Status</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" id="complainstatus" value="Initial" readonly="readonly" />
+                        </div>
+                    </div>
+
+
+                    @*active*@
+                    <div class="form-group">
+                        <label class="col-lg-2" for="active">Catagory</label>
+                        <div class="col-lg-10">
+                            
+                            <select class="nostyle form-control resetIt" id="categoryid" name="active" style="width: 100%;">
+                                <option value="0">None</option>
+                                @foreach (var x in ViewBag.Category)
+                                {
+                                    <option value="@x.CATEGORY_ID">@x.CATEGORY_NAME</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    @*active*@
+                    <div class="form-group">
+                        <label class="col-lg-2" for="active">Sub Category</label>
+                        <div class="col-lg-10">
+                            <select class="nostyle form-control resetIt" id="subcategoryId" name="active" style="width: 100%;">
+                                
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2" for="active">Mobile No.</label>
+                        <div class="col-lg-10">
+                            <input class="form-control" id="mobile" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2" for="active">Title</label>
+                        <div class="col-lg-10">
+                            <input id="txttitle" class="form-control"  />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2" for="active">Content</label>
+                        <div class="col-lg-10">
+                            <textarea rows="10" class="form-control limit nostyle" id="txtContent" maxlength="3000"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2" for="active"></label>
+                        <div class="col-lg-10">
+                            <input id="chkEmailNotify" type="checkbox" /> Get Email Notification
+                        </div>
+                    </div>
+
+
+                    @*Buttons*@
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-9">
+                            <button type="button" id="btn-submit-mainform" class="btn btn-success btn-lg">Submit</button>
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#btn-submit-mainform').click(function (e) {
+            e.preventDefault();
+            var ticket = {};
+            ticket.StatusId = 1;
+            ticket.CategoryId = $('#categoryid').val();
+            ticket.SubCategoryId = $('#subcategoryId').val();
+            ticket.Mobile = $('#mobile').val();
+            ticket.Title = $('#txttitle').val();
+            ticket.ContentText = $('#txtContent').val();
+            if ($('#chkEmailNotify').is(":checked")) {
+                ticket.isNotifyByEmail = true;
+            }
+            else {
+                ticket.isNotifyByEmail = false;
+            }
+            
+            console.log(ticket);
+            var url = '@Url.Action("CreateNewComplain", "Complain")';
+            $.ajax({
+                type: "POST",
+                url: url,
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                async: true,
+                data: JSON.stringify({ ticket: ticket }),
+                success: function (result) {
+                    $('#form-search-employee').hide();
+                    $('#SuccessfulMsg').show();
+                },
+                error: function (request, status, error) {
+                    alert("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                }
+            });
+
+
+            
+        });
+        $('#categoryid').change(function () {
+            var url = '@Url.Action("getSubCategory","Complain")';
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                async: true,
+                data: JSON.stringify({ categoryId: $(this).val() }),
+                success: function (result) {
+                    BindCombo(result, $("#subcategoryId"));
+                },
+                error: function (request, status, error) {
+                    alert("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                }
+            });
+        });
+        function BindCombo(result, combo) {
+            combo.empty().append('<option selected="selected"> None</option>');
+            $.each(result, function () {
+                combo.append($("<option></option>").val(this['SUB_CATEGORY_ID']).html(this['SUB_CATEGORY_NAME']));
+            });
+        }
+    });
+</script>

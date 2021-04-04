@@ -1,0 +1,598 @@
+﻿<style>
+    .br-row-style {
+        background-color: #d9edf7;
+    }
+
+    .br-sup-row-style {
+        background-color: #086A87;
+    }
+
+    .ac-row-style {
+        background-color: #8A4B08;
+    }
+
+    .ac-row-style {
+        background-color: #81BEF7;
+    }
+
+    .cm-row-style {
+        background-color: #A9BCF5;
+    }
+
+    .ms-row-style {
+        background-color: #86B404;
+    }
+    </style>
+
+
+<<h1>Create New Employee Position</h1>
+
+    <div class="row">
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>
+                    <span>Search Criteria</span>
+                </h4>
+             @*   <span id="pie-chart-loader" class="loader">
+                    <img src="../../assets/images/loaders/circular/059.gif" width="16" height="16" alt="" /></span>*@
+                <a href="#" class="minimize">Minimize</a>
+            </div>
+            <div class="panel-body">
+
+                <form class="form-horizontal" id="form-create-cm-position" action="~/Dashboard/CreateNewEmployeePosition">
+
+                    @*distributionhouseid*@
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label" for="distributionhouseid">Distribution House</label>
+                        <div class="col-lg-9">
+                            <select class="nostyle form-control resetIt" id="distributionhouseid" name="distributionhouseid" style="width: 100%;">
+                                <option></option>
+                                @foreach (var house in ViewBag.Houses)
+                                {
+                                    <option value="@house.DistributionHouseId">@house.DistributionHouseName</option>
+                                }
+                                <option value="0">None</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    @*positiontypeid*@
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label" for="positiontypeid">Position Type</label>
+                        <div class="col-lg-9">
+                            <select class="nostyle form-control resetIt" id="positiontypeid" name="positiontypeid" style="width: 100%;">
+                                <option></option>
+                                @foreach (var type in ViewBag.PositionTypes)
+                                {
+                                    <option value="@type.EmployeeTypeId">@type.EmployeeTypeName</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    @*startingposition*@
+@*                    <div class="form-group">
+                        <label class="col-lg-3 control-label" for="startingposition">Starting Position No.</label>
+                        <div class="col-lg-9">
+                            <input class="form-control nostyle" id="startingposition" name="startingposition" type="text"/>
+                        </div>
+                    </div>*@
+
+                    @*endingposition*@
+     @*               <div class="form-group">
+                        <label class="col-lg-3 control-label" for="endingposition">Ending Position No.</label>
+                        <div class="col-lg-9">
+                            <input class="form-control nostyle" id="endingposition" name="endingposition" type="text" />
+                        </div>
+                    </div>*@
+
+                    @*positionquantity*@
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label" for="positionquantity">Position Quantity.</label>
+                        <div class="col-lg-9">
+                            <input class="form-control nostyle" id="positionquantity" name="positionquantity" type="text" />
+                        </div>
+                    </div>
+
+                    @*Buttons*@
+                    <div class="form-group">
+                        <div class="col-lg-offset-3 col-lg-9">
+                            <button type="submit" id="btn-submit-mainform" class="btn btn-success btn-lg">Save changes</button>
+                            <button type="button" id="btn-reset-mainform" class="btn btn-info btn-lg">Reset</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+        <div class="col-lg-6">
+        <div class="panel panel-default" id="existing-data" style="display:none;">
+            <div class="panel-heading">
+                <h4>
+                    <span>Existing Data</span>
+                </h4>
+                <span id="existing-data-loader" class="loader">
+                    <img src="../../assets/images/loaders/circular/059.gif" width="16" height="16" alt="" /></span>
+                <a href="#" class="minimize">Minimize</a>
+            </div>
+            <div class="panel-body noPad">
+                <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Position Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+                
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+    
+
+
+<!-- Modal Can not delete -->
+<div class="modal fade" id="modal-can-not-delete" tabindex="-1" role="dialog" aria-labelledby="can-not-delete-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="can-not-delete-label">Delete Position</h4>
+      </div>
+      <div class="modal-body">
+      This position is already occupied by a person. Please remove that person from <a class="handle-link" href="~/Dashboard/AssignEmployeePosition">here</a>.  Then try again.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        @*<button type="button" class="btn btn-primary">Save changes</button>*@
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<!-- Modal confirm delete -->
+<div class="modal fade" id="delete-confirmation-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Delete Position</h4>
+      </div>
+      <div class="modal-body">
+          <input type="hidden" id="modal-position-id" value="" />
+        Are you sure you want to delete <strong id="modal-position-name"></strong> position  ? 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-warning" id="btn-delete-position">Yes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<!-- Modal Update -->
+<div class="modal fade" id="update-modal" tabindex="-1" role="dialog" aria-labelledby="update-modal-title" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="update-modal-title">Update Position</h4>
+      </div>
+      <div class="modal-body">
+          <h4>Position Name</h4>
+          <input type="hidden" id="update-modal-position-id" value="" />
+          <input class="form-control nostyle" type="text" id="update-modal-position-name" value="" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success" id="btn-update-position">Update</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+    <!-- Select2 plugin -->
+    <script>
+        $(document).ready(function () {
+            $('#distributionhouseid').select2({ placeholder: "Select a house." });
+            $('#positiontypeid').select2({ placeholder: "Select a position." });
+        });
+    </script>
+
+    <!-- Validation -->
+    <script type="text/javascript">
+        // document ready function
+        $(document).ready(function () {
+
+            $('a.handle-link').click(function (e) {
+                e.preventDefault();
+
+                var currentLink = $(this).attr('href');
+                $.ajax({
+                    url: currentLink,
+                    async: true,
+                    beforeSend: function () {
+                        $('div.sidenav').block({ message: '<img src="../../Assets/images/loaders/circular/001.gif" />' });
+                        $('.panel-body div').removeClass('scroll');
+                        $("#PartialContent").fadeOut("slow");
+                        $("#PartialContent").empty();
+
+                    },
+                    success: function (data) {
+                        $('#PartialContent').html(data);
+                        $("#PartialContent").fadeIn("slow");
+                    },
+                    error: function (request, status, error) {
+                        alert("Error-  Request: " + request + ", Status: " + status + ", Error: " + error);
+                    },
+                    complete: function () {
+                        $('div.sidenav').unblock();
+                    }
+                });
+            });
+
+
+            $('#btn-update-position').click(function () {
+                var position_id_to_update = $('#update-modal-position-id').val();
+                var position_name_to_update = $('#update-modal-position-name').val();
+                var distributionhouseid  = $('#distributionhouseid').val();
+                var urlData = '@Url.Action("UpdatePositionName", "Dashboard")';
+
+                if (position_name_to_update=='') {
+                    AlertNotification("Alert", "Please enter position name."); $('#update-modal-position-name').focus(); return;
+                }
+
+                $.ajax({
+                    type: "POST", url: urlData,
+                    contentType: "application/json; charset=utf-8",
+
+                    data: "{'positionid':'" + position_id_to_update + "','positionname':'" + position_name_to_update + "','distributionhouseid':'" + distributionhouseid + "'}",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result == 'Success') {
+                            LoadPositionData();
+                            SuccessNotification("Position updated successfully.");
+                            $('#update-modal').modal('hide')
+                        }
+                        else {
+                            ErrorNotification("Position already exists. Please try another name.");
+                        }
+                    },
+                    error: function (request, status, error) {
+                        alert("Failed to execute. Error Details-  Request: " + request + " Status: " + status + " Error: " + error);
+                    }
+                });
+             });
+
+            ///===============
+
+            $('#btn-delete-position').click(function () {
+                var position_id_to_delete = $('#modal-position-id').val();
+
+                //DeleteCmPosition
+                var urlData = '@Url.Action("DeleteCmPosition", "Dashboard")';
+
+                $.ajax({
+                    type: "POST", url: urlData,
+                    contentType: "application/json; charset=utf-8",
+
+                    data: "{'positionid':'" + position_id_to_delete + "'}",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result == 'Success') {
+                            LoadPositionData();
+                            SuccessNotification("Position deleted successfully.");
+                            $('#delete-confirmation-modal').modal('hide')
+                        }
+                        else {
+                            alert(result);
+                        }
+                    },
+                    error: function (request, status, error) {
+                        alert("Failed to delete. Error Details-  Request: " + request + " Status: " + status + " Error: " + error);
+                    }
+                });
+            });
+
+            $("input, textarea, select").not('.nostyle').uniform();
+
+            $('#positiontypeid').change(function () {
+                var selectedVal = $('#positiontypeid option:selected').attr('value');
+
+                if (selectedVal==0) {
+                    $('table tbody tr').each(function () {
+
+                        $(this).show();
+
+                    });
+                }
+                else {
+                    $('table tbody tr').each(function () {
+
+                        var typeid = $(this).find('.PositionTypeId').val();
+                        if (typeid == selectedVal) {
+                            $(this).show();
+                        }
+                        else {
+                            $(this).hide();
+                        }
+
+                    });
+                }
+
+
+            });
+
+            //hosue change event
+            $('#distributionhouseid').change(function () {
+
+                $('#existing-data').show();
+                var selectedVal = $('#distributionhouseid option:selected').attr('value');
+
+                //Get DistributionHouseSpecificPositions
+                var urlData = '@Url.Action("DistributionHouseSpecificPositions", "Dashboard")';
+
+                $.ajax({
+                    type: "POST", url: urlData,
+                    contentType: "application/json; charset=utf-8",
+
+                    data: "{'houseid':'" + selectedVal + "'}",
+                    dataType: "json",
+                    success: function (result) {
+                        var tbody = $('tbody');
+                        tbody.empty();
+                       
+                        $.each(result, function () {
+                            var currentPositionTypeId = this.PositionTypeId;
+                            var currentEmployeeId = this.EmployeeId;
+
+                            if (currentEmployeeId == 0) {
+                                tbody.append('<tr><td><span class="PositionName">' + this.PositionName + '</span><input type ="hidden" class="PositionId" value="' + this.PositionId + '" /><input type ="hidden" class="PositionTypeId" value="' + this.PositionTypeId + '" /></td><td><button class="btn btn-info edit-position">Edit</button> <button class="btn btn-success delete-position">Delete</button></td></tr>');
+                            }
+                            else {
+                                tbody.append('<tr><td><span class="PositionName">' + this.PositionName + '</span><input type ="hidden" class="PositionId" value="' + this.PositionId + '" /><input type ="hidden" class="PositionTypeId" value="' + this.PositionTypeId + '" /></td><td><button class="btn btn-info edit-position">Edit</button> <button class="btn btn-danger delete-position">Delete</button></td></tr>');
+                            }
+
+                        });
+
+                        $('.edit-position').click(function () {
+                            var currentTr = $(this).closest('tr');
+                            var positionId = currentTr.find('.PositionId').val();
+                            $('#update-modal-position-id').val(positionId);
+                            var positionName = $(currentTr).find('.PositionName').html();
+                            $('#update-modal-position-name').val(positionName);
+
+                            $('#update-modal').modal({
+                                keyboard: true,
+                                backdrop: false
+                            });
+                        });
+
+                        $('.delete-position').click(function () {
+                            if ($(this).hasClass('btn-danger')) {
+                               
+                                $('#modal-can-not-delete').modal({
+                                    keyboard: true,
+                                    backdrop: false
+                                });
+                            }
+                            else { //sure to delete
+                                var currentTr = $(this).closest('tr');
+                                var positionId = currentTr.find('.PositionId').val();
+                               
+                                $('#modal-position-id').val(positionId);
+
+                                var PositionName = $(currentTr).find('.PositionName').html();
+                                $('#modal-position-name').html(PositionName);
+
+                                $('#delete-confirmation-modal').modal({
+                                    keyboard: true,
+                                    backdrop: false
+                                });
+                            }
+                          
+                        });
+
+                        $('#existing-data-loader').hide();
+                    },
+                    error: function (request, status, error) {
+                        alert("Failed to load list. Error Details-  Request: " + request + " Status: " + status + " Error: " + error);
+                    }
+                });
+                //Get DistributionHouseSpecificPositions
+            });
+            //<-- house chnge event
+
+
+            //form validation
+            var form = $('#form-create-cm-position');
+            form.validate({
+                submitHandler: function () {
+                    SubmitThisForm(form);
+                },
+                ignore: null,
+                rules: {
+                    //startingposition: { required: true, number: true },
+                    //endingposition: { required: true, number: true },
+                    distributionhouseid: { required: true },
+                    positiontypeid: { required: true },
+                    positionquantity:{required: true, number:true}
+                },
+                messages: {
+                    //startingposition: { required: "Please enter position no.", number: "It must be numeric." },
+                    //endingposition: { required: "Please enter position no.", number: "It must be numeric." },
+                    distributionhouseid: { required: "select a distribution house." },
+                    positiontypeid: { required: "select position type." },
+                    positionquantity:{required: "enter quantity.", number:"must be numeric"}
+
+                }
+                //invalidHandler: function (event, validator) {
+                //    // 'this' refers to the form
+                //    var errors = validator.numberOfInvalids();
+                //    if (errors) {
+                //        alert(errors);
+                //    } else {
+
+                //    }
+                //}
+            });
+
+
+            //Main Form Submit Handler
+            function SubmitThisForm(MainForm) {
+
+                var SubmitURL = MainForm.attr('action');
+               
+                var FormData = MainForm.serialize();
+                var typeName = $('#positiontypeid option:selected').text();
+
+
+                //&positionquantity=5
+                FormData = FormData + '&typename=' + typeName;
+ 
+                $.ajax({
+                    type: "POST",
+                    url: SubmitURL,
+                    async: true,
+                    //If datatype is of 'FormCollection', following 3 lines are not needed-
+                    //====================================================
+                    //contentType: "application/json; charset=utf-8",
+                    //data: "{'agentdata':'"+ agentdata +"'}",
+                    //dataType: 'json',
+                    //====================================================
+                    data: FormData,
+                    beforeSend: function () {
+                        $(MainForm).find('.btn').attr('disabled', 'disabled');
+                        $(MainForm).find('#btn-submit-mainform').html('Working...');
+                    },
+                    success: function (result) {
+                        if (result == 'Success') {
+                            SuccessNotification('Position/s successfully created.');
+                            LoadPositionData();
+                        }
+                        else {
+                            ShowRegularError(result);
+                            //alert("Failed to save. " + result);
+                        }
+                    },
+                    error: function (request, status, error) {
+                        ShowRegularError("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                        //alert("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                    },
+                    complete: function () {
+                        $(MainForm).find('.btn').removeAttr("disabled");
+                        $(MainForm).find('#btn-submit-mainform').html('Save changes');
+
+                    }
+                });
+                return false;
+            }
+
+            function LoadPositionData() {
+                $('#existing-data-loader').show();
+
+                //var selectedVal = $('#distributionhouseid option:selected').attr('value');
+                var selectedVal = $('#distributionhouseid').val();
+
+
+                //Get DistributionHouseSpecificPositions
+                var urlData = '@Url.Action("DistributionHouseSpecificPositions", "Dashboard")';
+
+                $.ajax({
+                    type: "POST", url: urlData,
+                    contentType: "application/json; charset=utf-8",
+
+                    data: "{'houseid':'" + selectedVal + "'}",
+                    dataType: "json",
+                    success: function (result) {
+
+                      //  ResetMainForm(MainForm);
+
+                        var tbody = $('tbody');
+                        tbody.empty();
+
+                        $.each(result, function () {
+                            //PositionId, PositionName, PositionTypeId, EmployeeId
+
+                            var currentPositionTypeId = this.PositionTypeId;
+                            var currentEmployeeId = this.EmployeeId;
+
+                            if (currentEmployeeId == 0) {
+                                tbody.append('<tr><td><span class="PositionName">' + this.PositionName + '</span><input type ="hidden" class="PositionId" value="' + this.PositionId + '" /><input type ="hidden" class="PositionTypeId" value="' + this.PositionTypeId + '" /></td><td><button class="btn btn-info edit-position">Edit</button> <button class="btn btn-success delete-position">Delete</button></td></tr>');
+                            }
+                            else {
+                                tbody.append('<tr><td><span class="PositionName">' + this.PositionName + '</span><input type ="hidden" class="PositionId" value="' + this.PositionId + '" /><input type ="hidden" class="PositionTypeId" value="' + this.PositionTypeId + '" /></td><td><button class="btn btn-info edit-position">Edit</button> <button class="btn btn-danger delete-position">Delete</button></td></tr>');
+                            }
+
+                        });
+
+                        $('.edit-position').click(function () {
+                            var currentTr = $(this).closest('tr');
+                            var positionId = currentTr.find('.PositionId').val();
+                            $('#update-modal-position-id').val(positionId);
+                            var positionName = $(currentTr).find('.PositionName').html();
+                            $('#update-modal-position-name').val(positionName);
+
+                            $('#update-modal').modal({
+                                keyboard: true,
+                                backdrop: false
+                            });
+                        });
+
+                        $('.delete-position').click(function () {
+                            if ($(this).hasClass('btn-danger')) {
+
+                                $('#modal-can-not-delete').modal({
+                                    keyboard: true,
+                                    backdrop: false
+                                });
+                            }
+                            else { //sure to delete
+                                var currentTr = $(this).closest('tr');
+                                var positionId = currentTr.find('.PositionId').val();
+
+                                $('#modal-position-id').val(positionId);
+
+                                var PositionName = $(currentTr).find('.PositionName').html();
+                                $('#modal-position-name').html(PositionName);
+
+                                $('#delete-confirmation-modal').modal({
+                                    keyboard: true,
+                                    backdrop: false
+                                });
+                            }
+
+                        });
+
+                        $('#existing-data-loader').hide();
+                    },
+                    error: function (request, status, error) {
+                        alert("Failed to load list. Error Details-  Request: " + request + " Status: " + status + " Error: " + error);
+                    }
+                });
+                //Get DistributionHouseSpecificPositions
+
+
+            }
+
+
+        });
+        </script>
+
+
+

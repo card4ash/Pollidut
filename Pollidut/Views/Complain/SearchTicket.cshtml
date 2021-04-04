@@ -1,0 +1,179 @@
+﻿
+
+
+<div class="row" id="SearchPanel">
+    <div class="col-lg-12">
+        <div class="panel panel-default" id="existing-data">
+            <div class="row" id="search-criteria-class">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>
+                                <span>Search Complain</span>
+                            </h4>
+                            @*   <span id="pie-chart-loader" class="loader">
+                        <img src="../../assets/images/loaders/circular/059.gif" width="16" height="16" alt="" /></span>*@
+                            <a href="#" class="minimize">Minimize</a>
+                        </div>
+                        <div class="panel-body">
+
+                            <form class="form-horizontal" id="form-search-employee" action="~/Complain/CreateNewComplain">
+
+                                <div class="form-group">
+                                    <label class="col-lg-2 " for="complainstatus">Status</label>
+                                    <div class="col-lg-10">
+                                        <select class="nostyle form-control resetIt" id="active" name="active" style="width: 100%;">
+                                            <option value="0">All</option>
+                                            @foreach (var x in ViewBag.TicketStatus)
+                                            {
+                                                <option value="@x.StatusId">@x.StatusName</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                @*active*@
+                                <div class="form-group">
+                                    <label class="col-lg-2" for="active">Catagory</label>
+                                    <div class="col-lg-10">
+                                        <select class="nostyle form-control resetIt" id="categoryid" name="active" style="width: 100%;">
+                                            <option value="0">None</option>
+                                            @foreach (var x in ViewBag.Category)
+                                            {
+                                                <option value="@x.CATEGORY_ID">@x.CATEGORY_NAME</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                @*active*@
+                                <div class="form-group">
+                                    <label class="col-lg-2" for="active">Sub Catagory</label>
+                                    <div class="col-lg-10">
+                                        <select class="nostyle form-control resetIt" id="subcategoryId" name="active" style="width: 100%;"></select>
+                                    </div>
+                                </div>
+
+
+
+                                @*Buttons*@
+                                <div class="form-group">
+                                    <div class="col-lg-offset-2 col-lg-9">
+                                        <button type="button" id="btn-submit-mainform" class="btn btn-success btn-lg">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body noPad" id="SearchResultMainDiv" style="display:none;">
+                <table id="searchIndent" class="table table-hover searchIndent" style="display:table;">
+                    <thead>
+                        <tr>
+                            <th>Ticket</th>
+                            <th>Status</th>
+                            <th>Duration</th>
+                            <th>Total Reply</th>
+                            <th>Last Reply From</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="searchResult">
+                       
+                       
+                    </tbody>
+
+
+
+                </table>
+
+            </div>
+
+
+
+        </div>
+    </div>
+
+</div>
+<script>
+    function BindCombo(result, combo) {
+        combo.empty().append('<option selected="selected"> None</option>');
+        $.each(result, function () {
+            combo.append($("<option></option>").val(this['SUB_CATEGORY_ID']).html(this['SUB_CATEGORY_NAME']));
+        });
+    }
+    $(function () {
+        $('#categoryid').change(function () {
+            var url = '@Url.Action("getSubCategory","Complain")';
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                async: true,
+                data: JSON.stringify({ categoryId: $(this).val() }),
+                success: function (result) {
+                    BindCombo(result, $("#subcategoryId"));
+                },
+                error: function (request, status, error) {
+                    alert("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(function () {
+        $('#btn-submit-mainform').click(function () {
+            var url = '@Url.Action("getTickets", "Complain")';
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                async: true,
+                data: JSON.stringify({ statusId: 0,CategoryId:0,SubCategoryId:0 }),
+                success: function (result) {
+                    $('#SearchResultMainDiv').show();
+                    $('#searchResult').empty();
+                    $.each(result, function () {
+                        $('#searchResult').append('<tr><td>' + this.TicketId + '</td><td>' + this.Status + '</td><td>' + this.Duration + '</td><td>' + this.TotalConversation + '</td><td>' + this.LastRepliedFrom + '</td><td><input type="button" class="btn btn-primary btnTicketDetail" value="Open Ticket" /></td></tr>')
+                    });
+                },
+                error: function (request, status, error) {
+                    alert("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                }
+            });
+            $('#SearchResultMainDiv').show();
+        });
+        $('#SearchResultMainDiv').on('click', '.btnTicketDetail', function () {
+            var currentLink = '/Complain/TicketDetails?ticketId=12';
+            $.ajax({
+                url: currentLink,
+                async: true,
+                beforeSend: function () {
+                    $('div.sidenav').block({ message: '<img src="../../Assets/images/loaders/circular/001.gif" />' });
+                    $('.panel-body div').removeClass('scroll');
+                    $("#PartialContent").fadeOut("slow").empty();
+
+                },
+                success: function (data) {
+                    $('#PartialContent').hide().html(data).fadeIn("slow");
+                },
+                error: function (request, status, error) {
+                    alert("Error-  Request: " + request + ", Status: " + status + ", Error: " + error);
+                },
+                complete: function () {
+                    $('div.sidenav').unblock();
+                }
+            });
+        });
+    });
+</script>

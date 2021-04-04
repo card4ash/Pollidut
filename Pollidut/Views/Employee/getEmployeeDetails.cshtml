@@ -1,0 +1,1145 @@
+﻿@model Pollidut.Models.OnlineUsersModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@ViewBag.DashboardTitle</title>
+    <meta name="author" content="SuggeElson" />
+    <meta name="description" content="Admin Panel" />
+    <meta name="keywords" content="OK Mobile Banking Admin Panel" />
+    <meta name="application-name" content="Supr admin template" />
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Force IE9 to render in normal mode -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Headings -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css' />
+    <!-- Text -->
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css' />
+    <!-- Core stylesheets do not remove -->
+    <link id="bootstrap" href="~/assets/css/bootstrap/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="~/Assets/css/bootstrap/bootstrap-theme.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/css/supr-theme/jquery.ui.supr.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/css/icons.css" rel="stylesheet" type="text/css" />
+
+    <!-- Plugins stylesheets -->
+    <link href="../assets/plugins/misc/qtip/jquery.qtip.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/plugins/misc/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/plugins/misc/search/tipuesearch.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/forms/uniform/uniform.default.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/gallery/jpages/jPages.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/plugins/gallery/pretty-photo/prettyPhoto.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/misc/pnotify/jquery.pnotify.default.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/forms/togglebutton/toggle-buttons.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/misc/jqueryFileTree/jqueryFileTree.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/tables/dataTables/jquery.dataTables.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/forms/inputlimiter/jquery.inputlimiter.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/forms/color-picker/color-picker.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/forms/select/select2.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/forms/validate/validate.css" type="text/css" rel="stylesheet" />
+    <link href="../assets/plugins/forms/smartWizzard/smart_wizard.css" type="text/css" rel="stylesheet" />
+    <link href="~/assets/css/font-awesome-4.0.3/css/font-awesome.css" rel="stylesheet" />
+
+
+
+    <!-- Main stylesheets -->
+    <link href="../assets/css/main.css" rel="stylesheet" type="text/css" />
+
+    <!-- Custom stylesheets ( Put your own changes here ) -->
+    <link href="../assets/css/custom.css" rel="stylesheet" type="text/css" />
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="../assets/images/favicon.ico" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/apple-touch-icon-144-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/apple-touch-icon-114-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/apple-touch-icon-72-precomposed.png" />
+    <link rel="apple-touch-icon-precomposed" href="images/apple-touch-icon-57-precomposed.png" />
+
+    <!-- Windows8 touch icon ( http://www.buildmypinnedsite.com/ )-->
+    <meta name="application-name" content="Supr" />
+    <meta name="msapplication-TileColor" content="#3399cc" />
+
+    <!-- Load modernizr first -->
+    <script type="text/javascript" src="../assets/js/libs/modernizr.js"></script>
+
+
+    <style>
+        .input-group {
+            width: 100%;
+            padding: 0px;
+            border-bottom: 5px;
+        }
+
+        .input-group-addon {
+            width: 180px;
+            min-width: 150px;
+            padding: 0px;
+        }
+
+        .input-group-sm {
+            width: 100%;
+        }
+        .image-upload > input
+        {
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- loading animation -->
+    <div id="qLoverlay"></div>
+    <div id="qLbar"></div>
+
+    <div id="header">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#"><span class="slogan">@ViewBag.DashboardTitle</span></a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon16 icomoon-icon-arrow-4"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="#"><span class="icon16 icomoon-icon-screen-2"></span> <span class="txt">Dashboard</span> </a>
+                    </li>
+
+                </ul>
+
+                <ul class="nav navbar-right usernav">
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle avatar" data-toggle="dropdown">
+                            <img src="../assets/images/avatar.jpg" alt="" class="image" />
+                            <span class="txt">@ViewBag.LoginName</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="menu">
+                                <ul>
+                                    <li><a href="#"><span class="icon16 icomoon-icon-user-plus"></span>Profile</a></li>
+                                    <li><a href="~/Common/ChangePassword?userid=@ViewBag.UserId" class="handle-link"><span class="icon16 icomoon-icon-bubble-2"></span>Change Pass</a></li>
+
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="/Login?mode=logout"><span class="icon16 icomoon-icon-exit"></span><span class="txt"> Logout</span></a></li>
+                </ul>
+            </div><!-- /.nav-collapse -->
+        </nav><!-- /navbar -->
+
+    </div><!-- End #header -->
+
+    <div id="wrapper">
+
+        <!--Responsive navigation button-->
+        <div class="resBtn">
+            <a href="#"><span class="icon16 minia-icon-list-3"></span></a>
+        </div>
+
+        <!--Left Sidebar collapse button-->
+        <div class="collapseBtn leftbar">
+            <a href="#" class="tipR" title="Hide Left Sidebar"><span class="icon12 minia-icon-layout"></span></a>
+        </div>
+
+        <!--Sidebar background-->
+        <div id="sidebarbg"></div>
+
+        <!--Start Sidebar Content-->
+        <div id="sidebar">
+
+            <div class="shortcuts">
+                <ul>
+                    <li><a href="#" title="Help" class="tip"><span class="icon24 icomoon-icon-support"></span></a></li>
+                    <li><a href="#" title="Data Backup" class="tip"><span class="icon24 icomoon-icon-database"></span></a></li>
+                    <li><a href="~/Statistics/statistics.html" title="Statistics" class="tip" target="_blank"><span class="icon24 icomoon-icon-pie-2"></span></a></li>
+                    <li><a href="#" title="Contact Webadmin" class="tip"><span class="icon24 icomoon-icon-pencil"></span></a></li>
+                </ul>
+            </div><!-- End search -->
+
+            <!-- End sidenav -->
+            <div class="sidenav">
+
+                <div class="sidebar-widget" style="margin: -1px 0 0 0;">
+                    <h5 class="title" style="margin-bottom:0">Navigation</h5>
+                </div><!-- End .sidenav-widget -->
+
+                <div class="mainnav">
+                    <ul>
+
+                        <!-- Admin only content- chart, graph etc. menu -->
+                        @{
+                            String userType = ViewBag.UserTypeName;
+                        }
+
+
+                        @*Complain Menus*@
+                        <li>
+                            <a href="#"><span class="icon16 icomoon-icon-users"></span>Complain</a>
+                            <ul class="sub">
+                                @{
+
+                                    switch (userType)
+                                    {
+                                        case "webadmin":
+                                        case "superadmin":
+                                        case "PollidutSupervisor":
+
+                                            <text>
+                                                <li><a href="~/Complain/CreateTicket"><span class="icon16 icomoon-icon-user-plus-2"></span>Create Complain Ticket</a></li>
+                                                <li><a href="~/Complain/SearchTicket"><span class="icon16 icomoon-icon-search-3"></span>Search Ticket</a></li>
+
+
+                                            </text>
+                                            break;
+
+                                        default:
+                                        <text></text>
+                                            break;
+                                    }
+                                }
+
+                            </ul>
+                        </li>
+                        @*Employee Menus //MyWorks begins from here*@
+                        <li>
+                            <a href="#"><span class="icon16 icomoon-icon-users"></span>Employee</a>
+                            <ul class="sub">
+                                @{
+
+                                    switch (userType)
+                                    {
+                                        case "webadmin":
+                                        case "superadmin":
+                                        case "PollidutSupervisor":
+                                            <text>
+                                                <li><a href="~/Dashboard/CreatePD"><span class="icon16 icomoon-icon-user-plus-2"></span>Create New</a></li>
+                                                <li><a href="~/Dashboard/EditEmployee"><span class="icon16 icomoon-icon-search-3"></span>Search Employee</a></li>
+                                                <li><a href="~/Employee/AssignEmployeeToParent"><span class="icon16 icomoon-icon-vcard"></span>Supervisor Assignment</a></li>
+                                            </text>
+                                            break;
+                                        default:
+                                        <text></text>
+                                            break;
+                                    }
+                                }
+
+                            </ul>
+                        </li>
+                        @*User management*@
+                        <li>
+                            <a href="#"><span class="icon16 icomoon-icon-user-3"></span>User Management</a>
+                            <ul class="sub">
+                                @{
+                                    switch (userType)
+                                    {
+                                        case "webadmin":
+                                        case "superadmin":
+                                        case "PollidutSupervisor":
+
+                                            <text>
+                                                <li><a href="~/Dashboard/ManageUser"><span class="icon16 icomoon-icon-user-plus-3"></span>Create User</a></li>
+                                            </text>
+                                            break;
+
+                                        default:
+                                        <text></text>
+                                            break;
+                                    }
+                                }
+
+                            </ul>
+                        </li>
+                        @*====================================================================================*@
+
+
+                        @*Employee Menus //MyWorks begins from here*@
+                        <li>
+                            <a href="#"><span class="icon16 icomoon-icon-file"></span>Indent Manage</a>
+                            <ul class="sub">
+                                @{
+
+                                    switch (userType)
+                                    {
+                                        case "webadmin":
+                                        case "superadmin":
+                                        case "PollidutSupervisor":
+
+                                            <text>
+                                                <li><a href="~/IndentForm/OrderForm"><span class="icon16 icomoon-icon-file-7"></span>Order Form</a></li>
+                                                <li><a href="~/IndentForm/SearchForm"><span class="icon16 icomoon-icon-search-3"></span>Search Form</a></li>
+                                                <li><a href="~/IndentForm/Summary"><span class="icon16  icomoon-icon-support"></span>Summary</a></li>
+                                            </text>
+                                            break;
+
+                                        default:
+                                        <text></text>
+                                            break;
+                                    }
+                                }
+
+                            </ul>
+                        </li>
+                        <li><a href="~/Dashboard/ReportPosition"><span class="icon16 icomoon-icon-globe-2"></span>Report Position </a></li>
+
+                    </ul>
+                </div>
+            </div>
+
+
+            
+        </div>
+        <!-- End Sidebar Content -->
+        <!--Body content-->
+        <div id="content" class="clearfix">
+            <div class="contentwrapper">
+
+                <!-- Start Heading -->
+                <div class="heading">
+                    <h3>Welcome, <span class="txt">@ViewBag.FullName</span>  </h3>
+                    <div class="resBtnSearch">
+                        <a href="#"><span class="icon16 icomoon-icon-search-3"></span></a>
+                    </div>
+
+                    <ul class="breadcrumb">
+                        <li>You are here:</li>
+                        <li>
+                            <a href="#" class="tip" title="back to dashboard">
+                                <span class="icon16 icomoon-icon-screen-2"></span>
+                            </a>
+                            <span class="divider">
+                                <span class="icon16 icomoon-icon-arrow-right-3"></span>
+                            </span>
+                        </li>
+                        <li class="active">Dashboard</li>
+                    </ul>
+                </div>
+                <!-- End .heading-->
+                <!--Start Build page from here: -->
+
+
+
+                <div id="PartialContent">
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-default">
+
+                                <div class="panel-heading">
+                                    <h4>
+                                        <span>Pallydut Details</span>
+                                    </h4>
+                                    
+
+                                </div>
+                                <form class="form-horizontal" id="form-create-employee" method="post" enctype="multipart/form-data" action="~/Employee/UpdatePD">
+                                    <div class="panel-body noPad">
+                                        <div class="row">
+                                            <div class="col-lg-12" style="text-align:right;">
+                                                <div class="image-upload">
+                                                    <label for="file-input">
+                                                        <img id="thumbnil" style="height:150px; margin-top:10px;" src="~/Photos/EmployeePhotos/@ViewBag.Employee.PERSON.PERSON_IMAGE" alt="image" />
+                                                    </label>
+
+                                                    <input id="file-input" type="file" onchange="showMyImage(this)" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <input type="hidden" id="employeeId" value="@ViewBag.Employee.EMPLOYEE_ID" />
+                                                    <input type="hidden" id="personId" value="@ViewBag.Employee.PERSON_ID" />
+                                                    <span class="input-group-addon">Employee Name</span>
+                                                    <input class="form-control nostyle" id="personname" name="personname" type="text" title="Employee Name." value="@ViewBag.Employee.PERSON.PERSON_NAME" />
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Employee Code</span>
+                                                    <input class="form-control nostyle" id="empcode" name="empcode" type="text" title="Employee Code." value="@ViewBag.Employee.EMPLOYEE_CODE" />
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                        </div><!-- /.row -->
+
+
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Father Name</span>
+                                                    <input class="form-control nostyle" id="fathername" name="fathername" type="text" title="Father Name." value="@ViewBag.Employee.PERSON.FATHERS_NAME" />
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Mother Name</span>
+                                                    <input class="form-control nostyle" id="mothername" name="mothername" type="text" title="Mother Name." value="@ViewBag.Employee.PERSON.MOTHERS_NAME" />
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                        </div><!-- /.row -->
+
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Mobile No.</span>
+                                                    <input class="form-control nostyle" id="mobileno" name="mobileno" type="text" title="Mobile No." value="@ViewBag.Employee.PERSON.MOBILE" />
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Educational Qualification</span>
+                                                    <input class="form-control nostyle" id="educationalqualification" name="educationalqualification" type="text" title="Educational Qualification." value="@ViewBag.Employee.PERSON.EDUCATIONAL_QUALIFICATION" />
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                        </div><!-- /.row -->
+
+
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Date Of Birth</span>
+                                                    <input class="form-control nostyle datepicker" id="dateofbirth" name="dateofbirth" type="text" title="Date Of Birth" value="@ViewBag.Employee.PERSON.DATE_OF_BIRTH.ToString("dd-MM-yyyy")" />
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">NID Number</span>
+                                                    <input class="form-control nostyle" id="nidno" name="nidno" type="text" title="NID Number" value="@ViewBag.Employee.PERSON.NID" />
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                        </div><!-- /.row -->
+
+
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Nationality</span>
+                                                    <input class="form-control nostyle " id="nationality" name="nationality" type="text" title="Nationality" value="@ViewBag.Employee.PERSON.NATIONALITY" />
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Religion</span>
+                                                    <select class="" id="religionid" name="religionid">
+
+                                                        @foreach (var type in ViewBag.Religions)
+                                                        {
+
+
+                                                            if (ViewBag.Employee.PERSON.RELIGION_ID == type.ReligionId)
+                                                            {
+                                                                <option selected="selected" value="@type.ReligionId">@type.ReligionName</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@type.ReligionId">@type.ReligionName</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                        </div><!-- /.row -->
+
+
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Present Address</span>
+                                                    <textarea id="presentaddress" name="presentaddress" rows="3" class="form-control limit nostyle">@ViewBag.Employee.PERSON.MAILING_ADDRESS</textarea>
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Permanent Address</span>
+                                                    <textarea id="permanentaddress" name="permanentaddress" rows="3" class="form-control limit nostyle">@ViewBag.Employee.PERSON.PERMANENT_ADDRESS</textarea>
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                        </div><!-- /.row -->
+
+
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Type/Desig</span>
+                                                    <select class="" id="employeetypeid" name="employeetypeid">
+                                                        <option></option>
+                                                        @foreach (var type in ViewBag.EmployeeTypes)
+                                                        {
+                                                            if (ViewBag.Employee.EMPLOYEE_TYPE_ID == type.EmployeeTypeId)
+                                                            {
+                                                                <option selected value="@type.EmployeeTypeId">@type.EmployeeTypeName</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@type.EmployeeTypeId">@type.EmployeeTypeName</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Joining Date</span>
+                                                    <input class="form-control nostyle datepicker" id="joinDate" name="joinDate" type="text" title="Joining Date" value="@ViewBag.Employee.JOINING_DATE.ToString("dd-MM-yyyy")" />
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                        </div><!-- /.row -->
+
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Minimum Investment.</span>
+                                                    <input class="form-control nostyle" id="minimumInvestment" name="minimumInvestment" type="text" title="Minimum Investment." value="@ViewBag.Employee.MINIMUM_INVESTMENT" />
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Other Financial Activity</span>
+                                                    <input class="form-control nostyle" id="otherFinace" name="otherFinace" type="text" title="Other Financial Activity" value="@ViewBag.Employee.OTHER_FINANCIAL" />
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                        </div><!-- /.row -->
+
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Distribution House</span>
+
+                                                    <div class="input-group divDistribution" id="divDistribution">
+                                                        <select class="nostyle  distributionhouseid" style="width: 100%;" name="distributionhouseid">
+                                                            <option></option>
+                                                            @foreach (var house in ViewBag.Houses)
+                                                            {
+                                                                <option value="@house.DistributionHouseId">@house.DistributionHouseName</option>
+                                                                if (ViewBag.Employee.DISTRIBUTION_HOUSE_ID == Convert.ToInt32(house.DistributionHouseId))
+                                                                {
+                                                                    <option selected="selected" value="@house.DistributionHouseId">@house.DistributionHouseName</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@house.DistributionHouseId">@house.DistributionHouseName</option>
+                                                                }
+                                                            }
+                                                            <option value="0">None</option>
+                                                        </select>
+                                                    </div><!-- /input-group -->
+
+                                                </div>
+                                            </div>
+
+                                        </div><!-- /.row -->
+                                    </div>
+                                    <div class="panel-heading">
+                                        <h4>
+                                            <span>Pallydut Family Details</span>
+                                        </h4>
+
+                                    </div>
+
+                                    <div class="panel-body noPad">
+
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Relationship Status</span>
+                                                    <select class="nostyle  relationship" id="relationship" style="width: 100%;" name="relationship">
+                                                        <option></option>
+                                                        @foreach (var relation in ViewBag.RelationShip)
+                                                        {
+                                                            if (ViewBag.Employee.PERSON.MARITAL_STATUS_ID == relation.MaritalStatusId)
+                                                            {
+                                                                <option selected="selected" value="@relation.MaritalStatusId">@relation.MaritalStatusName</option>
+                                                            }
+                                                            else
+                                                            {
+                                                                <option value="@relation.MaritalStatusId">@relation.MaritalStatusName</option>
+                                                            }
+                                                        }
+                                                        <option value="0">None</option>
+                                                    </select>
+
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Family Member No.</span>
+                                                    <input class="form-control nostyle memberno" id="memberno" name="memberno" type="text" title="Employee Code." value="@ViewBag.Employee.PERSON.FAMILY_MEMBER_NO" />
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                        </div><!-- /.row -->
+
+
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Male Member No.</span>
+                                                    <input class="form-control nostyle" id="malemember" name="malemember" type="text" title="Male member No." value="@ViewBag.Employee.PERSON.MALE_NO" />
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Female Member No.</span>
+                                                    <input class="form-control nostyle" id="femalemember" name="femalemember" type="text" title="Female Member No." value="@ViewBag.Employee.PERSON.FEMALE_NO" />
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                        </div><!-- /.row -->
+
+                                        <table id="pdFamilydetails" class="table table-hover pdFamilydetails" style="display:table;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Member Name</th>
+                                                    <th>Relation</th>
+                                                    <th>Age</th>
+                                                    <th>Occupation</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in ViewBag.Employee.PERSON.PERSON_FAMILY)
+                                                {
+                                                    <tr class="familytr">
+                                                        <td><input class="personFamilyId" type="hidden" value="@item.FAMILY_ID" /><input type="text" class="form-control memberName" value="@item.MEMBER_NAME" /></td>
+                                                        <td><input type="text" class="form-control relation" value="@item.RELATION" /></td>
+                                                        <td><input type="text" class="form-control age" value="@item.AGE" /></td>
+                                                        <td><input type="text" class="form-control occupation" value="@item.OCCUPATION" /></td>
+                                                        <td><button type="button" class="removefamily btn btn-sm btn-default">Remove <i class="fa fa icon-minus-sign"></i> </button></td>
+                                                    </tr>
+                                                }
+                                                <tr>
+                                                    <td colspan="5" style="text-align:center">
+                                                        <button type="button" class="addfamily btn btn-sm btn-default">Add <i class="fa fa icon-plus-sign"></i> </button>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+
+                                        </table>
+
+
+
+
+                                    </div>
+
+
+
+
+
+
+                                    <div class="panel-heading">
+                                        <h4>
+                                            <span>Pallydut Working Details</span>
+                                        </h4>
+
+                                    </div>
+
+                                    <div class="panel-body noPad">
+                                        <table id="pdWorkdetails" class="table table-hover pdWorkdetails" style="display:table;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Work Area</th>
+                                                    <th>Union</th>
+                                                    <th>Thana</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in ViewBag.Employee.EMPLOYEE_WORK)
+                                                {
+                                                    <tr class="worktr">
+                                                        <td>
+                                                            <input class="workId" type="hidden" value="@item.WORK_ID" />
+                                                            <input type="text" class="form-control workarea" value="@item.WORK_AREA" />
+                                                        </td>
+                                                        <td><input type="text" class="form-control unionname" value="@item.UNION_NAME" /></td>
+                                                        <td><input type="text" class="form-control thana" value="@item.THANA_NAME" /></td>
+                                                        <td><button type="button" class="removework btn btn-sm btn-default">Remove <i class="fa fa icon-minus-sign"></i> </button></td>
+                                                    </tr>
+                                                }
+                                                <tr>
+                                                    <td colspan="4" style="text-align:center">
+                                                        <button type="button" class="addwork btn btn-sm btn-default">Add <i class="fa fa icon-plus-sign"></i> </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+
+                                        </table>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">PD Service Description</span>
+                                                    <textarea id="pdservice" name="pdservice" rows="3" class="form-control limit nostyle">@ViewBag.Employee.SERVICE_DESCRIPTION</textarea>
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                            <div class="col-lg-6">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">Previous PD Details</span>
+                                                    <textarea id="previouspd" name="previouspd" rows="3" class="form-control limit nostyle">@ViewBag.Employee.PREVIOUS_PD_DETAIL</textarea>
+                                                </div>
+                                            </div><!-- /.col-lg-6 -->
+                                        </div><!-- /.row -->
+
+
+
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="input-group" style="text-align:center;">
+                                                <button type="submit" id="btn-submit-mainform" class="btn btn-success btn-lg">Save changes</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Partial Content ends -->
+            </div>
+        </div><!-- End #content -->
+
+    </div><!-- End #wrapper -->
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Important plugins put in all pages -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="../assets/js/bootstrap/bootstrap.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="../assets/js/libs/jRespond.min.js"></script>
+
+
+    <!-- Misc plugins -->
+    <script type="text/javascript" src="../assets/plugins/misc/fullcalendar/fullcalendar.min.js"></script><!-- Calendar plugin -->
+    <script type="text/javascript" src="../assets/plugins/misc/qtip/jquery.qtip.min.js"></script><!-- Custom tooltip plugin -->
+    <script type="text/javascript" src="../assets/plugins/misc/totop/jquery.ui.totop.min.js"></script> <!-- Back to top plugin -->
+    <script type="text/javascript" src="~/Assets/plugins/misc/nicescroll/jquery.nicescroll.min.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.blockUI.js"></script> <!-- Block UI plugin -->
+    <script type="text/javascript" src="../assets/plugins/misc/pnotify/jquery.pnotify.min.js"></script>
+
+
+
+
+    <!-- Form plugins -->
+    <script type="text/javascript" src="../assets/plugins/forms/uniform/jquery.uniform.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/togglebutton/jquery.toggle.buttons.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/typeahead/typeahead.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/wizard/jquery.bbq.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/wizard/jquery.form.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/validate/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/wizard/jquery.form.wizard.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/elastic/jquery.elastic.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/inputlimiter/jquery.inputlimiter.1.3.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/maskedinput/jquery.maskedinput-1.3.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/globalize/globalize.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/color-picker/colorpicker.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/timeentry/jquery.timeentry.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/select/select2.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/dualselect/jquery.dualListBox-1.3.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/tiny_mce/tinymce.min.js"></script>
+    <script type="text/javascript" src="../assets/js/supr-theme/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript" src="../assets/js/supr-theme/jquery-ui-sliderAccess.js"></script>
+    <script src="~/assets/plugins/misc/imgpreview.full.jquery.js"></script>
+
+    <!-- Charts plugins -->
+    <script type="text/javascript" src="http://static.pureexample.com/js/flot/jquery.flot.min.js"></script>
+    <script type="text/javascript" src="http://static.pureexample.com/js/flot/jquery.flot.time.js"></script>
+    <script type="text/javascript" src="http://static.pureexample.com/js/flot/jquery.flot.axislabels.js"></script>
+
+    <script type="text/javascript" src="../assets/plugins/charts/flot/jquery.flot.tooltip_0.4.4.js"></script>
+    <script type="text/javascript" src="../assets/plugins/charts/flot/jquery.flot.orderBars.js"></script>
+    <script type="text/javascript" src="../assets/plugins/charts/sparkline/jquery.sparkline.min.js"></script><!-- Sparkline plugin -->
+    <script type="text/javascript" src="../assets/plugins/charts/knob/jquery.knob.js"></script><!-- Circular sliders and stats -->
+    <!-- Misc plugins -->
+    <script type="text/javascript" src="../assets/plugins/misc/fullcalendar/fullcalendar.min.js"></script><!-- Calendar plugin -->
+    <script type="text/javascript" src="../assets/plugins/misc/qtip/jquery.qtip.min.js"></script><!-- Custom tooltip plugin -->
+    <script type="text/javascript" src="../assets/plugins/misc/totop/jquery.ui.totop.min.js"></script> <!-- Back to top plugin -->
+    <script type="text/javascript" src="~/Assets/plugins/misc/nicescroll/jquery.nicescroll.min.js"></script>
+    <script type="text/javascript" src="../assets/js/jquery.blockUI.js"></script> <!-- Block UI plugin -->
+    <script type="text/javascript" src="../assets/plugins/misc/pnotify/jquery.pnotify.min.js"></script>
+
+    <!-- Gallery plugins -->
+    <script type="text/javascript" src="../assets/plugins/gallery/lazy-load/jquery.lazyload.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/gallery/jpages/jPages.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/gallery/pretty-photo/jquery.prettyPhoto.js"></script>
+
+    <!-- Search plugin -->
+    <script type="text/javascript" src="../assets/plugins/misc/search/tipuesearch_set.js"></script>
+    <script type="text/javascript" src="../assets/plugins/misc/search/tipuesearch_data.js"></script><!-- JSON for searched results -->
+    <script type="text/javascript" src="../assets/plugins/misc/search/tipuesearch.js"></script>
+
+    <!-- Datatable plugins -->
+    @*  <script src="~/assets/plugins/tables/dataTables/TableTools.min.js"></script>*@
+    <script src="~/assets/plugins/tables/dataTables/jquery.dataTables.min.js"></script>
+
+
+    <!-- Form plugins -->
+    <script type="text/javascript" src="../assets/plugins/forms/uniform/jquery.uniform.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/togglebutton/jquery.toggle.buttons.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/typeahead/typeahead.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/wizard/jquery.bbq.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/wizard/jquery.form.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/validate/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/wizard/jquery.form.wizard.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/elastic/jquery.elastic.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/inputlimiter/jquery.inputlimiter.1.3.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/maskedinput/jquery.maskedinput-1.3.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/globalize/globalize.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/color-picker/colorpicker.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/timeentry/jquery.timeentry.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/select/select2.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/dualselect/jquery.dualListBox-1.3.min.js"></script>
+    <script type="text/javascript" src="../assets/plugins/forms/tiny_mce/tinymce.min.js"></script>
+    <script type="text/javascript" src="../assets/js/supr-theme/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript" src="../assets/js/supr-theme/jquery-ui-sliderAccess.js"></script>
+    <script src="~/assets/plugins/misc/imgpreview.full.jquery.js"></script>
+
+
+    <!-- Google Chart API -->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+    <!-- Init plugins -->
+    <script type="text/javascript" src="../assets/js/main.js"></script><!-- Core js functions -->
+    <script type="text/javascript" src="../assets/js/dashboard.js"></script><!-- Init plugins only for page -->
+
+    <script type="text/javascript" src="../assets/js/widgets.js"></script><!-- Init plugins only for page -->
+    <!-- My Funtions -->
+    <script type="text/javascript" src="~/Assets/js/myfunctions.js"></script><!-- My Funtions -->
+    <script src="~/Assets/js/handle-link.js"></script>
+    <script>
+        function showMyImage(fileInput) {
+            var files = fileInput.files;
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var imageType = /image.*/;
+                if (!file.type.match(imageType)) {
+                    continue;
+                }
+                var img = document.getElementById("thumbnil");
+                img.file = file;
+                var reader = new FileReader();
+                reader.onload = (function (aImg) {
+                    return function (e) {
+                        aImg.src = e.target.result;
+                    };
+                })(img);
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+
+    <!-- load default page for current user-->
+    <script>
+    $(document).ready(function () {
+
+        $('.relationship').select2({ placeholder: "Select Relationship Status." });
+        $('.limit').inputlimiter({ limit: 100 });
+        var extraRowAdd = $('.divDistribution').html();
+        $('#hiddenRow').html(extraRowAdd);
+        $('.distributionhouseid:last').select2({ placeholder: "Select a house." });
+
+
+        $('#form-create-employee').on('click', '.add', function () {
+            $('<div class="input-group divDistribution" > </div>').insertAfter('.divDistribution:last').append($('#hiddenRow').html());
+            $('.distributionhouseid:last').select2({ placeholder: "Select a house." });
+            $(this).attr('class', 'remove  btn btn-sm btn-default');
+            $(this).html('Remove <i class="fa fa icon-minus"></i>');
+        });
+
+        $('#form-create-employee').on('click', '.remove', function () {
+            $(this).closest('.divDistribution').remove();
+        });
+
+        $('#pdWorkdetails').on('click', '.addwork', function () {
+            $(this).closest('tr').before('<tr class="insertwork">'
+                                      + '<td><input class="workId" type="hidden" value="0" /><input type="text" class="form-control workarea" /></td>'
+                                      + '<td><input type="text" class="form-control unionname" /></td>'
+                                      + '<td><input type="text" class="form-control thana" /></td>'
+                                      + '<td><button type="button" class="removework btn btn-sm btn-default">Remove <i class="fa fa icon-minus-sign"></i> </button></td>'
+                                  + '</tr>');
+        });
+        $('#pdWorkdetails').on('click', '.removework', function () {
+            $(this).closest('tr').hide();
+            if ($(this).closest('tr').hasClass("insertwork")) {
+                $(this).closest('tr').remove();
+            }
+            else {
+                $(this).closest('tr').find(".workId").val($(this).closest('tr').find(".workId").val() * (-1));
+                $(this).closest('tr').hide();
+            }
+        });
+        $('#pdFamilydetails').on('click', '.addfamily', function () {
+            $(this).closest('tr').before('<tr class="insertfamily">'
+                                + '<td><input class="personFamilyId" type="hidden" value=0 /><input type="text" class="form-control memberName" /></td>'
+                                + '<td><input type="text" class="form-control relation" /></td>'
+                                + '<td><input type="text" class="form-control age" /></td>'
+                                + '<td><input type="text" class="form-control occupation" /></td>'
+                                + '<td><button type="button" class="removefamily btn btn-sm btn-default">Remove <i class="fa fa icon-minus-sign"></i> </button></td>'
+                            + '</tr>');
+            jQuery.validator.addClassRules('age', {
+                required: false,
+                number: true,
+                min: 0,
+                max: 140
+            });
+        });
+        $('#pdFamilydetails').on('click', '.removefamily', function () {
+            if ($(this).closest('tr').hasClass("insertfamily")) {
+                $(this).closest('tr').remove();
+            }
+            else {
+                $(this).closest('tr').find(".personFamilyId").val($(this).closest('tr').find(".personFamilyId").val() * (-1));
+                $(this).closest('tr').hide();
+            }
+        });
+
+    });
+</script>
+
+    <!-- date time picker -->
+    <script type="text/javascript">
+        $(function () {
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd-mm-yy',
+                yearRange: "-70:+0"
+            });
+        });
+    </script>
+
+
+    <!-- Validation -->
+    <script type="text/javascript">
+        // document ready function
+        $(document).ready(function () {
+
+            //Validator date chech method
+            $.validator.addMethod('accept', function () { return true; });
+
+
+
+
+            $.validator.addMethod("dateCheck", function (value, element) {
+                var dateValue = $("#dateofbirth").val();
+                var validDatePattern = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
+
+                if (validDatePattern.test(dateValue)) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+
+            }, 'Invalid date.');
+
+            $.validator.addMethod("JdateCheck", function (value, element) {
+                var dateValue = $("#joinDate").val();
+                var validDatePattern = /^$|^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
+
+                if (validDatePattern.test(dateValue)) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+
+            }, 'Invalid date.');
+
+
+
+            $("input, textarea, select").not('.nostyle').uniform();
+
+            //form validation
+            var form = $('#form-create-employee');
+
+
+            $('#form-create-employee').validate({
+                submitHandler: function () {
+                    var distributions = [];
+                    var cats = {};
+                    $('.divDistribution > .distributionhouseid').filter(function () {
+                        var category = $(this).val();
+                        if (cats[category]) {
+                            return false;
+                        } else {
+                            cats[category] = true;
+                            var distribution = {};
+                            distribution.Id = $(this).val();
+                            distributions.push(distribution);
+                            return true;
+                        }
+                    });
+
+
+
+
+                    var photo = document.getElementById('file-input').files[0];
+
+                    var fd = new FormData();
+                    fd.append("empId", $('#employeeId').val());
+                    fd.append("personId", $('#personId').val());
+                    fd.append("personname", $('#personname').val());
+                    fd.append("empcode", $('#empcode').val())
+                    fd.append("fathername", $('#fathername').val());
+                    fd.append("mothername", $('#mothername').val());
+                    fd.append("mobileno", $('#mobileno').val());
+                    fd.append("education", $('#educationalqualification').val());
+                    fd.append("dateofbirth", $('#dateofbirth').val());
+                    fd.append("nidno", $('#nidno').val());
+                    fd.append("nationality", $('#nationality').val());
+                    fd.append("religionid", $('#religionid').val());
+                    fd.append("presentaddress", $('#presentaddress').val());
+                    fd.append("permanentaddress", $('#permanentaddress').val());
+                    fd.append("employeetypeid", $('#employeetypeid').val());
+                    fd.append("joinDate", $('#joinDate').val());
+                    fd.append("minimumInvestment", $('#minimumInvestment').val());
+                    fd.append("otherFinace", $('#otherFinace').val());
+                    fd.append("relationship", $('#relationship').val());
+                    fd.append("memberno", $('#memberno').val());
+                    fd.append("malemember", $('#malemember').val());
+                    fd.append("femalemember", $('#femalemember').val());
+                    fd.append("pdservice", $('#pdservice').val());
+                    fd.append("previouspd", $('#previouspd').val());
+
+                    var works = [];
+                    $('#pdWorkdetails tbody tr').not(':last').each(function () {
+                        var work = {};
+                        if ($(this).find('.workarea').val() != '') {
+                            work.id = $(this).find('.workId').val();
+                            work.areaname = $(this).find('.workarea').val();
+                            work.unionname = $(this).find('.unionname').val();
+                            work.thananame = $(this).find('.thana').val();
+                            works.push(work);
+                        }
+                    });
+                    var family = [];
+                    $('#pdFamilydetails tbody tr').not(':last').each(function () {
+                        if ($(this).find('.memberName').val() != '') {
+                            var member = {};
+                            member.id = $(this).find('.personFamilyId').val();
+                            member.memberName = $(this).find('.memberName').val();
+                            member.relation = $(this).find('.relation').val();
+                            member.age = $(this).find('.age').val();
+                            member.occupation = $(this).find('.occupation').val();
+                            family.push(member);
+                        }
+                    });
+                    fd.append("distributions", JSON.stringify(distributions));
+                    fd.append("works", JSON.stringify(works));
+                    fd.append("family", JSON.stringify(family))
+                    fd.append("photo", photo);
+                    console.log(fd);
+                    var SubmitURL = form.attr('action');
+
+                    $.ajax({
+                        url: SubmitURL,
+                        type: "POST",
+                        data: fd,
+                        processData: false,  // tell jQuery not to process the data
+                        contentType: false,   // tell jQuery not to set contentType
+                        beforeSend: function () {
+                            $(form).find('#btn-reset-mainform').attr('disabled', 'disabled');
+                            $(form).find('#btn-submit-mainform').html('Working...');
+                        },
+                        success: function (result) {
+                            if (result.savestatus == 'Success') {
+                                SuccessfullSaveNotification("Successfully Updated");
+                            }
+                            else {
+                                ShowRegularError(result);
+                            }
+                        },
+                        error: function (request, status, error) {
+                            ShowRegularError("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                        },
+                        complete: function () {
+                            $(form).find('#btn-reset-mainform').removeAttr("disabled");
+                            $(form).find('#btn-submit-mainform').html('Save changes');
+
+                        }
+                    });
+
+                },
+                ignore: 'photo',
+                rules: {
+                    personname: { required: true },
+                    dateofbirth: { required: true, dateCheck: true },
+                    photo: { required: false, accept: "image/png" },
+                    mobileno: { required: true, number: true, minlength: 11, maxlength: 11 },
+                    distributionhouseid: { required: true },
+                    employeetypeid: { required: true },
+                    joinDate: { required: false, JdateCheck: true },
+                    nidno: { required: false, number: true, min: 100000, max: 9999999999999999999 },
+                    minimumInvestment: { required: true, number: true, min: 1000, max: 9999999999 },
+                    memberno: { required: false, number: true, min: 0, max: 500 },
+                    malemember: { required: false, number: true, min: 0, max: 500 },
+                    femalemember: { required: false, number: true, min: 0, max: 500 }
+                },
+                messages: {
+                    personname: { required: "Please enter employee name." },
+                    mobileno: { required: "Required", number: "must be numeric", minlength: "minimum length 11.", maxlength: "max 11" },
+                    dateofbirth: { required: "Enter date.", dateCheck: "Invalid date." },
+                    joinDate: { required: "Enter date.", JdateCheck: "Invalid date." },
+                    distributionhouseid: { required: "select a hosue." },
+                    employeetypeid: { required: "select a type." },
+                    nidno: { number: "Must be Number" },
+                    minimumInvestment: { number: "Must be Number" },
+                    memberno: { number: "Must be Number" },
+                    malemember: { number: "Must be Number" },
+                    femalemember: { number: "Must be Number" }
+                }
+
+
+            });
+
+            $('#btn-reset-mainform').click(function (e) {
+
+                e.preventDefault();
+                var form = $(this).parents('form');
+
+                form.trigger('reset');
+                var validator = form.validate();
+                validator.resetForm();
+
+                $('select.resetIt', form).each(function () {
+                    $(this).select2("val", "");
+                });
+
+                $('select.emptyIt', form).empty();
+
+                $(form).find('#detail-button').remove();
+
+                $(form).find('input:visible:first').focus();
+
+            });
+
+
+        });
+    </script>
+
+
+
+
+
+
+</body>
+</html>

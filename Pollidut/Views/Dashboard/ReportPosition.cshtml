@@ -1,0 +1,245 @@
+﻿<style>
+    /*GeoLocationDiv*/
+/*#GeoServiceToggle {
+    padding: 10px 18px;
+    margin-bottom: 20px;
+    height: 2.9em;
+    border: 1px solid #999;
+    border-radius: 3px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    text-shadow: 1px 1px #fff;
+    font-weight: 700;
+    font-size: 10pt;
+    background-color: #FFB606;
+}*/ 
+        
+.GeoLocationDiv {
+    margin-top: 9px;
+    padding: 12px 5px;
+    border: 1px solid #999;
+    border-radius: 3px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    text-shadow: 1px 1px #fff;
+    font-weight: 700;
+    font-size: 10pt;
+    background-color: #c4c19e;
+}
+
+.GeoLocationDiv.green {
+    background-color:#217a0f;
+}
+</style>
+<div class="row" id="search-criteria-class">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>
+                    <span>Report Position</span>
+                </h4>
+                @*   <span id="pie-chart-loader" class="loader">
+                    <img src="../../assets/images/loaders/circular/059.gif" width="16" height="16" alt="" /></span>*@
+                <a href="#" class="minimize">Minimize</a>
+            </div>
+            <div class="panel-body">
+
+                <div class="service_box">
+                    <div class="form">
+                        <form class="cmxform">
+                            <button class="btn btn-primary" id="GeoServiceToggle">Start</button>
+                            <input type="hidden" id="Latitude" value="" />
+                            <input type="hidden" id="Longitude" value="" />
+                            <input type="hidden" id="Accuracy" value="" />
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <div id="map_canvas" style="width: 100%; height:250px;"></div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+        $(function () {
+            $(document).on('click', '.GeoLocationDiv', function (e) {
+                e.preventDefault();
+                $('.GeoLocationDiv').not(this).remove();
+                $(this).closest('form').find('#Latitude').val($(this).find('.lat').val());
+                $(this).closest('form').find('#Longitude').val($(this).find('.lon').val());
+                $(this).closest('form').find('#Accuracy').val($(this).find('.acc').val());
+
+                addMarker($(this).closest('form').find('#Latitude').val(),$(this).closest('form').find('#Longitude').val());
+            });
+
+            $("#GeoServiceToggle").click(function (e) {
+                e.preventDefault();
+                var buttonText = $(this).html();
+                if (buttonText === 'Start') {
+                    StartGeoService();
+                    $(this).html('Stop');
+                }
+                else {
+                    StopGeoService();
+                    $(this).html('Start');
+                }
+            });
+        });
+</script>
+
+
+ <!-- GeoLocation Service -->
+<script>
+    var WatchId = null;
+    function StartGeoService() {
+
+        try {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                        processGeolocationResult,
+                        html5Error,
+                        {
+                            maximumAge: 250,
+                            timeout: 60000,
+                            enableHighAccuracy: true
+                        }
+                );
+
+                WatchId = navigator.geolocation.watchPosition(
+                       processGeolocationResult,
+                       html5Error,
+                       {
+                           maximumAge: 250,
+                           timeout: 60000,
+                           enableHighAccuracy: true
+                       }
+               );
+
+                //For more info on maximumAge (milliseconds): http://dev.w3.org/geo/api/spec-source.html#max-age
+                //For more info on timeout (milliseconds): http://dev.w3.org/geo/api/spec-source.html#timeout
+                //For more info on enableHighAccuracy: http://dev.w3.org/geo/api/spec-source.html#high-accuracy
+            }
+            else {
+                alert("Sorry, your browser does not support geolocation");
+            }
+        }
+        catch (err) {
+            alert("Unable to start geolocation. See console.log for message.")
+            //console.log("startGeolocation: " + err.message);
+        }
+
+    }
+
+    function processGeolocationResult(position) {
+        displayGeocodedLocation(position);
+    }
+
+    function html5Error(error) {
+        var error_value = "null";
+
+        switch (error.code) {
+            case 1:
+                error_value = "PERMISSION_DENIED";
+                // this.geoSliderOnOff.val("off");
+                break;
+            case 2:
+                error_value = "POSITION_UNAVAILABLE";
+                break;
+            case 3:
+                //Read more at http://dev.w3.org/geo/api/spec-source.html#timeout
+                error_value = "TIMEOUT";
+                break;
+        }
+
+
+        alert('There was a problem retrieving your location: ' + error_value);
+        console.log('There was a problem retrieving your location: ' + error_value);
+    }
+
+    function displayGeocodedLocation(position) {
+
+        if (position.coords.accuracy < 20) {
+            $('<div/>').addClass('GeoLocationDiv green').html(position.coords.accuracy.toFixed(0) + ' meters <input type="hidden" class="lat" value="' + position.coords.latitude + '"/><input type="hidden" class="lon" value="' + position.coords.longitude + '"/><input type="hidden" class="acc" value="' + position.coords.accuracy.toFixed(0) + '"/>').insertAfter($('#GeoServiceToggle'));
+        }
+        else {
+            $('<div/>').addClass('GeoLocationDiv').html(position.coords.accuracy.toFixed(0) + ' meters <input type="hidden" class="lat" value="' + position.coords.latitude + '"/><input type="hidden" class="lon" value="' + position.coords.longitude + '"/><input type="hidden" class="acc" value="' + position.coords.accuracy.toFixed(0) + '"/>').insertAfter($('#GeoServiceToggle'));
+        }
+    }
+
+    function StopGeoService() {
+        try {
+            // swipernested.reInit();
+            navigator.geolocation.clearWatch(WatchId);
+            WatchId = null;
+
+        }
+        catch (err) {
+            console.log("stopGeolocation error: " + err.toString());
+        }
+    }
+</script>
+<!-- GeoLocation Service -->
+
+
+<!--google map-->
+<script>
+    var map;
+    var markers = [];
+    $(function () {
+        var retailerLat = 29.265487;  // document.getElementById('Latitude').value;
+        var retailerLon = 90.625487;// document.getElementById('Longitude').value;
+
+       
+        var center = new google.maps.LatLng(23.76250228864416, 90.37851862204738);
+        var opts = {
+            zoom: 10,
+            center: center,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+         map = new google.maps.Map(document.getElementById('map_canvas'), opts);
+        //var marker = new google.maps.Marker({
+        //    map: map,
+        //    position: retailerLocation
+        //});
+    });
+
+
+    function addMarker(lat, lon) {
+        deleteMarkers();
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(lat, lon),
+            map: map
+        });
+        markers.push(marker);
+
+        map.setCenter(new google.maps.LatLng(lat, lon));
+    }
+
+    // Sets the map on all markers in the array.
+    function setAllMap(map) {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(map);
+        }
+    }
+
+    // Removes the markers from the map, but keeps them in the array.
+    function clearMarkers() {
+        setAllMap(null);
+    }
+
+    // Deletes all markers in the array by removing references to them.
+    function deleteMarkers() {
+        clearMarkers();
+        markers = [];
+    }
+</script>
+<!--google map-->

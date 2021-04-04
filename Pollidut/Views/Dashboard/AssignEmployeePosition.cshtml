@@ -1,0 +1,446 @@
+﻿
+
+<style>
+    #imgPreviewWithStyles {
+    background: #222;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    padding: 15px;
+    z-index: 999;
+    border: none;
+}
+
+/* Text below image */
+#imgPreviewWithStyles span {
+    color: white;
+    text-align: center;
+    display: block;
+    padding: 10px 0 3px 0;
+}
+
+</style>
+
+    <div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>
+                    <span>Employee Position Assignment</span>
+                </h4>
+             @*   <span id="pie-chart-loader" class="loader">
+                    <img src="../../assets/images/loaders/circular/059.gif" width="16" height="16" alt="" /></span>*@
+                <a href="#" class="minimize">Minimize</a>
+            </div>
+            <div class="panel-body">
+
+                <form class="form-horizontal" id="form-assign-cm-position" action="~/Dashboard/AssignEmployeePosition">
+
+                    @*distributionhouseid*@
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label" for="distributionhouseid">Distribution House</label>
+                        <div class="col-lg-5">
+                            <select class="nostyle form-control resetIt" id="distributionhouseid" name="distributionhouseid" style="width: 100%;">
+                                <option></option>
+                                @foreach (var house in ViewBag.Houses)
+                                {
+                                    <option value="@house.DistributionHouseId">@house.DistributionHouseName</option>
+                                }
+                            </select>
+                        </div>
+
+                         <div class="col-lg-5">
+                             <button id="btn-house-specific-list" class="btn btn-warning btn-sm">View Selected House Specific Data</button>
+                         </div>
+                    </div>
+
+                    @*Buttons*@
+@*                    <div class="form-group">
+                        <div class="col-lg-offset-3 col-lg-9">
+                            <button id="btn-house-specific-list" class="btn btn-warning btn-md">View Selected House Specific Data</button>
+                            
+                        </div>
+                    </div>*@
+
+                    @*positiontypeid*@
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label" for="positiontypeid">Position Type</label>
+                        <div class="col-lg-5">
+                            <select class="nostyle form-control resetIt" id="positiontypeid" name="positiontypeid" style="width: 100%;">
+                                <option></option>
+                                @foreach (var type in ViewBag.PositionTypes)
+                                {
+                                    <option value="@type.EmployeeTypeId">@type.EmployeeTypeName</option>
+                                }
+                            </select>
+                        </div>
+                          <div class="col-lg-5">
+                            <button type="button" id="btn-positiontype-specific-list" class="btn btn-info btn-sm">View Selected Type Specific Data&nbsp;&nbsp;&nbsp;</button>
+                              
+                          </div>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-lg-12">
+        <div class="panel panel-default" id="existing-data">
+            <div class="panel-heading">
+                <h4>
+                    <span>Existing Data  <img title="Download as .pdf" src="~/assets/images/icons/pdf32.png" />   <img title="Download as excel" src="~/assets/images/icons/excel32.png" />  </span>
+                </h4>
+                @*<span id="existing-data-loader" class="loader">
+                    <img src="../../assets/images/loaders/circular/059.gif" width="16" height="16" alt="" /></span>
+                <a href="#" class="minimize">Minimize</a>*@
+            </div>
+            <div class="panel-body noPad">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width:50%;text-align:left;">Position Name</th>
+                            <th style="text-align:left; display:none; ">Employee Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+
+<!-- Modal confirm delete -->
+<div class="modal fade" id="delete-confirmation-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Delete Position</h4>
+      </div>
+      <div class="modal-body">
+          <input type="hidden" id="modal-position-id" value="" />
+          <input type="hidden" id="modal-employee-id" value="" />
+  
+        Are you sure to remove the selected employee from the position ? 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-danger" id="btn-delete-position">Yes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+    <!-- Select2 plugin -->
+    <script>
+        $(document).ready(function () {
+            $('#distributionhouseid').select2({ placeholder: "Select a house." });
+            $('#positiontypeid').select2({ placeholder: "Select a position." });
+            $('.test').select2({ placeholder: "Select a position." });
+
+        });
+    </script>
+
+
+    <script type="text/javascript">
+        $(function () {
+
+            //-->btn-house-specific-list button click event
+            $('#btn-house-specific-list').click(function (e) {
+                e.preventDefault();
+                var selectedVal = $('#distributionhouseid').val();
+
+                if (selectedVal == '') {
+                   
+                    AlertNotification('Alert !', 'Please select a house.');
+                    $('#distributionhouseid').focus();
+                    return;
+                }
+
+                var urlData = '@Url.Action("HouseSpecificPositionAndEmployeeList", "Dashboard")';
+                 $.ajax({
+                     type: "POST",
+                     url: urlData,
+                     contentType: "application/json; charset=utf-8",
+
+                     data: "{'houseid':'" + selectedVal + "'}",
+                     dataType: "json",
+                     success: function (result) {
+                         var tbody = $('tbody'); tbody.empty();
+                         var thead = $('thead'); thead.empty();  //clearing table colulmn
+                         thead.html('<tr> <th style="width:25%;text-align:left;">Position Name</th><th style="width:75%;text-align:left;">Employee</th><th style="width:25%;text-align:left;"></th> </tr>'); //addin new column
+
+                         $.each(result, function () {
+
+                             if (this.PersonName == 'N/A') {
+                                 tbody.append('<tr><td style="width:25%;text-align:left;">' + this.PositionName + '</td><td style="width:75%;text-align:left;"> ' + this.PersonName + '</td></tr>');
+                             }
+                             else {
+                                 tbody.append('<tr><td style="width:25%;text-align:left;">' + this.PositionName + '</td><td style="width:75%;text-align:left;"><a href="img/../../../Photos/EmployeePhotos/' + this.Photo + '".jpg"><img width="20px" class="img-rounded" src="../../../Photos/EmployeePhotos/' + this.Photo + '"/></a> &nbsp;&nbsp;&nbsp;<a href="../../../../Employee/EmployeeDetail?id=' + this.EmployeeId + '" class="person-name-link">' + this.PersonName + '</a></td></tr>');
+                             }
+                         });
+
+
+                         $('td a').imgPreview({
+                             containerID: 'imgPreviewWithStyles',
+                             imgCSS: {
+                                 // Limit preview size:
+                                 height: 200
+                             },
+                             // When container is shown:
+                             //onShow: function (link) {
+                             //    $('<span>' + $(link).text() + '</span>').appendTo(this);
+                             //},
+                             // When container hides: 
+                             onHide: function (link) {
+                                 $('span', this).remove();
+                             }
+                         });
+
+                     },
+                     error: function (request, status, error) {
+                         alert("Failed to execute. Error Details-  Request: " + request + " Status: " + status + " Error: " + error);
+                     }
+                 });
+
+            });
+            //<--btn-house-specific-list button click event
+
+
+            //--> Position button click handler
+            $('#btn-positiontype-specific-list').click(function (e) {
+                e.preventDefault();
+
+                var selectedHouseId = $('#distributionhouseid').val();
+                var selectedTypeId = $('#positiontypeid').val();
+
+
+                if (selectedHouseId == '') {
+
+                    AlertNotification('Alert !', 'Please select a house.');
+                    $('#distributionhouseid').focus();
+                    return;
+                }
+
+                if (selectedTypeId == '') {
+
+                    AlertNotification('Alert !', 'Please select a position type.');
+                    $('#positiontypeid').focus();
+                    return;
+                }
+
+                var optionValues;
+
+                //--> get unassigned employee list for the current position
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetHouseAndTypeSpecificUassignedEmployees", "Dashboard")',
+                    contentType: "application/json; charset=utf-8",
+
+                    data: "{'houseid':'" + selectedHouseId + "','employeetypeid':'" + selectedTypeId + "'}",
+                    dataType: "json",
+                    success: function (result) {
+                        optionValues += '<option></option>';
+                        $.each(result, function () {
+                            optionValues += '<option value="' + this.EmployeeId + '">' + this.EmployeeName + ' (' + this.EmployeeCode + ')</option>';
+                        });
+
+                        //--> Get tabular data
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("HouseAndPositionSpecificPositionAndEmployeeList", "Dashboard")',
+                            contentType: "application/json; charset=utf-8",
+
+                            data: "{'houseid':'" + selectedHouseId + "','positiontypeid':'" + selectedTypeId + "'}",
+                            dataType: "json",
+                            success: function (result) {
+                                var tbody = $('tbody'); tbody.empty();
+                                var thead = $('thead'); thead.empty();  //clearing table colulmn
+                                thead.html('<tr> <th style="width:25%;text-align:left;">Position Name</th><th style="width:50%;text-align:left;">Employee</th><th style="width:25%;text-align:left;"></th> </tr>'); //addin new column
+
+                                $.each(result, function () {
+                                    if (this.PersonName == 'N/A') {
+                                        tbody.append('<tr><td style="width:25%;text-align:left;">' + this.PositionName + '<input type="hidden" class="hidden-position-id" value="' + this.PositionId + '" /></td><td style="width:50%;text-align:left;"><select style="width:80%;" class="inline-combo">' + optionValues + '</select>  </td><td style="width:25%;text-align:left;"> <span style="display:none;" class="loader add-employee-loader"><img src="../../assets/images/loaders/circular/059.gif" width="16" height="16" alt="" /></span><button class="btn btn-success btn-xs add-employee" style="display:none;">Assign</button></td></tr>');
+                                    }
+                                    else {
+                                        tbody.append('<tr><td style="width:25%;text-align:left;">' + this.PositionName + '<input type="hidden" class="hidden-position-id" value="' + this.PositionId + '" /></td> <td class="employee-name-td" style="width:50%;text-align:left;"><a class="employee-thumb" href="img/../../../Photos/EmployeePhotos/' + this.Photo + '".jpg"><img width="20px" class="img-rounded" src="../../../Photos/EmployeePhotos/' + this.Photo + '"/></a>&nbsp;&nbsp;&nbsp; <a href="../../../../Employee/EmployeeDetail?id=' + this.EmployeeId + '" class="person-name-link">' + this.PersonName + '</a> <input type="hidden" class="hidden-employee-id" value="' + this.EmployeeId + '" /></td><td style="width:25%;text-align:left;"><span style="display:none;" class="loader add-employee-loader"><img src="../../assets/images/loaders/circular/059.gif" width="16" height="16" alt="" /></span> <button class="btn btn-danger btn-xs remove-employee" style="display:none;">Remove</button></td></tr>');
+                                    }
+                                });
+
+
+                                //-->button remove-employee click handler
+                                $('.remove-employee').click(function () {
+
+                                    var currentRow = $(this).closest('tr');
+                                    var btn = currentRow.find('.remove-employee');
+                                    var currentPositionId = currentRow.find('.hidden-position-id').val();
+                                    var currentEmployeeId = currentRow.find('.hidden-employee-id').val();
+                                    var loader = currentRow.find('.add-employee-loader');
+
+                                    //$('#delete-confirmation-modal').modal({
+                                    //    keyboard: true,
+                                    //    backdrop: false
+                                    //});
+
+                                    //return;
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url: '@Url.Action("RemoveEmployeePosition","Dashboard")',
+                                        async: true,
+                                        contentType: "application/json; charset=utf-8",
+                                        data: "{'positionid':'" + currentPositionId + "','employeeid':'" + currentEmployeeId + "'}",
+                                        dataType: 'json',
+                                        beforeSend: function () {
+                                            loader.show();
+                                           
+                                            btn.attr('disabled', 'disabled');
+                                            btn.html('wait...');
+                                        },
+                                        success: function (result) {
+                                            if (result == 'Success') {
+                                                SuccessNotification("Employee removed successfully from the position.");
+                                                btn.html('removed');
+                                                currentRow.find('.employee-name-td').html("N/A");
+                                            }
+                                            else {
+                                                ShowRegularError(result);
+                                                btn.html('Try again');
+                                                btn.removeAttr("disabled");
+                                            }
+                                        },
+                                        error: function (request, status, error) {
+                                            ShowRegularError("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                                            btn.html('Try again');
+                                            btn.removeAttr("disabled");
+                                        },
+                                        complete: function () {
+                                            loader.hide();
+                                        }
+                                    });
+
+                                });
+                                //<-- button add-employee click handler
+
+                                //-->button add-employee click handler
+                                $('.add-employee').click(function () {
+
+                                    var currentRow = $(this).closest('tr');
+                                    var btn = currentRow.find('.add-employee');
+                                    var currentPositionId = currentRow.find('.hidden-position-id').val();
+                                    var currentEmployeeId = currentRow.find('.inline-combo option:selected').attr('value');
+                                    var loader = currentRow.find('.add-employee-loader');
+                                    var currentCombo = currentRow.find('.inline-combo');
+
+                                    if (currentEmployeeId == '') {
+
+                                        $('<span class="employee-selection-error" style="color:red;">Select employee</span>').appendTo(currentCombo.closest('td'));
+                                        return;
+                                    }
+                                    else {
+                                        currentCombo.closest('td').find('.employee-selection-error').hide();
+                                    }
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url: '@Url.Action("AssignEmployeePosition","Dashboard")',
+                                async: true,
+                                contentType: "application/json; charset=utf-8",
+                                data: "{'positionid':'" + currentPositionId + "','employeeid':'" + currentEmployeeId + "'}",
+                                dataType: 'json',
+                                beforeSend: function () {
+                                    loader.show();
+                                    currentCombo.attr('disabled', 'disabled');
+
+                                    btn.attr('disabled', 'disabled');
+                                    btn.html('wait...');
+                                },
+                                success: function (result) {
+                                    if (result == 'Success') {
+                                        SuccessNotification("Selected employee has been assigned successfully to the selected position.");
+                                        btn.html('Success');
+                                    }
+                                    else {
+                                        ShowRegularError(result);
+                                        currentCombo.removeAttr('disabled');
+                                        btn.html('Try again');
+                                        btn.removeAttr("disabled");
+                                    }
+                                },
+                                error: function (request, status, error) {
+                                    ShowRegularError("Failed to save. Error Details -  Request: " + request + ", Status: " + status + ", Error: " + error);
+                                    currentCombo.removeAttr('disabled');
+                                    btn.html('Try again');
+                                    btn.removeAttr("disabled");
+                                },
+                                complete: function () {
+                                    loader.hide();
+                                }
+                            });
+
+                        });
+                        //<-- button add-employee click handler
+
+                        $('tbody tr').hover(function () {
+                            $(this).find('.remove-employee').show();
+                            $(this).find('.add-employee').show();
+                        }, function () {
+                            $(this).find('.remove-employee').hide();
+                            $(this).find('.add-employee').hide();
+                        });
+
+                        $('.inline-combo').select2({ placeholder: "Select a position." });
+
+                        $('.employee-thumb').imgPreview({
+                            containerID: 'imgPreviewWithStyles',
+                            imgCSS: {
+                                // Limit preview size:
+                                height: 150
+                            },
+                            // When container is shown:
+                            //onShow: function (link) {
+                            //    $('<span>' + $('.employee-thumb').closest('tr').find('.person-name-link').html() + '</span>').appendTo(this);
+                            //},
+                            // When container hides: 
+                            onHide: function (link) {
+                                $('span', this).remove();
+                            }
+                        });
+                    },
+                            error: function (request, status, error) {
+                                alert("Failed to execute. Error Details-  Request: " + request + " Status: " + status + " Error: " + error);
+                            }
+                        });
+                        //<-- Get tabular data
+
+                    },
+                    error: function (request, status, error) {
+                        alert("Failed to execute. Error Details-  Request: " + request + " Status: " + status + " Error: " + error);
+                    }
+                });
+                //<-- get unassigned employee list for the current position
+
+
+
+            });
+
+
+           
+
+            //<-- Position type combo handler
+
+            });
+
+    </script>
+
+
+
+
+
